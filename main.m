@@ -1,6 +1,7 @@
 %% Add to path
 
-addpath 
+clc;clear;
+addpath C:\Users\hamed\Research\PredictiveCoding\DynaSim-dev
 savepath
 
 %%
