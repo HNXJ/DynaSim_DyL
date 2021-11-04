@@ -5,7 +5,6 @@ addpath C:\Users\hamed\Research\PredictiveCoding\DynaSim-dev
 savepath
 
 %%
-% define equations of cell model (same for E and I populations)
 
 clc;
 
@@ -14,9 +13,6 @@ eqns={
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
-% Tip: monitor all functions of a mechanism using: monitor MECHANISM.functions
-
-% create DynaSim specification structure
 s=[];
 s.populations(1).name='E';
 s.populations(1).size=10;
