@@ -9,7 +9,7 @@ savepath
 clc;
 
 eqns={
-  'dv/dt=Iapp+@current+noise*randn(1,N_pop); Iapp=0; noise=0'
+  'dv/dt=Iapp+@current+noise*randn(1,N_pop); Iapp=0; noise=1'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
@@ -39,7 +39,9 @@ for i = 1:model_size
 end
 
 disp("Connections created...");
+
 %%
+
 data=dsSimulate(s);
 dsPlot(data);
 
