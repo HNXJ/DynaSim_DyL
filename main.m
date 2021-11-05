@@ -21,10 +21,10 @@ gK = [35, 36, 44, 31, 37];
 for i = 1:model_size
 
     s.populations(i).name= ['P', num2str(i)];
-    s.populations(i).size=10;
+    s.populations(i).size=5;
     s.populations(i).equations=eqns;
     s.populations(i).mechanism_list={'iNa', 'iK'};
-    s.populations(i).parameters={'Iapp', 9, 'gNa', gNa(i), 'gK', gK(i), 'noise', 10};
+    s.populations(i).parameters={'Iapp', 9, 'gNa', gNa(i), 'gK', gK(i), 'noise', 5};
 
 end
 
@@ -35,7 +35,7 @@ for i = 1:model_size
 
         s.connections((i-1)*model_size + j).direction = [s.populations(i).name, '->', s.populations(j).name];
         s.connections((i-1)*model_size + j).mechanism_list={'iGABAa'};
-        s.connections((i-1)*model_size + j).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(10,10)}; 
+        s.connections((i-1)*model_size + j).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
         
     end
 end
