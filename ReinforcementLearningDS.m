@@ -15,23 +15,25 @@ s.populations(1).equations = eqns;
 s.populations(1).mechanism_list = {'iNa', 'iK'};
 s.populations(1).parameters = {'Iapp', 9, 'gNa', 120, 'gK', 40, 'noise', 5};
 
-s.populations(1).name = 'P2';
-s.populations(1).size = 5;
-s.populations(1).equations = eqns;
-s.populations(1).mechanism_list = {'iNa', 'iK'};
-s.populations(1).parameters = {'Iapp', 9, 'gNa', 120, 'gK', 40, 'noise', 5};
+s.populations(2).name = 'P2';
+s.populations(2).size = 5;
+s.populations(2).equations = eqns;
+s.populations(2).mechanism_list = {'iNa', 'iK'};
+s.populations(2).parameters = {'Iapp',0, 'gNa', 110, 'gK', 40, 'noise', 5};
 
-s.populations(1).name = 'P3';
-s.populations(1).size = 5;
-s.populations(1).equations = eqns;
-s.populations(1).mechanism_list = {'iNa', 'iK'};
-s.populations(1).parameters = {'Iapp', 9, 'gNa', 120, 'gK', 40, 'noise', 5};
+s.populations(3).name = 'P3';
+s.populations(3).size = 5;
+s.populations(3).equations = eqns;
+s.populations(3).mechanism_list = {'iNa', 'iK'};
+s.populations(3).parameters = {'Iapp', 9, 'gNa', 120, 'gK', 40, 'noise', 5};
 
 s.connections(1).direction = [s.populations(1).name, '->', s.populations(2).name];
 s.connections(1).mechanism_list={'iGABAa'};
 s.connections(1).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
 
-%%
+s.connections(2).direction = [s.populations(3).name, '->', s.populations(2).name];
+s.connections(2).mechanism_list={'iGABAa'};
+s.connections(2).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
 
 data=dsSimulate(s);
 dsPlot(data);
@@ -58,10 +60,4 @@ s.connections(1).mechanism_list={'iGABAa'};
 s.connections(1).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
 
 disp("Connections created...");
-
-%%
-
-data=dsSimulate(s);
-dsPlot(data);
-
 %%
