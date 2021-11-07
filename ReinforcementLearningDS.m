@@ -36,6 +36,7 @@ s.connections(2).mechanism_list={'iGABAa'};
 s.connections(2).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
 
 data=dsSimulate(s);
+
 dsPlot(data);
 
 %% Model template of definition
