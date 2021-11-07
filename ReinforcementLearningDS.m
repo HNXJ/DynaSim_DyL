@@ -19,7 +19,7 @@ s.populations(2).name = 'P2';
 s.populations(2).size = 5;
 s.populations(2).equations = eqns;
 s.populations(2).mechanism_list = {'iNa', 'iK'};
-s.populations(2).parameters = {'Iapp',0, 'gNa', 110, 'gK', 40, 'noise', 5};
+s.populations(2).parameters = {'Iapp',1, 'gNa', 110, 'gK', 40, 'noise', 5};
 
 s.populations(3).name = 'P3';
 s.populations(3).size = 5;
