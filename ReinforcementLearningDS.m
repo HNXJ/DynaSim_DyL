@@ -60,3 +60,8 @@ s.connections(1).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)};
 disp("Connections created...");
 
 %%
+
+data=dsSimulate(s);
+dsPlot(data);
+
+%%
