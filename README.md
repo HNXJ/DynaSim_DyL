@@ -1,3 +1,5 @@
 # DynaSym-connected-models
 
-Draft for dynasym model implementations
+Draft for dynasim model implementations
+
+TODO: RL, EL, IO for DynaSim
