@@ -1,3 +1,3 @@
 # DynaConn
 
-Draft for dynasym L model implementations
+Draft for dynasym model implementations
