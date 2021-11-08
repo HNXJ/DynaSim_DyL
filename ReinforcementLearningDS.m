@@ -1,5 +1,7 @@
 %%
 
+% TODO: I/O on DynaSim for interactive and online scenarios
+
 clear;clc;
 
 eqns={
