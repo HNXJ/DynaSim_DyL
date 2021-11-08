@@ -1,9 +1,11 @@
 %%
 
 % TODO: I/O on DynaSim for interactive and online scenarios
-% Noise correlation for inputs may be a good idea
-% Two population one-hot [0, 1] and its 4 states may be good form of output for neural net
 
+% Noise correlation for inputs may be a good idea
+% Two population one-hot [0, 1] and its 4 states may be good form of output for the neural model''s net
+% Should find a way for representing plasticity (learning/memory variables)
+% 
 
 clear;clc;
 
