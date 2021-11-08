@@ -7,13 +7,16 @@
 % Two population one-hot [0, 1] and its 4 states may be good form of output for the neural model''s net
 % Should find a way for representing plasticity (learning/memory variables)
 % Relation between frequency and gNa/gK?
+
 % Look for Brian2 package of Python, Izhikevich_2007 as RL model
 % Design RL scenario for PredCoding
-% Extract model properties from data, e.g. tSNE and similarities between frames
 
+% Extract model properties from data, e.g. tSNE and similarities between frames
 % NeuroPy Idea: tSNE on single trial, 100ms tPSDs as 45 data. Perplx ~= 5
 % Augmentation via adding another similar trial, e.g. trials 61 and 62 which both are unexpected/unpredictable trials
 % Chech on NeuroPy
+
+%%
 
 clear;clc;
 
