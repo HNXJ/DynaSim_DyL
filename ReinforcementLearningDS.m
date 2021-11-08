@@ -7,7 +7,7 @@
 % Two population one-hot [0, 1] and its 4 states may be good form of output for the neural model''s net
 % Should find a way for representing plasticity (learning/memory variables)
 % Relation between frequency and gNa/gK?
-% 
+% Look for Brian2 package of Python, 
 
 clear;clc;
 
