@@ -8,6 +8,10 @@
 % Should find a way for representing plasticity (learning/memory variables)
 % Relation between frequency and gNa/gK?
 % Look for Brian2 package of Python, Izhikevich_2007 as RL model
+% Design RL scenario for PredCoding
+% Extract model properties from data, e.g. tSNE and similarities between frames
+
+% NeuroPy Idea: tSNE on single trial, 100ms tPSDs as 45 data. Perplx ~= 5
 
 clear;clc;
 
