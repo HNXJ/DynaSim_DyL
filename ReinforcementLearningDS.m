@@ -12,6 +12,7 @@
 % Extract model properties from data, e.g. tSNE and similarities between frames
 
 % NeuroPy Idea: tSNE on single trial, 100ms tPSDs as 45 data. Perplx ~= 5
+% Augmentation via adding another similar trial, e.g. trials 61 and 62 which both
 
 clear;clc;
 
