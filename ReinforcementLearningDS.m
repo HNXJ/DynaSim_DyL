@@ -1,6 +1,7 @@
 %%
 
 % TODO: I/O on DynaSim for interactive and online scenarios
+% Noise correlation for inputs may be a good idea
 
 clear;clc;
 
