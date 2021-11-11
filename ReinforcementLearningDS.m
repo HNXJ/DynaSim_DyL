@@ -48,22 +48,22 @@ eqns_harmonic_sine={
   'dv/dt=-w0^2*u-2*l*w0*v+(1/m)*F0*sin(2*pi*f*t)'
   };
 
-% step response simulations
+%% step response simulations
 vary={'m',m;'l',l;'w0',w0;'F0',F0};
 data=dsSimulate(eqns_harmonic_step,'vary',vary,'time_limits',[0 1000]);
 dsPlot(data);
 
-% vary input strength
+%% vary input strength
 vary={'m',m;'l',l;'w0',w0;'F0',F0*[1 2 3]};
 data=dsSimulate(eqns_harmonic_step,'vary',vary,'time_limits',[0 1000]);
 dsPlot(data);
 
-% frequency response simulations
+%% frequency response simulations
 vary={'m',m;'l',l;'w0',w0;'F0',F0;'f',[0:2:20]/1e3};
 data=dsSimulate(eqns_harmonic_sine,'vary',vary,'time_limits',[0 1000]);
 dsPlot(data);
 
-% vary input strength
+%% vary input strength
 % vary={'m',m;'l',l;'w0',w0;'F0',F0*[1 2 3];'f',[0:2:20]/1e3};
 % data=dsSimulate(eqns_harmonic_sine,'vary',vary,'time_limits',[0 1000]);
 dsPlot(data);
@@ -124,4 +124,5 @@ s.connections(1).mechanism_list={'iGABAa'};
 s.connections(1).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
 
 disp("Connections created...");
+
 %%
