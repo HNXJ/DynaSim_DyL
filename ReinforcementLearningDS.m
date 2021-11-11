@@ -21,7 +21,9 @@
 clear;clc;
 
 eqns={
-  'dv/dt=Iapp+@current+noise*randn(1,N_pop); Iapp=0.1; noise=1'
+  'du/dt=w; u(0)=0.01'
+  'dw/dt=1; w(0)=0.0'
+  'dv/dt=u+@current+noise*randn(1,N_pop); noise=1'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
@@ -50,7 +52,7 @@ eqns_harmonic_sine={
 
 %% step response simulations
 vary={'m',m;'l',l;'w0',w0;'F0',F0};
-data=dsSimulate(eqns_harmonic_step,'vary',vary,'time_limits',[0 1000]);
+data=dsSimulate(eqns,'vary',vary,'time_limits',[0 1000]);
 dsPlot(data);
 
 %% vary input strength
@@ -74,7 +76,7 @@ s=[];
 
 s.populations(1).name = 'P1';
 s.populations(1).size = 5;
-s.populations(1).equations = eqns_harmonic_step;
+s.populations(1).equations = eqns;
 s.populations(1).mechanism_list = {'iNa', 'iK'};
 s.populations(1).parameters = {'Iapp', 9, 'gNa', 120, 'gK', 40, 'noise', 5};
 
