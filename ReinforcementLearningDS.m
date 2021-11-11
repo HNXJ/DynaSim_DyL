@@ -23,7 +23,7 @@ clear;clc;
 eqns={
   'du/dt=w; u(0)=0.01'
   'dw/dt=1; w(0)=0.0'
-  'dv/dt=u+@current+noise*randn(1,N_pop); noise=1'
+  'dv/dt=@current+noise*randn(1,N_pop); noise=1'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
