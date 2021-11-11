@@ -39,7 +39,7 @@ F0 = w0^2;    % amplitude of driving force
 % step input
 eqns_harmonic_step={
   'du/dt=v; u(0)=.5'
-  'dv/dt=-^2*u-2*l**v+*0.01'
+  'dv/dt=-@current-0.01*u-0.00*v+0.01'
   };
 
 % sinusoidal driving force
