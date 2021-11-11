@@ -39,7 +39,7 @@ F0 = w0^2;    % amplitude of driving force
 % step input
 eqns_harmonic_step={
   'du/dt=v; u(0)=.5'
-  'dv/dt=-w0^2*u-2*l*w0*v+(1/m)*F0'
+  'dv/dt=-^2*u-2*l**v+*0.01'
   };
 
 % sinusoidal driving force
@@ -74,7 +74,7 @@ s=[];
 
 s.populations(1).name = 'P1';
 s.populations(1).size = 5;
-s.populations(1).equations = eqns;
+s.populations(1).equations = eqns_harmonic_step;
 s.populations(1).mechanism_list = {'iNa', 'iK'};
 s.populations(1).parameters = {'Iapp', 9, 'gNa', 120, 'gK', 40, 'noise', 5};
 
