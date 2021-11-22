@@ -1,44 +1,29 @@
-%%
-
-clc;
-
+% define equations of cell model (same for E and I populations)
 eqns={
-  'dv/dt=Iapp+@current+noise*randn(1,N_pop); Iapp=0.1; noise=1'
+  'dv/dt=Iapp+@current+noise*randn(1,N_pop); Iapp=0; noise=0'
   'monitor iGABAa.functions, iAMPA.functions'
 };
+% Tip: monitor all functions of a mechanism using: monitor MECHANISM.functions
 
-model_size = 5;
+% create DynaSim specification structure
 s=[];
-gNa = [90, 95, 100, 125, 120];
-gK = [35, 36, 44, 31, 37];
-
-for i = 1:model_size
-
-    s.populations(i).name= ['P', num2str(i)];
-    s.populations(i).size=5;
-    s.populations(i).equations=eqns;
-    s.populations(i).mechanism_list={'iNa', 'iK'};
-    s.populations(i).parameters={'Iapp', 9, 'gNa', gNa(i), 'gK', gK(i), 'noise', 5};
-
-end
-
-disp("Populations created...");
-
-for i = 1:model_size
-    for j = 1:model_size
-
-        s.connections((i-1)*model_size + j).direction = [s.populations(i).name, '->', s.populations(j).name];
-        s.connections((i-1)*model_size + j).mechanism_list={'iGABAa'};
-        s.connections((i-1)*model_size + j).parameters={'tauD', 3, 'gGABAa', .1, 'netcon', ones(5, 5)}; 
-        
-    end
-end
-
-disp("Connections created...");
-
-%%
-
+s.populations(1).name='E';
+s.populations(1).size=80;
+s.populations(1).equations=eqns;
+s.populations(1).mechanism_list={'iNa','iK'};
+s.populations(1).parameters={'Iapp',5,'gNa',120,'gK',36,'noise',40};
+s.populations(2).name='I';
+s.populations(2).size=20;
+s.populations(2).equations=eqns;
+s.populations(2).mechanism_list={'iNa','iK'};
+s.populations(2).parameters={'Iapp',0,'gNa',120,'gK',36,'noise',10};
+s.connections(1).direction='I->E';
+s.connections(1).mechanism_list={'iGABAa'};
+s.connections(1).parameters={'tauD',10,'gGABAa',.1,'netcon','ones(N_pre,N_post)'}; % connectivity matrix defined using a string that evalutes to a numeric matrix
+s.connections(2).direction='E->I';
+s.connections(2).mechanism_list={'iAMPA'};
+s.connections(2).parameters={'tauD',2,'gAMPA',.1,'netcon',ones(80,20)}; % connectivity set using a numeric matrix defined in script
+% Simulate Sparse Pyramidal-Interneuron-Network-Gamma (sPING)
 data=dsSimulate(s);
-dsPlot(data);
 
-%%
+dsPlot(data); % <-- Figure 4 in DynaSim paper
