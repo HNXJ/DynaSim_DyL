@@ -20,16 +20,16 @@ s.populations(1).mechanism_list={'iNa','iK'};
 s.populations(1).parameters={'Iapp',3,'gNa',90,'gK',36,'noise',10};
 
 s.populations(2).name='L2';
-s.populations(2).size=10;
+s.populations(2).size=5;
 s.populations(2).equations=eqns;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',1,'gNa',40,'gK',36,'noise',20};
+s.populations(2).parameters={'Iapp',1,'gNa',10,'gK',48,'noise',20};
 
 s.populations(3).name='L3';
-s.populations(3).size=10;
+s.populations(3).size=5;
 s.populations(3).equations=eqns;
 s.populations(3).mechanism_list={'iNa','iK'};
-s.populations(3).parameters={'Iapp',1,'gNa',40,'gK',24,'noise',10};
+s.populations(3).parameters={'Iapp',1,'gNa',10,'gK',48,'noise',10};
 
 s.populations(4).name='L4';
 s.populations(4).size=10;
