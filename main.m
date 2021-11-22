@@ -23,13 +23,13 @@ s.populations(2).name='L2';
 s.populations(2).size=8;
 s.populations(2).equations=eqns;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',5,'gNa',3,'gK',12,'noise',25};
+s.populations(2).parameters={'Iapp',5,'gNa',10,'gK',12,'noise',25};
 
 s.populations(3).name='L3';
 s.populations(3).size=5;
 s.populations(3).equations=eqns;
 s.populations(3).mechanism_list={'iNa','iK'};
-s.populations(3).parameters={'Iapp',3,'gNa',90,'gK',48,'noise',25};
+s.populations(3).parameters={'Iapp',3,'gNa',30,'gK',48,'noise',25};
 
 s.populations(4).name='L4';
 s.populations(4).size=12;
@@ -56,8 +56,8 @@ s.connections(3).mechanism_list={'iAMPA'};
 s.connections(3).parameters={'tauD',2,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(4).direction='L3->L2';
-s.connections(4).mechanism_list={'iGABA'};
-s.connections(4).parameters={'tauD',5,'gGABAa',.05,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(4).mechanism_list={'iAMPA'};
+s.connections(4).parameters={'tauD',5,'gAMPA',.05,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(5).direction='L4->L1';
 s.connections(5).mechanism_list={'iGABA'};
