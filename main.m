@@ -1,13 +1,15 @@
 % Equations
 
+clc;
 eqns1={
   'u(t) = (t < 50)'
-  'dv/dt=Iapp*u(t)+0.93*@current+noise*randn(1,N_pop); noise=0.1'
+  'dv/dt=Iapp+0.93*@current+noise*randn(1,N_pop); noise=0.1'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
 eqns2={
-  'dv/dt=Iapp+0.19*@current+noise*randn(1,N_pop); Iapp=0.1; noise=0.1'
+  'u(t) = (t < 50)'
+  'dv/dt=Iapp*u(t)+0.19*@current+noise*randn(1,N_pop); Iapp=0.1; noise=0.1'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
@@ -71,5 +73,3 @@ s.connections(6).parameters={'tauD',3,'gAMPA',.3,'netcon', 'ones(N_pre,N_post)'}
 
 data=dsSimulate(s);
 dsPlot(data); 
-
-% <-- Figure 4 in DynaSim paper
