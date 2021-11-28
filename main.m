@@ -49,11 +49,11 @@ s.populations(5).parameters={'Iapp',20,'gNa',360,'gK',36,'noise',60};
 
 s.connections(1).direction='L1->L2';
 s.connections(1).mechanism_list={'iGABAa'};
-s.connections(1).parameters={'tauD',10,'gGABAa',.1,'netcon','ones(N_pre,N_post)'};
+s.connections(1).parameters={'tauD',3,'gGABAa',.1,'netcon','ones(N_pre,N_post)'};
 
 s.connections(2).direction='L5->L2';
 s.connections(2).mechanism_list={'iAMPA'};
-s.connections(2).parameters={'tauD',5,'gAMPA',.05,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(2).parameters={'tauD',5,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(3).direction='L2->L3';
 s.connections(3).mechanism_list={'iAMPA'};
@@ -61,7 +61,7 @@ s.connections(3).parameters={'tauD',2,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}
 
 s.connections(4).direction='L3->L2';
 s.connections(4).mechanism_list={'iAMPA'};
-s.connections(4).parameters={'tauD',5,'gAMPA',.05,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(4).parameters={'tauD',5,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(5).direction='L4->L1';
 s.connections(5).mechanism_list={'iGABA'};
