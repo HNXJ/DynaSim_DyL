@@ -52,19 +52,19 @@ s.populations(4).name='L4';
 s.populations(4).size=12;
 s.populations(4).equations=eqns2;
 s.populations(4).mechanism_list={'iNa','iK'};
-s.populations(4).parameters={'Iapp',5,'gNa',250,'gK',36,'noise',20};
+s.populations(4).parameters={'Iapp',2,'gNa',250,'gK',36,'noise',20};
 
 s.populations(5).name='L5';
 s.populations(5).size=6;
 s.populations(5).equations=eqns2;
 s.populations(5).mechanism_list={'iNa','iK'};
-s.populations(5).parameters={'Iapp',5,'gNa',250,'gK',36,'noise',20};
+s.populations(5).parameters={'Iapp',2,'gNa',250,'gK',36,'noise',20};
 
 s.populations(6).name='L6';
 s.populations(6).size=4;
 s.populations(6).equations=eqns2;
 s.populations(6).mechanism_list={'iNa','iK'};
-s.populations(6).parameters={'Iapp',5,'gNa',360,'gK',36,'noise',20};
+s.populations(6).parameters={'Iapp',2,'gNa',360,'gK',36,'noise',20};
 
 s.populations(7).name='Input1';
 s.populations(7).size=1;
