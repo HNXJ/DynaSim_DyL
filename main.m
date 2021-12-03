@@ -16,13 +16,13 @@ eqns2={
 
 eqns3={
   'u(t) = (t > 50)'
-  'dv/dt = 30*sin(t) * u(t);'
+  'dv/dt = 30*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
 eqns4={
   'u(t) = (t < 50)'
-  'dv/dt = 30*sin(t) * u(t);'
+  'dv/dt = 30*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
 };
 
@@ -34,13 +34,13 @@ s.populations(1).name='L1';
 s.populations(1).size=7;
 s.populations(1).equations=eqns1;
 s.populations(1).mechanism_list={'iNa','iK'};
-s.populations(1).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',5};
+s.populations(1).parameters={'Iapp',1,'gNa',40,'gK',36,'noise',5};
 
 s.populations(2).name='L2';
 s.populations(2).size=8;
 s.populations(2).equations=eqns1;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',1,'gNa',90,'gK',12,'noise',10};
+s.populations(2).parameters={'Iapp',1,'gNa',50,'gK',12,'noise',10};
 
 s.populations(3).name='L3';
 s.populations(3).size=5;
@@ -52,7 +52,7 @@ s.populations(4).name='L4';
 s.populations(4).size=12;
 s.populations(4).equations=eqns2;
 s.populations(4).mechanism_list={'iNa','iK'};
-s.populations(4).parameters={'Iapp',8,'gNa',250,'gK',48,'noise',10};
+s.populations(4).parameters={'Iapp',10,'gNa',250,'gK',36,'noise',20};
 
 s.populations(5).name='L5';
 s.populations(5).size=6;
@@ -112,7 +112,12 @@ s.connections(8).parameters={'tauD',5,'gAMPA',.5,'netcon', 'ones(N_pre,N_post)'}
 
 s.connections(9).direction='L6->L5';
 s.connections(9).mechanism_list={'iAMPA'};
-s.connections(9).parameters={'tauD',3,'gAMPA',.5,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(9).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
+
+s.connections(10).direction='L5->L4';
+s.connections(10).mechanism_list={'iAMPA'};
+s.connections(10).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
+
 
 % data=dsSimulate(s);
 
