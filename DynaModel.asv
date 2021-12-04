@@ -1,0 +1,26 @@
+classdef DynaModel
+
+    properties
+        s = [];
+        trials = 1;
+        cues = [];
+    end
+    
+    methods
+        
+        function obj = DynaModel(s)
+            if nargin == 1
+                obj.s = s;
+            end
+        end
+        
+        function set_weights(obj, layer, wn)
+            obj.s.
+        end
+        
+        function r = multiplyBy(obj,n)
+            r = [obj.Value] * n;
+        end
+        
+    end
+end

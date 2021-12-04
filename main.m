@@ -92,7 +92,7 @@ s.connections(3).parameters={'tauD',18,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'
 
 s.connections(4).direction='L3->L2';
 s.connections(4).mechanism_list={'iAMPA'};
-s.connections(4).parameters={'tauD',17,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(4).parameters={'tauD',17,'gAMPA',.1,'netcon', rand(5,8)}; 
 
 s.connections(5).direction='L4->L1';
 s.connections(5).mechanism_list={'iGABA'};
