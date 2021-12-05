@@ -1,3 +1,6 @@
+%%
+
+%%
 % Equations
 
 clc;
@@ -118,8 +121,9 @@ s.connections(10).direction='L5->L4';
 s.connections(10).mechanism_list={'iAMPA'};
 s.connections(10).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
+m = DynaModel(s);
+a = m.connections;
+
 % data=dsSimulate(s);
-
-data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
-
-dsPlot(data); 
+% data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
+% dsPlot(data); 

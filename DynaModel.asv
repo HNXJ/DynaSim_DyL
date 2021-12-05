@@ -1,25 +1,40 @@
 classdef DynaModel
 
     properties
-        s = [];
-        trials = 1;
+        model = [];
+        current_trial = 0;
         cues = [];
+        data = [];
+        
+        connections = [];
+        
     end
     
     methods
         
-        function obj = DynaModel(s)
-            if nargin == 1
-                obj.s = s;
-            end
+        function obj = DynaModel(model_)
+            obj.model = model_;
+            obj.data = obj.init();
+            obj.connections = obj.get_connection_list()
         end
         
-        function set_weights(obj, layer, wn)
-            obj.s.
+        function d = init(obj)
+            d = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
         end
         
-        function r = multiplyBy(obj,n)
-            r = [obj.Value] * n;
+        function update_weights_stochastic(obj)
+            
+        end
+        
+        function set_weights(obj, connection, Wn)
+            obj.s.connections(connection).parameters = {'netcon', Wn};
+        end
+        
+        function w = get_weights(obj, connection)
+            w_s = obj.data.model.fixed_variables;
+            w_c = struct2cell(w_s);
+            w = w_c(connection);
+            w = w{1};
         end
         
     end
