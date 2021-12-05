@@ -31,31 +31,39 @@ classdef DynaModel < matlab.mixin.SetGet
         end
         
         function set.model(obj, val)
+            
              if ~isstruct(val) 
                 error('Model must be a struct');
              end
              obj.model = val;
+             
         end
         
         function set.data(obj, val)
+            
              if ~isstruct(val) 
                 error('Data must be a struct');
              end
              obj.data = val;
+             
         end
         
         function set.errors(obj, val)
+            
              if ~strcmpi(class(val), 'double') 
                 error('Errors log must be a double array');
              end
              obj.errors = val;
+             
         end
         
         function set.connections(obj, val)
+            
              if ~iscell(val) 
                 error('Connections must be a cell');
              end
              obj.connections = val;
+             
         end
         
         function set.last_trial(obj, val)
