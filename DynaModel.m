@@ -1,6 +1,7 @@
-classdef DynaModel
+classdef DynaModel < matlab.mixin.SetGet
 
     properties
+        
         model = [];
         data = [];
         errors = [];
@@ -10,48 +11,123 @@ classdef DynaModel
         last_inputs = [];
         last_outputs = [];
         last_error = [];
+        
     end
     
     methods
         
         function obj = DynaModel(model_)
-            obj.model = model_;
-            obj.data = obj.init();
-            obj.connections = obj.get_connections_list();
+            
+            set(obj, 'model', model_);
+            set(obj, 'data', obj.init());
+            set(obj, 'connections', obj.get_connections_list());
+            
+        end
+        
+        function set.model(obj, val)
+             if ~isstruct(val) 
+                error('Model must be a struct');
+             end
+             obj.model = val;
+        end
+        
+        function set.data(obj, val)
+             if ~isstruct(val) 
+                error('Data must be a struct');
+             end
+             obj.data = val;
+        end
+        
+        function set.errors(obj, val)
+             if ~strcmpi(class(val), 'double') 
+                error('Errors log must be a double array');
+             end
+             obj.errors = val;
+        end
+        
+        function set.connections(obj, val)
+             if ~iscell(val) 
+                error('Connections must be a cell');
+             end
+             obj.connections = val;
+        end
+        
+        function set.last_trial(obj, val)
+             
+             obj.last_trial = floor(double(val));
+             
+        end
+        
+        function set.last_inputs(obj, val)
+             
+             obj.last_inputs = val;
+             
+        end
+        
+        function set.last_outputs(obj, val)
+             
+             obj.last_outputs = val;
+             
+        end
+        
+        function set.last_error(obj, val)
+             
+             obj.last_error = val;
+             
         end
         
         function o = init(obj)
+            
             o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
+        
         end
         
         function o = simulate(obj, t, dt)
+            
             o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag',1);
+      
         end
         
         function c = get_connections_list(obj)
+            
             st = obj.data.model.fixed_variables;
             c = fieldnames(st);
+            
         end
         
         function o = get_outputs(obj, inds)
+            
             st = struct2cell(obj.data);
+            inds = inds{1};
             o = st(inds);
+            
         end
         
         function obj = update_error(obj)
             
+            err = 0; % TODO ERROR CALC
+            set(obj, 'errors', [get(obj, 'errors'), err]);
+            set(obj, 'last_error', err);
+            
         end
         
         function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
-           
+            
+            disp(inputs);
+            disp(inputs_index);
+          
+            obj.last_trial = obj.last_trial + 1;
+            cnt = 0;
             for i = inputs_index
-                obj.model.populations(i).equations = inputs(i);
+                cnt = cnt + 1;
+                eq = inputs(cnt);
+                obj.model.populations(i).equations = eq{1};
             end
             
-            obj.data = obj.simulate(obj, t, dt);
-            obj.last_output = obj.get_outputs(outputs_index);
+            obj.data = obj.simulate(t, dt);
+            obj.last_outputs = obj.get_outputs(outputs_index);
             obj.last_inputs = inputs;
-            obj.update_error()
+            obj.update_error();
             
         end
         
