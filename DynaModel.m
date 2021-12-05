@@ -2,13 +2,14 @@ classdef DynaModel
 
     properties
         model = [];
-        last_trial = 0;
-        last_input = [];
-        last_output = [];
-        
-        cues = [];
         data = [];
+        errors = [];
         connections = [];
+    
+        last_trial = 0;
+        last_inputs = [];
+        last_outputs = [];
+        last_error = [];
     end
     
     methods
@@ -23,13 +24,29 @@ classdef DynaModel
             d = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
         end
         
+        function d = simulate(obj, t, dt)
+            d = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag',1);
+        end
+        
         function c = get_connections_list(obj)
            st = obj.data.model.fixed_variables;
            c = fieldnames(st);
         end
         
-        function run_trial(obj, inputs)
+        function o = get_outputs(obj, inds)
             
+        end
+        
+        function run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
+            for i = inputs_index
+                obj.model.populations(i).equations = inputs(i);
+            end
+            
+            obj.data = obj.simulate(obj, t, dt);
+            outputs = obj.get_outputs(outputs_index);
+            
+            obj.last_inputs = inputs;
+            obj.last_outputs = outputs;
         end
         
         function train_step(obj, lambda)
