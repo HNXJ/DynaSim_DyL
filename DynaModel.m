@@ -2,12 +2,13 @@ classdef DynaModel
 
     properties
         model = [];
-        current_trial = 0;
+        last_trial = 0;
+        last_input = [];
+        last_output = [];
+        
         cues = [];
         data = [];
-        
         connections = [];
-        
     end
     
     methods
@@ -27,7 +28,11 @@ classdef DynaModel
            c = fieldnames(st);
         end
         
-        function train_step(obj)
+        function run_trial(obj, inputs)
+            
+        end
+        
+        function train_step(obj, lambda)
             
         end
         
