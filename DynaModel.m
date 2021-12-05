@@ -186,7 +186,9 @@ classdef DynaModel < matlab.mixin.SetGet
         end
         
         function set_weights(obj, connection, Wn)
+            
             obj.s.connections(connection).parameters = {'netcon', Wn};
+            
         end
         
         function w = get_weights(obj, connection)
