@@ -1,3 +1,2 @@
-# DynaSym-connected-models
+# DynaSym Trainable Model Draft
 
-Draft for DynaSim model implementations
