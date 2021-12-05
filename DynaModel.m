@@ -192,10 +192,12 @@ classdef DynaModel < matlab.mixin.SetGet
         end
         
         function w = get_weights(obj, connection)
+            
             w_s = obj.data.model.fixed_variables;
             w_c = struct2cell(w_s);
             w = w_c(connection);
             w = w{1};
+            
         end
         
     end
