@@ -146,12 +146,12 @@ classdef DynaModel < matlab.mixin.SetGet
             obj.train_step(lambda);
             
         end
-        % TODO DELTA RULE of Rascorla-Wager
+        
         function train_step(obj, lambda) 
             
             for i = 1:size(obj.connections)
                 
-                % Incomplete RW rule
+                % Incomplete RascWagner rule
                 
             end
             
