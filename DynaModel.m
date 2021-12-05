@@ -151,7 +151,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
             for i = 1:size(obj.connections)
                 
-                % Incomplete
+                % Incomplete RW
                 
             end
             
