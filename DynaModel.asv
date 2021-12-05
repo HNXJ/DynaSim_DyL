@@ -29,15 +29,16 @@ classdef DynaModel
         end
         
         function c = get_connections_list(obj)
-           st = obj.data.model.fixed_variables;
-           c = fieldnames(st);
+            st = obj.data.model.fixed_variables;
+            c = fieldnames(st);
         end
         
         function o = get_outputs(obj, inds)
-            
+            st = struct2cell(obj.data);
+            o = st(inds);
         end
         
-        function run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
             for i = inputs_index
                 obj.model.populations(i).equations = inputs(i);
             end
@@ -47,6 +48,7 @@ classdef DynaModel
             
             obj.last_inputs = inputs;
             obj.last_outputs = outputs;
+            
         end
         
         function train_step(obj, lambda)

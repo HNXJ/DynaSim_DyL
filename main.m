@@ -9,7 +9,7 @@ eqns1={
 %   'u(t) = (t < 50)'
   'dv/dt=0.5*Iapp+0.5*@current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
-  'monitor v.spikes(0)'
+  'monitor v.spikes(-20)'
 };
 
 eqns2={
@@ -120,8 +120,8 @@ s.connections(10).direction='L5->L4';
 s.connections(10).mechanism_list={'iAMPA'};
 s.connections(10).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
-m = DynaModel(s);
-m.simulate(100, 0.01);
+% m = DynaModel(s);
+m.simulate(1000, 0.01);
 a = m.connections;
 disp('done');
 
