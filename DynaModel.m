@@ -113,20 +113,20 @@ classdef DynaModel < matlab.mixin.SetGet
         
         function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
             
-            disp(inputs);
-            disp(inputs_index);
-          
-            obj.last_trial = obj.last_trial + 1;
+            set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             cnt = 0;
+            model_n = get(obj, 'model');
+            
             for i = inputs_index
                 cnt = cnt + 1;
                 eq = inputs(cnt);
-                obj.model.populations(i).equations = eq{1};
+                model_n.populations(i).equations = eq{1};
             end
             
-            obj.data = obj.simulate(t, dt);
-            obj.last_outputs = obj.get_outputs(outputs_index);
-            obj.last_inputs = inputs;
+            set(obj, 'model', model_n);
+            set(obj, 'data', obj.simulate(t, dt));
+            set(obj, 'last_outputs', obj.get_outputs(outputs_index));
+            set(obj, 'last_inputs', inputs);
             obj.update_error();
             
         end
