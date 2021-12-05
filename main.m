@@ -9,6 +9,7 @@ eqns1={
 %   'u(t) = (t < 50)'
   'dv/dt=0.5*Iapp+0.5*@current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
+  'monitor v.spikes(0)'
 };
 
 eqns2={
@@ -28,8 +29,6 @@ eqns4={
   'dv/dt = 30*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
 };
-
-eqns = eqns1;
 
 s=[];
 
@@ -123,6 +122,7 @@ s.connections(10).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'
 
 m = DynaModel(s);
 a = m.connections;
+disp('done');
 
 % data=dsSimulate(s);
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
