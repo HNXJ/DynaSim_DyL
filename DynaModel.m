@@ -38,16 +38,20 @@ classdef DynaModel
             o = st(inds);
         end
         
+        function obj = update_error(obj)
+            
+        end
+        
         function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
+           
             for i = inputs_index
                 obj.model.populations(i).equations = inputs(i);
             end
             
             obj.data = obj.simulate(obj, t, dt);
-            outputs = obj.get_outputs(outputs_index);
-            
+            obj.last_output = obj.get_outputs(outputs_index);
             obj.last_inputs = inputs;
-            obj.last_outputs = outputs;
+            obj.update_error()
             
         end
         
