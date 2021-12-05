@@ -170,11 +170,13 @@ classdef DynaModel < matlab.mixin.SetGet
         end
         
         function update_weights_stochastic_normal(obj, lambda, error)
+            
             for i = 1:size(obj.connections, 1)
                wp = obj.get_weights(i);
                wn = wp + lambda*error*randn(size(wp));
                obj.set_weights(i, wn);
             end
+            
         end
         
         function update_weights_stochastic_uniform(obj, lambda, error)
