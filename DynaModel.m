@@ -20,12 +20,12 @@ classdef DynaModel
             obj.connections = obj.get_connections_list();
         end
         
-        function d = init(obj)
-            d = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
+        function o = init(obj)
+            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
         end
         
-        function d = simulate(obj, t, dt)
-            d = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag',1);
+        function o = simulate(obj, t, dt)
+            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag',1);
         end
         
         function c = get_connections_list(obj)

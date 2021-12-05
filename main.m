@@ -121,8 +121,9 @@ s.connections(10).mechanism_list={'iAMPA'};
 s.connections(10).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 % m = DynaModel(s);
-m.simulate(1000, 0.01);
-a = m.connections;
+a = m.simulate(100, 0.01);
+m.data = a;
+% a = m.connections;
 disp('done');
 
 % data=dsSimulate(s);
