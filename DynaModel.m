@@ -20,7 +20,7 @@ classdef DynaModel
         end
         
         function w = get_weights(obj, connection)
-            
+            obj.data.model.fixed_variables.L4_L5_iAMPA_netcon
         end
         
     end
