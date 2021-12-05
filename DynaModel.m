@@ -12,6 +12,8 @@ classdef DynaModel < matlab.mixin.SetGet
         last_outputs = [];
         last_error = [];
         
+        last_targets = [];
+        
     end
     
     methods
@@ -76,9 +78,15 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
+        function set.last_targets(obj, val)
+             
+             obj.last_targets = val;
+             
+        end
+        
         function o = init(obj)
             
-            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
+            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 100], 'downsample_factor', 10, 'verbose_flag',1);
         
         end
         
@@ -105,15 +113,21 @@ classdef DynaModel < matlab.mixin.SetGet
         
         function obj = update_error(obj)
             
-            err = 0; % TODO ERROR CALC
+            output = get(obj, 'last_outputs');
+            output = sum(sum(double(output{1})));
+            target = get(obj, 'last_targets');
+            
+            err = (target-output)/10; % TODO ERROR CALC
             set(obj, 'errors', [get(obj, 'errors'), err]);
             set(obj, 'last_error', err);
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
+            set(obj, 'last_targets', target);
+            
             cnt = 0;
             model_n = get(obj, 'model');
             
@@ -127,11 +141,19 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'data', obj.simulate(t, dt));
             set(obj, 'last_outputs', obj.get_outputs(outputs_index));
             set(obj, 'last_inputs', inputs);
+            
             obj.update_error();
+            obj.train_step(lambda);
             
         end
-        
-        function train_step(obj, lambda)
+        % TODO DELTA RULE of Rascorla-Wager
+        function train_step(obj, lambda) 
+            
+            for i = 1:size(obj.connections)
+                
+                % Incomplete
+                
+            end
             
         end
         

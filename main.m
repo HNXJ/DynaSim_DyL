@@ -16,18 +16,21 @@ eqns2={
 %   'u(t) = (t < 50)'
   'dv/dt=Iapp+3*@current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
+  'monitor v.spikes(-20)'
 };
 
 eqns3={
   'u(t) = (t > 50)'
   'dv/dt = 30*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
+  'monitor v.spikes(-20)'
 };
 
 eqns4={
   'u(t) = (t < 50)'
   'dv/dt = 30*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
+  'monitor v.spikes(-20)'
 };
 
 s=[];
@@ -36,13 +39,13 @@ s.populations(1).name='L1';
 s.populations(1).size=7;
 s.populations(1).equations=eqns1;
 s.populations(1).mechanism_list={'iNa','iK'};
-s.populations(1).parameters={'Iapp',2,'gNa',40,'gK',36,'noise',5};
+s.populations(1).parameters={'Iapp',2,'gNa',90,'gK',36,'noise',10};
 
 s.populations(2).name='L2';
 s.populations(2).size=8;
 s.populations(2).equations=eqns1;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',2,'gNa',50,'gK',12,'noise',10};
+s.populations(2).parameters={'Iapp',2,'gNa',90,'gK',32,'noise',10};
 
 s.populations(3).name='L3';
 s.populations(3).size=5;
@@ -133,8 +136,13 @@ disp('done');
 %%
 
 % clc;
-m.run_trial({eqns3, eqns4}, [7, 8], {1}, 100, 0.01);
+lambda = 1;
+m.run_trial({eqns3, eqns4}, [7, 8], {45}, 100, 0.01, 10, lambda);
 disp('done');
 
 %%
-disp(eqns3);
+dsPlot(m.data);
+%%
+clc;
+m.update_error();
+f = fieldnames(m.data);
