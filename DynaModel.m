@@ -27,8 +27,32 @@ classdef DynaModel
            c = fieldnames(st);
         end
         
-        function update_weights_stochastic(obj, lambda, error)
+        function train_step(obj)
             
+        end
+        
+        function update_weights_stochastic_normal(obj, lambda, error)
+            for i = 1:size(obj.connections, 1)
+               wp = obj.get_weights(i);
+               wn = wp + lambda*error*randn(size(wp));
+               obj.set_weights(i, wn);
+            end
+        end
+        
+        function update_weights_stochastic_uniform(obj, lambda, error)
+            for i = 1:size(obj.connections, 1)
+               wp = obj.get_weights(i);
+               wn = wp + lambda*error*rand(size(wp));
+               obj.set_weights(i, wn);
+            end
+        end
+        
+        function update_weights_constant(obj, lambda, error)
+            for i = 1:size(obj.connections, 1)
+               wp = obj.get_weights(i);
+               wn = wp + lambda*error*ones(size(wp));
+               obj.set_weights(i, wn);
+            end
         end
         
         function set_weights(obj, connection, Wn)

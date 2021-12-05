@@ -15,15 +15,22 @@ classdef DynaModel
         function obj = DynaModel(model_)
             obj.model = model_;
             obj.data = obj.init();
-            obj.connections = obj.get_connection_list()
+            obj.connections = obj.get_connections_list();
         end
         
         function d = init(obj)
             d = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 10], 'downsample_factor', 10, 'verbose_flag',1);
         end
         
-        function update_weights_stochastic(obj)
-            
+        function c = get_connections_list(obj)
+           st = obj.data.model.fixed_variables;
+           c = fieldnames(st);
+        end
+        
+        function update_weights_stochastic(obj, lambda, error)
+            for i = 1:size(obj.connections, 1)
+               wp = obj.get_weights(i); 
+            end
         end
         
         function set_weights(obj, connection, Wn)
