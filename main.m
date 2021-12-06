@@ -146,17 +146,38 @@ disp('done');
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
 % dsPlot(m.data); 
 
-%%
+%% Training trials script
 
-% clc;
-lambda = 1;
-m.run_trial({eqns3, eqns4}, [7, 8], {45}, 100, 0.01, 10, lambda, 'normal');
-m.run_trial({eqns4, eqns3}, [7, 8], {45}, 100, 0.01, 5, lambda, 'normal');
+clc;
+
+lambda = 0.01;
+input_cues = {{eqns3, eqns4}, {eqns4, eqns3}};
+target_responses = [10, 5];
+batch_size = size(target_responses, 2);
+
+input_layers = [7, 8];
+output_indice = {49};
+T = 100;
+dT = 0.01;
+
+for i = 1:2
+    
+    for j = 1:batch_size
+        
+        c_input = input_cues(j);
+        c_input = c_input{1};
+        c_target = target_responses(j);
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, 'normal');
+    
+    end
+    fprintf("Trial no. %f of current batch %f \n", get(m, 'last_trial'), i);
+    
+end
+
 disp('done');
 
 %%
 dsPlot(m.data);
 %%
 clc;
-m.update_error();
 f = fieldnames(m.data);

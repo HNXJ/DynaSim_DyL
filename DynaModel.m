@@ -99,13 +99,13 @@ classdef DynaModel < matlab.mixin.SetGet
         
         function o = init(obj)
             
-            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 100], 'downsample_factor', 10, 'verbose_flag',1);
+            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 100], 'downsample_factor', 10, 'verbose_flag', 1);
         
         end
         
         function o = simulate(obj, t, dt)
             
-            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag',1);
+            o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag', 0);
       
         end
         

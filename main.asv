@@ -91,67 +91,93 @@ s.connections(2).direction='L2->L1';
 s.connections(2).mechanism_list={'iGABAa'};
 s.connections(2).parameters={'tauD',12,'gGABAa',.1,'netcon','rand(N_pre,N_post)'};
 
-s.connections(2).direction='L5->L2';
-s.connections(2).mechanism_list={'iAMPA'};
-s.connections(2).parameters={'tauD',16,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
-
-s.connections(2).direction='L5->L2';
-s.connections(2).mechanism_list={'iAMPA'};
-s.connections(2).parameters={'tauD',16,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
-
-s.connections(3).direction='L2->L3';
+s.connections(3).direction='L5->L2';
 s.connections(3).mechanism_list={'iAMPA'};
-s.connections(3).parameters={'tauD',18,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(3).parameters={'tauD',16,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(4).direction='L3->L2';
-s.connections(4).mechanism_list={'iAMPA'};
-s.connections(4).parameters={'tauD',17,'gAMPA',.1,'netcon', rand(5,8)}; 
+s.connections(4).direction='L2->L5';
+s.connections(4).mechanism_list={'iGABA'};
+s.connections(4).parameters={'tauD',16,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(5).direction='L4->L1';
-s.connections(5).mechanism_list={'iGABA'};
-s.connections(5).parameters={'tauD',12,'gGABAa',.1,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(5).direction='L2->L3';
+s.connections(5).mechanism_list={'iAMPA'};
+s.connections(5).parameters={'tauD',18,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(6).direction='L3->L1';
+s.connections(6).direction='L3->L2';
 s.connections(6).mechanism_list={'iAMPA'};
-s.connections(6).parameters={'tauD',19,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(6).parameters={'tauD',17,'gAMPA',.1,'netcon', rand(5,8)}; 
 
-s.connections(7).direction='Input1->L5';
-s.connections(7).mechanism_list={'iAMPA'};
-s.connections(7).parameters={'tauD',5,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(7).direction='L4->L1';
+s.connections(7).mechanism_list={'iGABA'};
+s.connections(7).parameters={'tauD',12,'gGABAa',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
-s.connections(8).direction='Input2->L6';
-s.connections(8).mechanism_list={'iAMPA'};
-s.connections(8).parameters={'tauD',5,'gAMPA',.5,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(8).direction='L1->L4';
+s.connections(8).mechanism_list={'iGABA'};
+s.connections(8).parameters={'tauD',12,'gGABAa',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
-s.connections(9).direction='L6->L5';
+s.connections(9).direction='L3->L1';
 s.connections(9).mechanism_list={'iAMPA'};
-s.connections(9).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(9).parameters={'tauD',19,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
-s.connections(10).direction='L5->L4';
-s.connections(10).mechanism_list={'iAMPA'};
-s.connections(10).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(10).direction='L1->L3';
+s.connections(10).mechanism_list={'iGABA'};
+s.connections(10).parameters={'tauD',19,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
+
+s.connections(11).direction='Input1->L5';
+s.connections(11).mechanism_list={'iAMPA'};
+s.connections(11).parameters={'tauD',5,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
+
+s.connections(12).direction='Input2->L6';
+s.connections(12).mechanism_list={'iAMPA'};
+s.connections(12).parameters={'tauD',5,'gAMPA',.5,'netcon', 'ones(N_pre,N_post)'}; 
+
+s.connections(13).direction='L6->L5';
+s.connections(13).mechanism_list={'iAMPA'};
+s.connections(13).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
+
+s.connections(14).direction='L5->L4';
+s.connections(14).mechanism_list={'iAMPA'};
+s.connections(14).parameters={'tauD',3,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 m = DynaModel(s);
-% a = m.simulate(100, 0.01);
-% m.data = a;
-% a = m.connections;
 disp('done');
 
 % data=dsSimulate(s);
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
 % dsPlot(m.data); 
 
-%%
+%% Training trials script
 
-% clc;
-lambda = 1;
-m.run_trial({eqns3, eqns4}, [7, 8], {45}, 100, 0.01, 10, lambda, 'normal');
-m.run_trial({eqns4, eqns3}, [7, 8], {45}, 100, 0.01, 5, lambda, 'normal');
+clc;
+
+lambda = 0.01;
+input_cues = {{eqns3, eqns4}, {eqns4, eqns3}};
+target_responses = [10, 5];
+batch_size = size(target_responses, 2);
+
+input_layers = [7, 8];
+output_indice = {49};
+T = 100;
+dT = 0.01;
+
+for i = 1:2
+    
+    for j = 1:batch_size
+        
+        c_input = input_cues(j);
+        c_input = c_input{1};
+        c_target = target_responses(j);
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, 'normal');
+    
+    end
+    fprintf("Trial no. %f of current batch %f \n", get(m, 'last_trial'), i);
+    
+end
+
 disp('done');
 
 %%
 dsPlot(m.data);
 %%
 clc;
-m.update_error();
 f = fieldnames(m.data);
