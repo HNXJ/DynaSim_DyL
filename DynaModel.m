@@ -161,7 +161,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode, momentum)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);
@@ -181,7 +181,7 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'last_inputs', inputs);
             
             obj.update_error(error_mode);
-            obj.train_step(lambda, mode);
+            obj.train_step(lambda, mode, momentum);
             
         end
         
@@ -191,11 +191,11 @@ classdef DynaModel < matlab.mixin.SetGet
             
             if strcmpi(mode, 'normal')
 
-                obj.update_weights_normal(lambda, error);
+                obj.update_weights_normal(lambda, error, momentum);
             
             elseif strcmpi(mode, 'uniform')
                 
-                obj.update_weights_uniform(lambda, error);
+                obj.update_weights_uniform(lambda, error, momentum);
                 
             else
                 
@@ -205,21 +205,21 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function update_weights_normal(obj, lambda, error)
+        function update_weights_normal(obj, lambda, error, momentum)
             
             for i = 1:size(obj.connections, 1)
                wp = obj.get_weight(i);
-               wn = wp + lambda*error*randn(size(wp));
+               wn = momentum*wp + (1-momentum)*lambda*error*randn(size(wp));
                obj.update_weight(i, wn);
             end
             
         end
         
-        function update_weights_uniform(obj, lambda, error)
+        function update_weights_uniform(obj, lambda, error, momentum)
             
             for i = 1:size(obj.connections, 1)
                wp = obj.get_weight(i);
-               wn = wp + lambda*error*rand(size(wp));
+               wn = momentum*wp + (1-momentum)*lambda*error*rand(size(wp));
                obj.update_weight(i, wn);
             end
             

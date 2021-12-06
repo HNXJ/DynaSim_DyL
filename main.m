@@ -162,6 +162,7 @@ dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'diff';
+momentum = 0.9;
 
 for i = 1:10
     
@@ -170,7 +171,7 @@ for i = 1:10
         c_input = input_cues(j);
         c_input = c_input{1};
         c_target = target_responses(j);
-        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
     
     end
     
@@ -186,7 +187,7 @@ dsPlot(m.data);
 
 %%
 
-m.error_plot(error_mode);
+m.error_plot('Difference between target and output (Diff error)');
 
 %%
 
