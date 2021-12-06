@@ -204,6 +204,6 @@ m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, updat
 %%
 
 clc;
-f = fieldnames(m.data);
+% f = fieldnames(m.data);
 
 %%
