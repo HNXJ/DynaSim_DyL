@@ -161,7 +161,15 @@ classdef DynaModel < matlab.mixin.SetGet
         end
         
         function train_step(obj, lambda) 
-
+            model_n = get(obj, 'model');
+            
+            for i = inputs_index
+                cnt = cnt + 1;
+                eq = inputs(cnt);
+                model_n.populations(i).equations = eq{1};
+            end
+            
+            set(obj, 'model', model_n);0
             for i = 1:size(obj.connections)
                 
                 % Incomplete Rascorla-Wagner rule
@@ -200,17 +208,8 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function update_weight(obj, connection, Wn)
+        function set_weights(obj, connection, Wn)
             
-            model_n = get(obj, 'model');
-            
-            for i = inputs_index
-                cnt = cnt + 1;
-                eq = inputs(cnt);
-                model_n.populations(i).equations = eq{1};
-            end
-            
-            set(obj, 'model', model_n);
             obj.s.connections(connection).parameters = {'netcon', Wn};
             
         end
