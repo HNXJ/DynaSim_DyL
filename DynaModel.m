@@ -143,11 +143,11 @@ classdef DynaModel < matlab.mixin.SetGet
                 
             elseif strcmpi(mode, 'MAE')
                 
-                err = abs(target-output);
+                err = 0.5*abs(target-output);
                 
             elseif strcmpi(mode, 'MSE')
                 
-                err = (target-output)^2;
+                err = 0.5*(target-output)^2;
                 
             else
                 

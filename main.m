@@ -16,21 +16,21 @@ eqns2={
 %   'u(t) = (t < 50)'
   'dv/dt=Iapp+@current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
-  'monitor v.spikes(-20)'
+  'monitor v.spikes(0)'
 };
 
 eqns3={
   'u(t) = (t > 50)'
-  'dv/dt = 30*sin(3*t) * u(t);'
+  'dv/dt = 50*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
-  'monitor v.spikes(-20)'
+  'monitor v.spikes(0)'
 };
 
 eqns4={
   'u(t) = (t < 50)'
-  'dv/dt = 30*sin(3*t) * u(t);'
+  'dv/dt = 50*sin(3*t) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
-  'monitor v.spikes(-20)'
+  'monitor v.spikes(0)'
 };
 
 s=[];
@@ -39,19 +39,19 @@ s.populations(1).name='L1';
 s.populations(1).size=9;
 s.populations(1).equations=eqns1;
 s.populations(1).mechanism_list={'iNa','iK'};
-s.populations(1).parameters={'Iapp',4,'gNa',90,'gK',36,'noise',10};
+s.populations(1).parameters={'Iapp',4,'gNa',120,'gK',36,'noise',10};
 
 s.populations(2).name='L2';
 s.populations(2).size=9;
 s.populations(2).equations=eqns1;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',4,'gNa',90,'gK',36,'noise',10};
+s.populations(2).parameters={'Iapp',4,'gNa',120,'gK',36,'noise',10};
 
 s.populations(3).name='L3';
 s.populations(3).size=6;
 s.populations(3).equations=eqns1;
 s.populations(3).mechanism_list={'iNa','iK'};
-s.populations(3).parameters={'Iapp',4,'gNa',90,'gK',36,'noise',10};
+s.populations(3).parameters={'Iapp',4,'gNa',120,'gK',36,'noise',10};
 
 s.populations(4).name='L4';
 s.populations(4).size=12;
@@ -66,7 +66,7 @@ s.populations(5).mechanism_list={'iNa','iK'};
 s.populations(5).parameters={'Iapp',8,'gNa',120,'gK',48,'noise',10};
 
 s.populations(6).name='L6';
-s.populations(6).size=3;
+s.populations(6).size=6;
 s.populations(6).equations=eqns2;
 s.populations(6).mechanism_list={'iNa','iK'};
 s.populations(6).parameters={'Iapp',6,'gNa',120,'gK',48,'noise',10};
@@ -139,6 +139,10 @@ s.connections(14).direction='L5->L4';
 s.connections(14).mechanism_list={'iAMPA'};
 s.connections(14).parameters={'tauD',2,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
+s.connections(15).direction='L4->L6';
+s.connections(15).mechanism_list={'iAMPA'};
+s.connections(15).parameters={'tauD',2,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'};
+
 m = DynaModel(s);
 disp('done');
 
@@ -150,7 +154,7 @@ disp('done');
 
 clc;
 
-lambda = 0.03;
+lambda = 0.003;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
 target_responses = [10, 5, 20];
 batch_size = size(target_responses, 2);
@@ -161,10 +165,10 @@ T = 100;
 dT = 0.01;
 
 update_mode = 'uniform';
-error_mode = 'diff';
-momentum = 0.9;
+error_mode = 'MAE';
+momentum = 0.8;
 
-for i = 1:10
+for i = 1:5
     
     for j = 1:batch_size
         
@@ -175,7 +179,7 @@ for i = 1:10
     
     end
     
-    fprintf("Trial no. %d of current batch %d, ME = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-2:end)));
+    fprintf("Trial no. %d of current batch %d, MAE = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-2:end)));
     
 end
 
@@ -187,7 +191,7 @@ dsPlot(m.data);
 
 %%
 
-m.error_plot('Difference between target and output (Diff error)');
+m.error_plot('Error of target-output (MAE)');
 
 %%
 
