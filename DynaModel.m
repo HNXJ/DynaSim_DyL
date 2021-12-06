@@ -136,7 +136,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);
@@ -156,36 +156,46 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'last_inputs', inputs);
             
             obj.update_error();
-            obj.train_step(lambda);
+            obj.train_step(lambda, mode);
             
         end
         
-        function train_step(obj, lambda) 
+        function train_step(obj, lambda, mode) 
+                            
+            error = get(obj, 'last_error');
+            
+            if strcmpi(mode, 'normal')
 
-            for i = 1:size(obj.connections)
+                obj.update_weights_normal(lambda, error);
+            
+            elseif strcmpi(mode, 'uniform')
                 
-                % Incomplete Rascorla-Wagner rule
+                obj.update_weights_uniform(lambda, error);
+                
+            else
+                
+                obj.update_weights_constant(lambda, error)
                 
             end
             
         end
         
-        function update_weights_stochastic_normal(obj, model, lambda, error)
+        function update_weights_normal(obj, lambda, error)
             
             for i = 1:size(obj.connections, 1)
-               wp = obj.get_weights(i);
+               wp = obj.get_weight(i);
                wn = wp + lambda*error*randn(size(wp));
-               obj.set_weights(i, wn);
+               obj.update_weight(i, wn);
             end
             
         end
         
-        function update_weights_stochastic_uniform(obj, lambda, error)
+        function update_weights_uniform(obj, lambda, error)
             
             for i = 1:size(obj.connections, 1)
-               wp = obj.get_weights(i);
+               wp = obj.get_weight(i);
                wn = wp + lambda*error*rand(size(wp));
-               obj.set_weights(i, wn);
+               obj.update_weight(i, wn);
             end
             
         end
@@ -193,9 +203,9 @@ classdef DynaModel < matlab.mixin.SetGet
         function update_weights_constant(obj, lambda, error)
             
             for i = 1:size(obj.connections, 1)
-               wp = obj.get_weights(i);
+               wp = obj.get_weight(i);
                wn = wp + lambda*error*ones(size(wp));
-               obj.set_weights(i, wn);
+               obj.update_weight(i, wn);
             end
             
         end
@@ -203,19 +213,12 @@ classdef DynaModel < matlab.mixin.SetGet
         function update_weight(obj, connection, Wn)
             
             model_n = get(obj, 'model');
-            
-            for i = inputs_index
-                cnt = cnt + 1;
-                eq = inputs(cnt);
-                model_n.populations(i).equations = eq{1};
-            end
-            
+            model_n.connections(connection).parameters = {'netcon', Wn};
             set(obj, 'model', model_n);
-            obj.s.connections(connection).parameters = {'netcon', Wn};
             
         end
         
-        function w = get_weights(obj, connection)
+        function w = get_weight(obj, connection)
             
             w_s = obj.data.model.fixed_variables;
             w_c = struct2cell(w_s);

@@ -137,7 +137,7 @@ disp('done');
 
 % clc;
 lambda = 1;
-m.run_trial({eqns3, eqns4}, [7, 8], {45}, 100, 0.01, 10, lambda);
+m.run_trial({eqns3, eqns4}, [7, 8], {45}, 100, 0.01, 10, lambda, 'normal');
 disp('done');
 
 %%
