@@ -3,7 +3,7 @@
 %%
 % Equations
 
-clc;
+clc;clear;
 
 eqns1={
 %   'u(t) = (t < 50)'
@@ -39,7 +39,7 @@ s.populations(1).name='L1';
 s.populations(1).size=7;
 s.populations(1).equations=eqns1;
 s.populations(1).mechanism_list={'iNa','iK'};
-s.populations(1).parameters={'Iapp',2,'gNa',90,'gK',36,'noise',10};
+s.populations(1).parameters={'Iapp',2,'gNa',90,'gK',36,'noise',5};
 
 s.populations(2).name='L2';
 s.populations(2).size=8;
@@ -146,13 +146,13 @@ disp('done');
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
 % dsPlot(m.data); 
 
-%% Training trials script
+%% Trials' training script script
 
 clc;
 
-lambda = 0.001;
-input_cues = {{eqns3, eqns4}, {eqns4, eqns3}};
-target_responses = [10, 5];
+lambda = 0.01;
+input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
+target_responses = [10, 5, 20];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
@@ -160,7 +160,7 @@ output_indice = {49};
 T = 100;
 dT = 0.01;
 
-update_mode = 'normal';
+update_mode = 'uniform';
 error_mode = 'diff';
 
 for i = 1:10
@@ -174,7 +174,7 @@ for i = 1:10
     
     end
     
-    fprintf("Trial no. %d of current batch %d \n", get(m, 'last_trial'), i);
+    fprintf("Trial no. %d of current batch %d, ME = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-2:end)));
     
 end
 
@@ -188,6 +188,14 @@ dsPlot(m.data);
 
 m.error_plot(error_mode);
 
+%%
+
+j = 2;
+c_input = input_cues(j);
+c_input = c_input{1};
+c_target = target_responses(j);
+m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
+        
 %%
 
 clc;

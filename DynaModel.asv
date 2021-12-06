@@ -124,6 +124,8 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
+        function get_outputs_spike(obj
+        
         function obj = update_error(obj, mode)
             
             output = get(obj, 'last_outputs');
@@ -131,18 +133,30 @@ classdef DynaModel < matlab.mixin.SetGet
             target = get(obj, 'last_targets');
             
             if strcmpi(mode, 'diff')
+                
                 err = (target-output); % Basic difference
+                
             elseif strcmpi(mode, 'MAE')
+                
                 err = abs(target-output);
-            elseif strcmpi(mode, '')
-                err = abs(target-output);
+                
+            elseif strcmpi(mode, 'MSE')
+                
+                err = (target-output)^2;
+                
+            else
+                
+                fprintf("Warning! error not defined, by default difference will be used.") 
+                err = (target-output); % Basic difference
+                
             end
+            
             set(obj, 'errors_log', [get(obj, 'errors_log'), err]);
             set(obj, 'last_error', err);
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);
@@ -161,7 +175,7 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'last_outputs', obj.get_outputs(outputs_index));
             set(obj, 'last_inputs', inputs);
             
-            obj.update_error();
+            obj.update_error(error_mode);
             obj.train_step(lambda, mode);
             
         end
@@ -236,9 +250,10 @@ classdef DynaModel < matlab.mixin.SetGet
         function error_plot(obj, error_title)
            
             errors = get(obj, 'errors_log');
-            figure("Position", [0 0 1200 800]);
+            figure("Position", [50 75 1450 575]);
             plot(errors);
             xlabel("Trials");
+            grid('on');
             ylabel(error_title);
             
         end
