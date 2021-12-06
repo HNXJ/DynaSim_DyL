@@ -160,7 +160,7 @@ output_indice = {49};
 T = 100;
 dT = 0.01;
 
-for i = 1:2
+for i = 1:10
     
     for j = 1:batch_size
         
@@ -170,7 +170,7 @@ for i = 1:2
         m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, 'normal');
     
     end
-    fprintf("Trial no. %f of current batch %f \n", get(m, 'last_trial'), i);
+    fprintf("Trial no. %d of current batch %f \n", get(m, 'last_trial'), i);
     
 end
 

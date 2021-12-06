@@ -150,7 +150,7 @@ disp('done');
 
 clc;
 
-lambda = 0.01;
+lambda = 0.001;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}};
 target_responses = [10, 5];
 batch_size = size(target_responses, 2);
@@ -160,24 +160,37 @@ output_indice = {49};
 T = 100;
 dT = 0.01;
 
-for i = 1:2
+update_mode = 'normal';
+error_mode = 'diff';
+
+for i = 1:10
     
     for j = 1:batch_size
         
         c_input = input_cues(j);
         c_input = c_input{1};
         c_target = target_responses(j);
-        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, 'normal');
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
     
     end
-    fprintf("Trial no. %f of current batch %f \n", get(m, 'last_trial'), i);
+    
+    fprintf("Trial no. %d of current batch %d \n", get(m, 'last_trial'), i);
     
 end
 
 disp('done');
 
 %%
+
 dsPlot(m.data);
+
 %%
+
+m.error_plot(error_mode);
+
+%%
+
 clc;
 f = fieldnames(m.data);
+
+%%

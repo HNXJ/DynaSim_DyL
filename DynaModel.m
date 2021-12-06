@@ -7,23 +7,23 @@ classdef DynaModel < matlab.mixin.SetGet
     
     properties
         
-        model = [];
-        data = [];
-        errors = [];
-        connections = [];
+        model = []; % Dynasim's model struct, containing model's populations (layers) and connections, mechanisms ... .
+        data = []; % Output data of last simulation.
+        errors_log = []; % Log of errors since first trial.
+        connections = []; % List of connection names.
     
-        last_trial = 0;
-        last_inputs = [];
-        last_outputs = [];
-        last_error = [];
+        last_trial = 0; % Last trial; how many times this model have been trianed with stimuli.
+        last_inputs = []; % Last input(s) that have been passed to this model.
+        last_outputs = []; % Last output (eg. spike vector) of this model.
+        last_error = []; % Last error of this model for target, equivalent to the last value of errors_log property
         
-        last_targets = [];
+        last_targets = []; % Last expected output that this model should've generated.
         
     end
     
     methods
         
-        function obj = DynaModel(model_)
+        function obj = DynaModel(model_) % Constructor
             
             set(obj, 'model', model_);
             set(obj, 'data', obj.init());
@@ -31,7 +31,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function set.model(obj, val)
+        function set.model(obj, val) % Getter/setters
             
              if ~isstruct(val) 
                 error('Model must be a struct');
@@ -49,12 +49,12 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
-        function set.errors(obj, val)
+        function set.errors_log(obj, val)
             
              if ~strcmpi(class(val), 'double') 
                 error('Errors log must be a double array');
              end
-             obj.errors = val;
+             obj.errors_log = val;
              
         end
         
@@ -97,13 +97,13 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
-        function o = init(obj)
+        function o = init(obj) % Initializer
             
             o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 100], 'downsample_factor', 10, 'verbose_flag', 1);
         
         end
         
-        function o = simulate(obj, t, dt)
+        function o = simulate(obj, t, dt) % DynaSimulator
             
             o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', dt, 'time_limits', [0 t], 'downsample_factor', 10, 'verbose_flag', 0);
       
@@ -124,19 +124,37 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function obj = update_error(obj)
+        function obj = update_error(obj, mode)
             
             output = get(obj, 'last_outputs');
             output = sum(sum(double(output{1})));
             target = get(obj, 'last_targets');
             
-            err = (target-output)/10; % TODO ERROR CALC
-            set(obj, 'errors', [get(obj, 'errors'), err]);
+            if strcmpi(mode, 'diff')
+                
+                err = (target-output); % Basic difference
+                
+            elseif strcmpi(mode, 'MAE')
+                
+                err = abs(target-output);
+                
+            elseif strcmpi(mode, 'MSE')
+                
+                err = (target-output)^2;
+                
+            else
+                
+                fprintf("Warning! error not defined, by default difference will be used.") 
+                err = (target-output); % Basic difference
+                
+            end
+            
+            set(obj, 'errors_log', [get(obj, 'errors_log'), err]);
             set(obj, 'last_error', err);
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);
@@ -155,7 +173,7 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'last_outputs', obj.get_outputs(outputs_index));
             set(obj, 'last_inputs', inputs);
             
-            obj.update_error();
+            obj.update_error(error_mode);
             obj.train_step(lambda, mode);
             
         end
@@ -224,6 +242,17 @@ classdef DynaModel < matlab.mixin.SetGet
             w_c = struct2cell(w_s);
             w = w_c(connection);
             w = w{1};
+            
+        end
+        
+        function error_plot(obj, error_title)
+           
+            errors = get(obj, 'errors_log');
+            figure("Position", [50 75 1450 575]);
+            plot(errors);
+            xlabel("Trials");
+            grid('on');
+            ylabel(error_title);
             
         end
         
