@@ -1,7 +1,7 @@
 classdef DynaModel < matlab.mixin.SetGet
 
     %
-    % An integrated class for interactive and trainable DynaSim models
+    % An integrated class for interactive and trainable DynaSim network models
     % Current learning method: Reinforcement learning - Delta rule
     %
     
