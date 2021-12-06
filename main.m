@@ -7,14 +7,14 @@ clc;clear;
 
 eqns1={
 %   'u(t) = (t < 50)'
-  'dv/dt=Iapp+0.5*@current+noise*rand(1,N_pop);'
+  'dv/dt=Iapp+@current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
-  'monitor v.spikes(-20)'
+  'monitor v.spikes(0)'
 };
 
 eqns2={
 %   'u(t) = (t < 50)'
-  'dv/dt=Iapp+0.5*@current+noise*rand(1,N_pop);'
+  'dv/dt=Iapp+@current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(-20)'
 };
@@ -39,31 +39,31 @@ s.populations(1).name='L1';
 s.populations(1).size=9;
 s.populations(1).equations=eqns1;
 s.populations(1).mechanism_list={'iNa','iK'};
-s.populations(1).parameters={'Iapp',4,'gNa',120,'gK',36,'noise',10};
+s.populations(1).parameters={'Iapp',4,'gNa',90,'gK',36,'noise',10};
 
 s.populations(2).name='L2';
 s.populations(2).size=9;
 s.populations(2).equations=eqns1;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',4,'gNa',120,'gK',36,'noise',10};
+s.populations(2).parameters={'Iapp',4,'gNa',90,'gK',36,'noise',10};
 
 s.populations(3).name='L3';
 s.populations(3).size=6;
 s.populations(3).equations=eqns1;
 s.populations(3).mechanism_list={'iNa','iK'};
-s.populations(3).parameters={'Iapp',4,'gNa',120,'gK',36,'noise',10};
+s.populations(3).parameters={'Iapp',4,'gNa',90,'gK',36,'noise',10};
 
 s.populations(4).name='L4';
 s.populations(4).size=12;
 s.populations(4).equations=eqns2;
 s.populations(4).mechanism_list={'iNa','iK'};
-s.populations(4).parameters={'Iapp',8,'gNa',180,'gK',48,'noise',10};
+s.populations(4).parameters={'Iapp',8,'gNa',120,'gK',48,'noise',10};
 
 s.populations(5).name='L5';
 s.populations(5).size=6;
 s.populations(5).equations=eqns2;
 s.populations(5).mechanism_list={'iNa','iK'};
-s.populations(5).parameters={'Iapp',8,'gNa',180,'gK',48,'noise',10};
+s.populations(5).parameters={'Iapp',8,'gNa',120,'gK',48,'noise',10};
 
 s.populations(6).name='L6';
 s.populations(6).size=3;
@@ -104,8 +104,8 @@ s.connections(5).mechanism_list={'iAMPA'};
 s.connections(5).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(6).direction='L3->L2';
-s.connections(6).mechanism_list={'iAMPA'};
-s.connections(6).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(6).mechanism_list={'iGABA'};
+s.connections(6).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(7).direction='L4->L1';
 s.connections(7).mechanism_list={'iGABA'};
@@ -150,7 +150,7 @@ disp('done');
 
 clc;
 
-lambda = 0.05;
+lambda = 0.03;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
 target_responses = [10, 5, 20];
 batch_size = size(target_responses, 2);

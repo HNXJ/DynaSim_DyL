@@ -185,7 +185,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function train_step(obj, lambda, mode) 
+        function train_step(obj, lambda, mode, momentum) 
                             
             error = get(obj, 'last_error');
             
@@ -208,9 +208,19 @@ classdef DynaModel < matlab.mixin.SetGet
         function update_weights_normal(obj, lambda, error, momentum)
             
             for i = 1:size(obj.connections, 1)
-               wp = obj.get_weight(i);
-               wn = momentum*wp + (1-momentum)*lambda*error*randn(size(wp));
-               obj.update_weight(i, wn);
+                
+                wp = obj.get_weight(i);
+                delta = lambda*error*randn(size(wp));
+                wn = momentum*wp + (1-momentum)*delta;
+                
+                if max(max(abs(wn))) > 1
+
+                    wn = wn / max(max(abs(wn)));
+
+                end
+               
+                obj.update_weight(i, wn);
+               
             end
             
         end
@@ -218,9 +228,19 @@ classdef DynaModel < matlab.mixin.SetGet
         function update_weights_uniform(obj, lambda, error, momentum)
             
             for i = 1:size(obj.connections, 1)
-               wp = obj.get_weight(i);
-               wn = momentum*wp + (1-momentum)*lambda*error*rand(size(wp));
-               obj.update_weight(i, wn);
+                
+                wp = obj.get_weight(i);
+                delta = lambda*error*(rand(size(wp))-0.5);
+                wn = momentum*wp + (1-momentum)*delta;
+
+                if max(max(abs(wn))) > 1
+
+                  wn = wn / max(max(abs(wn)));
+
+                end
+
+                obj.update_weight(i, wn);
+               
             end
             
         end
@@ -228,9 +248,16 @@ classdef DynaModel < matlab.mixin.SetGet
         function update_weights_constant(obj, lambda, error)
             
             for i = 1:size(obj.connections, 1)
-               wp = obj.get_weight(i);
-               wn = wp + lambda*error*ones(size(wp));
-               obj.update_weight(i, wn);
+                
+                wp = obj.get_weight(i);
+                wn = wp + lambda*error*ones(size(wp));
+                if max(max(abs(wn))) > 1
+
+                    wn = wn / max(max(abs(wn)));
+
+                end
+
+                obj.update_weight(i, wn);
             end
             
         end
