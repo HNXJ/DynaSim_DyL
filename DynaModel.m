@@ -127,7 +127,8 @@ classdef DynaModel < matlab.mixin.SetGet
         function o = get_outputs_spike(obj)
             
             output = get(obj, 'last_outputs');
-            o = sum(sum(double(output{1})));
+            k = size(output{1}, 2);
+            o = sum(sum(double(output{1})))/k;
         
         end
         
