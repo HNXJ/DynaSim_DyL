@@ -171,9 +171,8 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 20;
 
-for i = 1:iterations
+for i = 1:iterat
     
     for j = 1:batch_size
         
