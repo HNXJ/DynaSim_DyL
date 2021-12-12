@@ -134,9 +134,11 @@ classdef DynaModel < matlab.mixin.SetGet
         
         function obj = update_error(obj, mode)
             
-            output = get(obj, 'last_outputs');
+            output = obj.get_output_spike()
             output = sum(sum(double(output{1})));
             target = get(obj, 'last_targets');
+            
+            disp(output-target);
             
             if strcmpi(mode, 'diff')
                 
@@ -163,6 +165,13 @@ classdef DynaModel < matlab.mixin.SetGet
                 err = err * 1000;
                 
             end
+            
+            if isnan(err)
+               
+                err = obj.last_error;
+                
+            end
+            
             
             set(obj, 'errors_log', [get(obj, 'errors_log'), err]);
             set(obj, 'last_error', err);

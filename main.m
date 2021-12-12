@@ -158,7 +158,7 @@ disp('done');
 
 clc;
 
-lambda = 0.003;
+lambda = 0.05;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
 target_responses = [10, 5, 20];
 batch_size = size(target_responses, 2);
@@ -171,7 +171,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 5;
+iterations = 10;
 
 for i = 1:iterations
     
@@ -200,7 +200,7 @@ m.error_plot('Error of target-output (MAE)');
 
 %%
 
-j = 2;
+j = 1;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
