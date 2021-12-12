@@ -168,10 +168,10 @@ output_indice = {49};
 T = 100;
 dT = 0.01;
 
-update_mode = 'uniform';
-error_mode = 'MAE';
+update_mode = 'constant';
+error_mode = 'diff';
 momentum = 0.8;
-iterations = 20;
+iterations = 5;
 
 for i = 1:iterations
     
@@ -204,7 +204,7 @@ j = 2;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
-m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
+m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
         
 %%
 
