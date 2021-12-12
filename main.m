@@ -158,9 +158,9 @@ disp('done');
 
 clc;
 
-lambda = 0.05;
+lambda = 0.5;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
-target_responses = [10, 5, 20];
+target_responses = [40, 20, 80];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
