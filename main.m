@@ -158,7 +158,7 @@ disp('done');
 
 clc;
 
-lambda = 0.005;
+lambda = 0.003;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
 target_responses = [10, 5, 20];
 batch_size = size(target_responses, 2);
@@ -168,8 +168,8 @@ output_indice = {49};
 T = 100;
 dT = 0.01;
 
-update_mode = 'constant';
-error_mode = 'diff';
+update_mode = 'uniform';
+error_mode = 'MAE';
 momentum = 0.8;
 iterations = 5;
 

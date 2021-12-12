@@ -159,8 +159,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
             if abs(err) > 1000
                
-                err = err / abs(err);
-                err = err * 1000;
+                err
                 
             end
             

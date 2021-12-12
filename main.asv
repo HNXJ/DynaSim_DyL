@@ -158,7 +158,7 @@ disp('done');
 
 clc;
 
-lambda = 0.005;
+lambda = 0.003;
 input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
 target_responses = [10, 5, 20];
 batch_size = size(target_responses, 2);
@@ -171,8 +171,9 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
+iterations = 5;
 
-for i = 1:iterat
+for i = 1:iterations
     
     for j = 1:batch_size
         
@@ -203,7 +204,7 @@ j = 2;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
-m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
+m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
         
 %%
 
