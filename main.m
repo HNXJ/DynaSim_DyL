@@ -21,14 +21,14 @@ eqns2={
 
 eqns3={
   'u(t) = (t > 50)'
-  'dv/dt = 150*(sin(2*t)) * u(t);'
+  'dv/dt = 100*(sin(2*t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns4={
   'u(t) = (t < 50)'
-  'dv/dt = 150*(sin(2*t)) * u(t);'
+  'dv/dt = 100*(sin(2*t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };

@@ -137,7 +137,7 @@ classdef DynaModel < matlab.mixin.SetGet
             output = obj.get_outputs_spike();
             target = get(obj, 'last_targets');
             
-            disp(output-target);
+%             disp(output-target);
             
             if strcmpi(mode, 'diff')
                 
