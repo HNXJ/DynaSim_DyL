@@ -18,15 +18,17 @@ eqns_deep={
 };
 
 eqns_input1={
-  'v(t) = (t > 50)'
-%   'dv/dt = 100*(sin(2*t)) * u(t);'
+%   'v(t) = (t > 50)'
+  'u(t) = (t > 50)'
+  'dv/dt = 100*(sin(2*t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input2={
-  'v(t) = (t < 50)'
-%   'dv/dt = 100*(sin(2*t)) * u(t);'
+%   'v(t) = (t < 50)'
+  'u(t) = (t > 50)'
+  'dv/dt = 100*(sin(2*t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -139,7 +141,7 @@ s.connections(14).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)
 
 s.connections(15).direction='Input1->L2E';
 s.connections(15).mechanism_list={'iAMPA'};
-s.connections(15).parameters={'tauD',2,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(15).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(16).direction='Input2->L2I';
 s.connections(16).mechanism_list={'iAMPA'};
@@ -157,12 +159,12 @@ disp('done');
 clc;
 
 lambda = 0.5;
-input_cues = {{eqns3, eqns4}, {eqns4, eqns3}, {eqns3, eqns3}};
-target_responses = [40, 20, 80];
+input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
+target_responses = [40, 20, 10];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
-output_indice = {49}; 
+output_indice = {53}; % L3I Spikes
 T = 100;
 dT = 0.01;
 
@@ -207,6 +209,6 @@ m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, updat
 %%
 
 clc;
-% f = fieldnames(m.data);
+f = fieldnames(m.data);
 
 %%
