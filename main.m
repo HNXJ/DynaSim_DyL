@@ -5,39 +5,37 @@
 
 clc;clear;
 
-eqns1={
-%   'u(t) = (t < 50)'
-  'dv/dt=Iapp+@current+noise*rand(1,N_pop);'
+eqns_superficial={
+  'dv/dt = 0.4*Iapp + @current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
-eqns2={
-%   'u(t) = (t < 50)'
-  'dv/dt=Iapp+@current+noise*rand(1,N_pop);'
+eqns_deep={
+  'dv/dt = 1.0*Iapp + @current+noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
-eqns3={
-  'u(t) = (t > 50)'
-  'dv/dt = 100*(sin(2*t)) * u(t);'
+eqns_input1={
+  'v(t) = (t > 50)'
+%   'dv/dt = 100*(sin(2*t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
-eqns4={
-  'u(t) = (t < 50)'
-  'dv/dt = 100*(sin(2*t)) * u(t);'
+eqns_input2={
+  'v(t) = (t < 50)'
+%   'dv/dt = 100*(sin(2*t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 s=[];
 
-s.populations(1).name='L1';
-s.populations(1).size=9;
-s.populations(1).equations=eqns1;
+s.populations(1).name='L1-2-3';
+s.populations(1).size=12;
+s.populations(1).equations=eqns_superficial;
 s.populations(1).mechanism_list={'iNa','iK'};
 s.populations(1).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',10};
 
