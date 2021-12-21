@@ -82,30 +82,30 @@ s.populations(8).mechanism_list={'iNa','iK'};
 s.populations(8).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',1};
 
 s.connections(1).direction='L1E->L1I';
-s.connections(1).mechanism_list={'iGABAa'};
-s.connections(1).parameters={'tauD',5,'gGABAa',.1,'netcon','rand(N_pre,N_post)'};
+s.connections(1).mechanism_list={'iAMPA'};
+s.connections(1).parameters={'tauD',5,'gAMPA',.1,'netcon','rand(N_pre,N_post)'};
 
 s.connections(2).direction='L1I->L1E';
-s.connections(2).mechanism_list={'iAMPA'};
-s.connections(2).parameters={'tauD',5,'gAMPA',.1,'netcon','rand(N_pre,N_post)'};
+s.connections(2).mechanism_list={'iGABA'};
+s.connections(2).parameters={'tauD',5,'gGABAa',.1,'netcon','rand(N_pre,N_post)'};
 
 s.connections(3).direction='L1I->L2I';
-s.connections(3).mechanism_list={'iAMPA'};
-s.connections(3).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(3).mechanism_list={'iGABA'};
+s.connections(3).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(4).direction='L1E->L2I';
+s.connections(4).direction='L2I->L1I';
 s.connections(4).mechanism_list={'iGABA'};
 s.connections(4).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(5).direction='L2->L3';
+s.connections(5).direction='L1E->L2E';
 s.connections(5).mechanism_list={'iAMPA'};
 s.connections(5).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(6).direction='L3->L2';
-s.connections(6).mechanism_list={'iGABA'};
-s.connections(6).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(6).direction='L2E->L1E';
+s.connections(6).mechanism_list={'iAMPA'};
+s.connections(6).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(7).direction='L4->L1';
+s.connections(7).direction='L2E->L2I';
 s.connections(7).mechanism_list={'iGABA'};
 s.connections(7).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
