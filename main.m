@@ -20,7 +20,7 @@ eqns_deep={
 eqns_input1={
 %   'v(t) = (t > 50)'
   'u(t) = (t > 50)'
-  'dv/dt = 100*(sin(2*t)) * u(t);'
+  'dv/dt = 40*(sin(t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -28,7 +28,7 @@ eqns_input1={
 eqns_input2={
 %   'v(t) = (t < 50)'
   'u(t) = (t > 50)'
-  'dv/dt = 100*(sin(2*t)) * u(t);'
+  'dv/dt = 40*(sin(t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -154,6 +154,7 @@ disp('done');
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
 % dsPlot(m.data); 
 
+
 %% Trials' training script script
 
 clc;
@@ -171,7 +172,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 10;
+iterations = 20;
 
 for i = 1:iterations
     
