@@ -27,23 +27,23 @@ classdef DynaModel < matlab.mixin.SetGet
             
             if nargin == 1
                 
-                model_ = varargin{1};
-                
-                set(obj, 'model', model_);
-                set(obj, 'data', obj.init());
-                set(obj, 'connections', obj.get_connections_list());
-
-            else         
-                
-                inputExist = find(cellfun(@(x) strcmpi(x, 'filename') , varargin));
-               
-                if inputExist
-                  filename_ = varargin{inputExist+1};                
-                  obj.load_model(filename_);
+                if isstruct(varargin{1})
+                    
+                    model_ = varargin{1};           
+                    set(obj, 'model', model_);
+                    set(obj, 'data', obj.init());
+                    set(obj, 'connections', obj.get_connections_list());
+                    
+                elseif isstring(varargin{1}) || ischar(varargin{1})
+                    
+                    filename_ = varargin{1};                
+                    obj.load_model(filename_);    
+                    
+                else
+                    disp('invalid use of DynaNet; pass a filename or a struct of DynaSim.');
                 end
-
-            end
-        
+                
+            end  
         end
 
         function set.model(obj, val) % Getter/setters
