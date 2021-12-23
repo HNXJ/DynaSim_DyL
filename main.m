@@ -150,12 +150,7 @@ s.connections(16).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'
 disp('init done.');
 
 m = DynaModel(s);
-
 disp('done.');
-
-% data=dsSimulate(s);
-% data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
-% dsPlot(m.data); 
 
 %%
 

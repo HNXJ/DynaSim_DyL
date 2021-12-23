@@ -122,6 +122,7 @@ classdef DynaModel < matlab.mixin.SetGet
         function l = load_model(obj, filename)
 
              l = load(filename);
+             l = l.obj;
              
         end
         
