@@ -97,6 +97,12 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
+        function save_model(obj)
+             
+             obj.last_targets = val;
+             
+        end
+        
         function o = init(obj) % Initializer
             
             o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 100], 'downsample_factor', 10, 'verbose_flag', 1);
