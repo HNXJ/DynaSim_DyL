@@ -97,6 +97,18 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
+        function save_model(obj, filename)
+             
+             save(filename, 'obj');
+             
+        end
+        
+        function load_model(obj, filename)
+
+            save(filename, 'obj');
+
+        end
+        
         function o = init(obj) % Initializer
             
             o = dsSimulate(obj.model, 'solver', 'rk1', 'dt', .01, 'time_limits', [0 100], 'downsample_factor', 10, 'verbose_flag', 1);
@@ -134,9 +146,10 @@ classdef DynaModel < matlab.mixin.SetGet
         
         function obj = update_error(obj, mode)
             
-            output = get(obj, 'last_outputs');
-            output = sum(sum(double(output{1})));
+            output = obj.get_outputs_spike();
             target = get(obj, 'last_targets');
+            
+%             disp(output-target);
             
             if strcmpi(mode, 'diff')
                 
@@ -159,9 +172,17 @@ classdef DynaModel < matlab.mixin.SetGet
             
             if abs(err) > 1000
                
-                err
+                err = err / abs(err);
+                err = err * 1000;
                 
             end
+            
+            if isnan(err)
+               
+                err = obj.last_error;
+                
+            end
+            
             
             set(obj, 'errors_log', [get(obj, 'errors_log'), err]);
             set(obj, 'last_error', err);

@@ -97,10 +97,16 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
-        function save_model(obj)
+        function save_model(obj, filename)
              
-             obj.last_targets = val;
+             save(filename, 'obj');
              
+        end
+        
+        function obj = load_model(obj, filename)
+
+             obj = load(filename, 'obj');
+
         end
         
         function o = init(obj) % Initializer
