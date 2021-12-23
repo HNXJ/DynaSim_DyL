@@ -147,8 +147,11 @@ s.connections(16).direction='Input2->L2I';
 s.connections(16).mechanism_list={'iAMPA'};
 s.connections(16).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
+disp('init done.');
+
 m = DynaModel(s);
-disp('done');
+
+disp('done.');
 
 % data=dsSimulate(s);
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
@@ -156,7 +159,7 @@ disp('done');
 
 %%
 
-m = 
+m = DynaModel('filename', 'f1.mat');
 
 %% Trials' training script script
 

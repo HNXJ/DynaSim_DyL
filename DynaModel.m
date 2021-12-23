@@ -21,16 +21,13 @@ classdef DynaModel < matlab.mixin.SetGet
         
     end
     
-    methods (Access = public)
+    methods
 
-        function self = DynaModel(varargin)
+        function obj = DynaModel(varargin) % Constructors, will be expanded
             
             if nargin == 1
                 
-                inputExist = find(cellfun(@(x) strcmpi(x, 'fontname') , varargin));
-                if inputExist
-                  fontsize = varargin{inputExist+1};
-                end
+                model_ = varargin{1};
                 
                 set(obj, 'model', model_);
                 set(obj, 'data', obj.init());
@@ -38,23 +35,17 @@ classdef DynaModel < matlab.mixin.SetGet
 
             else         
                 
-                obj.load_model(
-                set(obj, 'model', model_);
-                set(obj, 'data', obj.init());
-                set(obj, 'connections', obj.get_connections_list());
+                inputExist = find(cellfun(@(x) strcmpi(x, 'filename') , varargin));
+               
+                if inputExist
+                  filename_ = varargin{inputExist+1};                
+                  obj.load_model(filename_);
+                end
 
             end
         
         end
 
-        function obj = DynaModel(model_) % Constructor
-            
-            set(obj, 'model', model_);
-            set(obj, 'data', obj.init());
-            set(obj, 'connections', obj.get_connections_list());
-            
-        end
-        
         function set.model(obj, val) % Getter/setters
             
              if ~isstruct(val) 
