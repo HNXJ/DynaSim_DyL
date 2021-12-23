@@ -161,7 +161,7 @@ disp('done.');
 
 clc;
 m.save_model('Files/f1.mat');
-m = DynaModel('Files/f1.mat');
+% m = DynaModel('Files/f1.mat');
 
 %% Trials' training script script
 

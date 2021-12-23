@@ -37,7 +37,8 @@ classdef DynaModel < matlab.mixin.SetGet
                 elseif isstring(varargin{1}) || ischar(varargin{1})
                     
                     filename_ = varargin{1};                
-                    obj.load_model(filename_);    
+                    l = obj.load_model(filename_);    
+                    obj = l;
                     
                 else
                     disp('invalid use of DynaNet; pass a filename or a struct of DynaSim.');
@@ -118,10 +119,10 @@ classdef DynaModel < matlab.mixin.SetGet
              
         end
         
-        function obj = load_model(obj, filename)
+        function l = load_model(obj, filename)
 
-             obj = load(filename, 'obj');
-
+             l = load(filename);
+             
         end
         
         function o = init(obj) % Initializer
