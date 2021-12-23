@@ -154,6 +154,9 @@ disp('done');
 % data = dsSimulate(s, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag',1);
 % dsPlot(m.data); 
 
+%%
+
+m = 
 
 %% Trials' training script script
 

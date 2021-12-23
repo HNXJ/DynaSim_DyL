@@ -21,8 +21,32 @@ classdef DynaModel < matlab.mixin.SetGet
         
     end
     
-    methods
+    methods (Access = public)
+
+        function self = DynaModel(varargin)
+            
+            if nargin == 1
+                
+                inputExist = find(cellfun(@(x) strcmpi(x, 'fontname') , varargin));
+                if inputExist
+                  fontsize = varargin{inputExist+1};
+                end
+                
+                set(obj, 'model', model_);
+                set(obj, 'data', obj.init());
+                set(obj, 'connections', obj.get_connections_list());
+
+            else         
+                
+                obj.load_model(
+                set(obj, 'model', model_);
+                set(obj, 'data', obj.init());
+                set(obj, 'connections', obj.get_connections_list());
+
+            end
         
+        end
+
         function obj = DynaModel(model_) % Constructor
             
             set(obj, 'model', model_);
