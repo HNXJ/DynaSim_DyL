@@ -175,7 +175,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 5;
+iterations = 6;
 
 for i = 1:iterations
     
