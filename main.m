@@ -6,13 +6,13 @@
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.04*Iapp + @current+0.5*noise*rand(1,N_pop);'
+  'dv/dt = 0.03*Iapp + @current+0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.1*Iapp + @current+0.5*noise*rand(1,N_pop);'
+  'dv/dt = 0.15*Iapp + @current+0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
