@@ -6,13 +6,13 @@
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.04*Iapp + @current+0.9*noise*rand(1,N_pop);'
+  'dv/dt = 0.04*Iapp + @current+0.5*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.1*Iapp + @current+0.9*noise*rand(1,N_pop);'
+  'dv/dt = 0.1*Iapp + @current+0.5*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -155,8 +155,8 @@ disp('done.');
 %%
 
 clc;
-% m.save_model('Files/f1.mat');
-m = DynaModel('Files/f1.mat');
+% m.save_model('Files/f1_init.mat');
+% m = DynaModel('Files/f1_init.mat');
 
 %% Trials' training script script
 
@@ -175,7 +175,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 10;
+iterations = 20;
 
 for i = 1:iterations
     
