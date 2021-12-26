@@ -200,6 +200,7 @@ dsPlot(m.data);
 
 %%
 
+clc;
 m.error_plot('Error of target-output (MAE)');
 
 %%
