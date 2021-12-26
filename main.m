@@ -1,6 +1,6 @@
-%%
+%% DynaModel example draft 
 
-%%
+%% Initialize model
 % Equations
 
 clc;clear;
@@ -198,12 +198,12 @@ disp('done');
 
 dsPlot(m.data);
 
-%%
+%% Error plot
 
 clc;
 m.error_plot('Error of target-output (MAE)');
 
-%%
+%% Single trial step
 
 j = 3;
 c_input = input_cues(j);
@@ -212,7 +212,7 @@ c_target = target_responses(j);
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
 fprintf("O = %f, T = %f", m.get_outputs_spike(), m.last_targets);     
 
-%%
+%% Check field names for input/output assigning
 
 clc;
 f = fieldnames(m.data);
