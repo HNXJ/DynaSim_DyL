@@ -204,7 +204,7 @@ m.error_plot('Error of target-output (MAE)');
 
 %%
 
-j = 2;
+j = 3;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
