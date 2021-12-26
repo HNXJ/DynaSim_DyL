@@ -152,7 +152,7 @@ disp('init done.');
 m = DynaModel(s);
 disp('done.');
 
-%%
+%% Save/load model
 
 clc;
 % m.save_model('Files/f1_init.mat');
