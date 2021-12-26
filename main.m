@@ -155,8 +155,8 @@ disp('done.');
 %%
 
 clc;
-m.save_model('Files/f1.mat');
-% m = DynaModel('Files/f1.mat');
+% m.save_model('Files/f1.mat');
+m = DynaModel('Files/f1.mat');
 
 %% Trials' training script script
 
@@ -164,7 +164,7 @@ clc;
 
 lambda = 0.5;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [40, 20, 10];
+target_responses = [15, 10, 5];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
@@ -175,7 +175,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 6;
+iterations = 10;
 
 for i = 1:iterations
     
@@ -204,12 +204,13 @@ m.error_plot('Error of target-output (MAE)');
 
 %%
 
-j = 1;
+j = 2;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
-        
+fprintf("O = %f, T = %f", m.get_outputs_spike(), m.last_targets);     
+
 %%
 
 clc;
