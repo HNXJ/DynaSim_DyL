@@ -194,7 +194,7 @@ end
 
 disp('done');
 
-%%
+%% Voltage visualization
 
 dsPlot(m.data);
 
@@ -212,7 +212,7 @@ c_target = target_responses(j);
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
 fprintf("O = %f, T = %f", m.get_outputs_spike(), m.last_targets);     
 
-%% Check field names for input/output assigning
+%% Extract and see field names for input/output index checking
 
 clc;
 f = fieldnames(m.data);

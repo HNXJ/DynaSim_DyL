@@ -1,18 +1,18 @@
-%%
+%% DynaModel example draft 
 
-%%
+%% Initialize model
 % Equations
 
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.04*Iapp + @current+0.9*noise*rand(1,N_pop);'
+  'dv/dt = 0.03*Iapp + @current+0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.1*Iapp + @current+0.9*noise*rand(1,N_pop);'
+  'dv/dt = 0.15*Iapp + @current+0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -152,17 +152,17 @@ disp('init done.');
 m = DynaModel(s);
 disp('done.');
 
-%%
+%% Save/load model
 
 clc;
-% m.save_model('Files/f1.mat');
-m = DynaModel('Files/f1.mat');
+% m.save_model('Files/f1_init.mat');
+% m = DynaModel('Files/f1_init.mat');
 
 %% Trials' training script script
 
 clc;
 
-lambda = 0.1;
+lambda = 0.5;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
 target_responses = [15, 10, 5];
 batch_size = size(target_responses, 2);
@@ -175,7 +175,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 10;
+iterations = 20;
 
 for i = 1:iterations
     
@@ -198,20 +198,21 @@ disp('done');
 
 dsPlot(m.data);
 
-%%
+%% Error plot
 
+clc;
 m.error_plot('Error of target-output (MAE)');
 
-%%
+%% Single trial step
 
 j = 3;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
-disp(m.get_outputs_spike());     
+fprintf("O = %f, T = %f", m.get_outputs_spike(), m.last_targets);     
 
-%%
+%% Extract and see field names for input/output index checking
 
 clc;
 f = fieldnames(m.data);
