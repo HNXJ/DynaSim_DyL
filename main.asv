@@ -162,7 +162,7 @@ clc;
 
 clc;
 
-lambda = 0.5;
+lambda = 0.1;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
 target_responses = [15, 10, 5];
 batch_size = size(target_responses, 2);
@@ -170,12 +170,12 @@ batch_size = size(target_responses, 2);
 input_layers = [7, 8];
 output_indice = {53}; % L3I Spikes
 T = 100;
-dT = 0.01;
+dT = 0.1;
 
 update_mode = 'uniform';
 error_mode = 'MAE';
-momentum = 0.8;
-iterations = 20;
+momentum = 0.9;
+iterations = 10;
 
 for i = 1:iterations
     
@@ -194,7 +194,7 @@ end
 
 disp('done');
 
-%%
+%% Voltage visualization
 
 dsPlot(m.data);
 
@@ -210,7 +210,7 @@ c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
-fprintf("O = %f, T = %f", m.get_outputs_spike(), m.last_targets);     
+fprintf("O = %f, T = %f\n", m.get_outputs_spike(), m.last_targets);     
 
 %% Extract and see field names for input/output index checking
 

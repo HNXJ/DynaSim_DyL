@@ -6,13 +6,13 @@
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.03*Iapp + @current+0.7*noise*rand(1,N_pop);'
+  'dv/dt = 0.3*Iapp + @current*0.9 + 0.6*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.15*Iapp + @current+0.7*noise*rand(1,N_pop);'
+  'dv/dt = 0.3*Iapp + @current*1.0 + 0.8*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -155,14 +155,14 @@ disp('done.');
 %% Save/load model
 
 clc;
-% m.save_model('Files/f1_init.mat');
-% m = DynaModel('Files/f1_init.mat');
+m.save_model('Files/f1_init.mat');
+% m = DynaModel('Files/f2_init.mat');
 
 %% Trials' training script script
 
 clc;
 
-lambda = 0.5;
+lambda = 0.2;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
 target_responses = [15, 10, 5];
 batch_size = size(target_responses, 2);
@@ -170,12 +170,14 @@ batch_size = size(target_responses, 2);
 input_layers = [7, 8];
 output_indice = {53}; % L3I Spikes
 T = 100;
-dT = 0.01;
+dT = 0.1;
 
 update_mode = 'uniform';
 error_mode = 'MAE';
 momentum = 0.8;
-iterations = 20;
+iterations = 10;
+
+fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
 for i = 1:iterations
     
@@ -210,7 +212,7 @@ c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
-fprintf("O = %f, T = %f", m.get_outputs_spike(), m.last_targets);     
+fprintf("O = %f, T = %f\n", m.get_outputs_spike(), m.last_targets);     
 
 %% Extract and see field names for input/output index checking
 
