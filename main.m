@@ -1,18 +1,24 @@
 %% DynaModel example draft 
 
+%% Save/load model
+
+clc;
+m.save_model('Files/f2_r15_init.mat');
+% m = DynaModel('Files/f1_init.mat');
+
 %% Initialize model
 % Equations
 
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.3*Iapp + @current*0.9 + 0.6*noise*rand(1,N_pop);'
+  'dv/dt = 0.03*Iapp + @current + 0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.3*Iapp + @current*1.0 + 0.8*noise*rand(1,N_pop);'
+  'dv/dt = 0.15*Iapp + @current + 0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -20,7 +26,7 @@ eqns_deep={
 eqns_input1={
 %   'v(t) = (t > 50)'
   'u(t) = (t > 50)'
-  'dv/dt = 40*(sin(t)) * u(t);'
+  'dv/dt = 20*(sin(t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -28,7 +34,7 @@ eqns_input1={
 eqns_input2={
 %   'v(t) = (t < 50)'
   'u(t) = (t > 50)'
-  'dv/dt = 40*(sin(t)) * u(t);'
+  'dv/dt = 20*(sin(t)) * u(t);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -152,17 +158,11 @@ disp('init done.');
 m = DynaModel(s);
 disp('done.');
 
-%% Save/load model
-
-clc;
-m.save_model('Files/f1_init.mat');
-% m = DynaModel('Files/f2_init.mat');
-
 %% Trials' training script script
 
 clc;
 
-lambda = 0.2;
+lambda = 0.5;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
 target_responses = [15, 10, 5];
 batch_size = size(target_responses, 2);
@@ -207,7 +207,7 @@ m.error_plot('Error of target-output (MAE)');
 
 %% Single trial step
 
-j = 3;
+j = 1;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
