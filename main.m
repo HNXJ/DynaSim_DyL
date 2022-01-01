@@ -12,29 +12,28 @@ m.save_model('Files/f2_r15_init.mat');
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.03*Iapp + @current + 0.7*noise*rand(1,N_pop);'
+  'dv/dt = Iapp + @current + 0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.15*Iapp + @current + 0.7*noise*rand(1,N_pop);'
+  'dv/dt = Iapp + @current + 0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input1={
-%   'v(t) = (t > 50)'
-  'u(t) = (t > 50)'
-  'dv/dt = 20*(sin(t)) * u(t);'
+  'u(t, T) = exp(-10*(t-T)^2);'
+  'dv/dt = 60*u(t, 50);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input2={
-%   'v(t) = (t < 50)'
-  'u(t) = (t > 50)'
-  'dv/dt = 20*(sin(t)) * u(t);'
+  'u(t, T) = exp(-10*(t-T)^2);'
+  'dv/dt = -60*u(t, 50);'
+  'v(0) = 33.63;'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
