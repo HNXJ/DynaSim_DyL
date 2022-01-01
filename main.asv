@@ -12,26 +12,28 @@ m.save_model('Files/f2_r15_init.mat');
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.03*Iapp + @current + 0.7*noise*rand(1,N_pop);'
+  'dv/dt = Iapp + @current + 0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.15*Iapp + @current + 0.7*noise*rand(1,N_pop);'
+  'dv/dt = Iapp + @current + 0.7*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input1={
-%   'v(t) = exp(t-50) / (1 + exp(t-50));'
-  'dv/dt = 5*exp(-5*(t-50)^2);'
+  'u(t, T) = exp(-10*(t-T)^2);'
+  'dv/dt = 10*u(t, 50);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input2={
-  'dv/dt = 20*(sin(t)) * u(t);'
+  'u(t, T) = exp(-10*(t-T)^2);'
+  'dv/dt = -10*u(t, 50);'
+  'v(0) = 5.6;'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -42,49 +44,49 @@ s.populations(1).name='L1I';
 s.populations(1).size=16;
 s.populations(1).equations=eqns_superficial;
 s.populations(1).mechanism_list={'iNa','iK'};
-s.populations(1).parameters={'Iapp', 1, 'gNa', 120, 'gK', 36, 'noise',10};
+s.populations(1).parameters={'Iapp', 4, 'gNa', 120, 'gK', 36, 'noise',10};
 
 s.populations(2).name='L2I';
 s.populations(2).size=8;
-s.populations(2).equations=eqns_deep;
+s.populations(2).equations=eqns_input1;
 s.populations(2).mechanism_list={'iNa','iK'};
-s.populations(2).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',10};
+s.populations(2).parameters={'Iapp',12,'gNa',120,'gK',36,'noise',10};
 
 s.populations(3).name='L3I';
 s.populations(3).size=12;
 s.populations(3).equations=eqns_deep;
 s.populations(3).mechanism_list={'iNa','iK'};
-s.populations(3).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',10};
+s.populations(3).parameters={'Iapp',12,'gNa',120,'gK',36,'noise',10};
 
 s.populations(4).name='L1E';
 s.populations(4).size=16;
 s.populations(4).equations=eqns_superficial;
 s.populations(4).mechanism_list={'iNa','iK'};
-s.populations(4).parameters={'Iapp', 1, 'gNa', 120, 'gK', 36, 'noise',10};
+s.populations(4).parameters={'Iapp', 4, 'gNa', 120, 'gK', 36, 'noise',10};
 
 s.populations(5).name='L2E';
 s.populations(5).size=8;
-s.populations(5).equations=eqns_deep;
+s.populations(5).equations=eqns_input2;
 s.populations(5).mechanism_list={'iNa','iK'};
-s.populations(5).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',10};
+s.populations(5).parameters={'Iapp',12,'gNa',120,'gK',36,'noise',10};
 
 s.populations(6).name='L3E';
 s.populations(6).size=12;
 s.populations(6).equations=eqns_deep;
 s.populations(6).mechanism_list={'iNa','iK'};
-s.populations(6).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',10};
+s.populations(6).parameters={'Iapp',12,'gNa',120,'gK',36,'noise',10};
 
 s.populations(7).name='Input1';
 s.populations(7).size=1;
 s.populations(7).equations=eqns_input1;
 s.populations(7).mechanism_list={'iNa','iK'};
-s.populations(7).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',1};
+s.populations(7).parameters={'Iapp',10,'gNa',120,'gK',36,'noise',1};
 
 s.populations(8).name='Input2';
 s.populations(8).size=1;
 s.populations(8).equations=eqns_input2;
 s.populations(8).mechanism_list={'iNa','iK'};
-s.populations(8).parameters={'Iapp',1,'gNa',120,'gK',36,'noise',1};
+s.populations(8).parameters={'Iapp',10,'gNa',120,'gK',36,'noise',1};
 
 s.connections(1).direction='L1E->L1I';
 s.connections(1).mechanism_list={'iAMPA'};
@@ -142,13 +144,13 @@ s.connections(14).direction='L3I->L3E';
 s.connections(14).mechanism_list={'iGABA'};
 s.connections(14).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
-s.connections(15).direction='Input1->L2E';
-s.connections(15).mechanism_list={'iAMPA'};
-s.connections(15).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
-
-s.connections(16).direction='Input2->L2I';
-s.connections(16).mechanism_list={'iAMPA'};
-s.connections(16).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+% s.connections(15).direction='Input1->L2E';
+% s.connections(15).mechanism_list={'iAMPA'};
+% s.connections(15).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+% 
+% s.connections(16).direction='Input2->L2I';
+% s.connections(16).mechanism_list={'iAMPA'};
+% s.connections(16).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
 
 disp('init done.');
 
@@ -159,20 +161,20 @@ disp('done.');
 
 clc;
 
-lambda = 0.5;
-input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
+lambda = 0.01;
+input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input1, eqns_input1}};
 target_responses = [15, 10, 5];
 batch_size = size(target_responses, 2);
 
-input_layers = [7, 8];
+input_layers = [2, 5];
 output_indice = {53}; % L3I Spikes
 T = 100;
-dT = 0.1;
+dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'MAE';
-momentum = 0.8;
-iterations = 10;
+momentum = 1.0;
+iterations = 1;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 

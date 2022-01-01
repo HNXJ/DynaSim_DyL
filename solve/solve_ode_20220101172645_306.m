@@ -1,4 +1,4 @@
-function [T,L1I_v,L1I_iNa_m,L1I_iNa_h,L1I_iK_n,L2I_v,L2I_iNa_m,L2I_iNa_h,L2I_iK_n,L3I_v,L3I_iNa_m,L3I_iNa_h,L3I_iK_n,L1E_v,L1E_iNa_m,L1E_iNa_h,L1E_iK_n,L2E_v,L2E_iNa_m,L2E_iNa_h,L2E_iK_n,L3E_v,L3E_iNa_m,L3E_iNa_h,L3E_iK_n,Input1_v,Input1_iNa_m,Input1_iNa_h,Input1_iK_n,Input2_v,Input2_iNa_m,Input2_iNa_h,Input2_iK_n,L1I_L1E_iAMPA_s,L1E_L1I_iGABA_s,L2I_L1I_iGABA_s,L1I_L2I_iGABA_s,L2E_L1E_iAMPA_s,L1E_L2E_iAMPA_s,L2I_L2E_iAMPA_s,L2E_L2I_iGABA_s,L3E_L2E_iAMPA_s,L3I_L2I_iGABA_s,L2E_L3E_iAMPA_s,L2I_L3I_iGABA_s,L3I_L3E_iAMPA_s,L3E_L3I_iGABA_s,L2E_Input1_iAMPA_s,L2I_Input2_iAMPA_s,L1I_v_spikes,L2I_v_spikes,L3I_v_spikes,L1E_v_spikes,L2E_v_spikes,L3E_v_spikes,Input1_v_spikes,Input2_v_spikes,L1E_L1I_iGABA_IGABA,L1E_L2E_iAMPA_IAMPA,L1I_L1E_iAMPA_IAMPA,L1I_L2I_iGABA_IGABA,L2E_Input1_iAMPA_IAMPA,L2E_L1E_iAMPA_IAMPA,L2E_L2I_iGABA_IGABA,L2E_L3E_iAMPA_IAMPA,L2I_Input2_iAMPA_IAMPA,L2I_L1I_iGABA_IGABA,L2I_L2E_iAMPA_IAMPA,L2I_L3I_iGABA_IGABA,L3E_L2E_iAMPA_IAMPA,L3E_L3I_iGABA_IGABA,L3I_L2I_iGABA_IGABA,L3I_L3E_iAMPA_IAMPA,L1I_L1E_iAMPA_netcon,L1E_L1I_iGABA_netcon,L2I_L1I_iGABA_netcon,L1I_L2I_iGABA_netcon,L2E_L1E_iAMPA_netcon,L1E_L2E_iAMPA_netcon,L2I_L2E_iAMPA_netcon,L2E_L2I_iGABA_netcon,L3E_L2E_iAMPA_netcon,L3I_L2I_iGABA_netcon,L2E_L3E_iAMPA_netcon,L2I_L3I_iGABA_netcon,L3I_L3E_iAMPA_netcon,L3E_L3I_iGABA_netcon,L2E_Input1_iAMPA_netcon,L2I_Input2_iAMPA_netcon]=solve_ode
+function [T,L1I_v,L1I_iNa_m,L1I_iNa_h,L1I_iK_n,L2I_v,L2I_iNa_m,L2I_iNa_h,L2I_iK_n,L3I_v,L3I_iNa_m,L3I_iNa_h,L3I_iK_n,L1E_v,L1E_iNa_m,L1E_iNa_h,L1E_iK_n,L2E_v,L2E_iNa_m,L2E_iNa_h,L2E_iK_n,L3E_v,L3E_iNa_m,L3E_iNa_h,L3E_iK_n,Input1_v,Input1_iNa_m,Input1_iNa_h,Input1_iK_n,Input2_v,Input2_iNa_m,Input2_iNa_h,Input2_iK_n,L1I_L1E_iAMPA_s,L1E_L1I_iGABA_s,L2I_L1I_iGABA_s,L1I_L2I_iGABA_s,L2E_L1E_iAMPA_s,L1E_L2E_iAMPA_s,L2I_L2E_iAMPA_s,L2E_L2I_iGABA_s,L3E_L2E_iAMPA_s,L3I_L2I_iGABA_s,L2E_L3E_iAMPA_s,L2I_L3I_iGABA_s,L3I_L3E_iAMPA_s,L3E_L3I_iGABA_s,L1I_v_spikes,L2I_v_spikes,L3I_v_spikes,L1E_v_spikes,L2E_v_spikes,L3E_v_spikes,Input1_v_spikes,Input2_v_spikes,L1E_L1I_iGABA_IGABA,L1E_L2E_iAMPA_IAMPA,L1I_L1E_iAMPA_IAMPA,L1I_L2I_iGABA_IGABA,L2E_L1E_iAMPA_IAMPA,L2E_L2I_iGABA_IGABA,L2E_L3E_iAMPA_IAMPA,L2I_L1I_iGABA_IGABA,L2I_L2E_iAMPA_IAMPA,L2I_L3I_iGABA_IGABA,L3E_L2E_iAMPA_IAMPA,L3E_L3I_iGABA_IGABA,L3I_L2I_iGABA_IGABA,L3I_L3E_iAMPA_IAMPA,L1I_L1E_iAMPA_netcon,L1E_L1I_iGABA_netcon,L2I_L1I_iGABA_netcon,L1I_L2I_iGABA_netcon,L2E_L1E_iAMPA_netcon,L1E_L2E_iAMPA_netcon,L2I_L2E_iAMPA_netcon,L2E_L2I_iGABA_netcon,L3E_L2E_iAMPA_netcon,L3I_L2I_iGABA_netcon,L2E_L3E_iAMPA_netcon,L2I_L3I_iGABA_netcon,L3I_L3E_iAMPA_netcon,L3E_L3I_iGABA_netcon]=solve_ode
 
 % ------------------------------------------------------------
 % Parameters:
@@ -30,8 +30,6 @@ L2E_L3E_iAMPA_netcon = rand(p.L3E_Npop,p.L2E_Npop);
 L2I_L3I_iGABA_netcon = rand(p.L3I_Npop,p.L2I_Npop);
 L3I_L3E_iAMPA_netcon = rand(p.L3E_Npop,p.L3I_Npop);
 L3E_L3I_iGABA_netcon = rand(p.L3I_Npop,p.L3E_Npop);
-L2E_Input1_iAMPA_netcon = rand(p.Input1_Npop,p.L2E_Npop);
-L2I_Input2_iAMPA_netcon = rand(p.Input2_Npop,p.L2I_Npop);
 
 % ------------------------------------------------------------
 % Initial conditions:
@@ -87,7 +85,7 @@ L1E_iNa_h(1,:) = L1E_iNa_h_last;
 L1E_iK_n_last = p.L1E_iK_n_IC+p.L1E_iK_IC_noise*rand(1,p.L1E_Npop);
 L1E_iK_n = zeros(nsamp,p.L1E_Npop);
 L1E_iK_n(1,:) = L1E_iK_n_last;
-L2E_v_last = zeros(1,p.L2E_Npop);
+L2E_v_last =  5.6 * ones(1,p.L2E_Npop);
 L2E_v = zeros(nsamp,p.L2E_Npop);
 L2E_v(1,:) = L2E_v_last;
 L2E_iNa_m_last = p.L2E_iNa_m_IC+p.L2E_iNa_IC_noise*rand(1,p.L2E_Npop);
@@ -123,7 +121,7 @@ Input1_iNa_h(1,:) = Input1_iNa_h_last;
 Input1_iK_n_last = p.Input1_iK_n_IC+p.Input1_iK_IC_noise*rand(1,p.Input1_Npop);
 Input1_iK_n = zeros(nsamp,p.Input1_Npop);
 Input1_iK_n(1,:) = Input1_iK_n_last;
-Input2_v_last = zeros(1,p.Input2_Npop);
+Input2_v_last =  5.6 * ones(1,p.Input2_Npop);
 Input2_v = zeros(nsamp,p.Input2_Npop);
 Input2_v(1,:) = Input2_v_last;
 Input2_iNa_m_last = p.Input2_iNa_m_IC+p.Input2_iNa_IC_noise*rand(1,p.Input2_Npop);
@@ -177,12 +175,6 @@ L3I_L3E_iAMPA_s(1,:) = L3I_L3E_iAMPA_s_last;
 L3E_L3I_iGABA_s_last =  p.L3E_L3I_iGABA_IC+p.L3E_L3I_iGABA_IC_noise.*rand(1,p.L3I_Npop);
 L3E_L3I_iGABA_s = zeros(nsamp,p.L3I_Npop);
 L3E_L3I_iGABA_s(1,:) = L3E_L3I_iGABA_s_last;
-L2E_Input1_iAMPA_s_last =  p.L2E_Input1_iAMPA_IC+p.L2E_Input1_iAMPA_IC_noise.*rand(1,p.Input1_Npop);
-L2E_Input1_iAMPA_s = zeros(nsamp,p.Input1_Npop);
-L2E_Input1_iAMPA_s(1,:) = L2E_Input1_iAMPA_s_last;
-L2I_Input2_iAMPA_s_last =  p.L2I_Input2_iAMPA_IC+p.L2I_Input2_iAMPA_IC_noise.*rand(1,p.Input2_Npop);
-L2I_Input2_iAMPA_s = zeros(nsamp,p.Input2_Npop);
-L2I_Input2_iAMPA_s(1,:) = L2I_Input2_iAMPA_s_last;
 
 % MONITORS:
 L1I_tspike = -1e32*ones(2,p.L1I_Npop);
@@ -217,16 +209,12 @@ L1I_L1E_iAMPA_IAMPA = zeros(nsamp,p.L1I_Npop);
   L1I_L1E_iAMPA_IAMPA(1,:)=-p.L1I_L1E_iAMPA_gAMPA.*(L1I_L1E_iAMPA_s_last*L1I_L1E_iAMPA_netcon).*(L1I_v_last-p.L1I_L1E_iAMPA_EAMPA);
 L1I_L2I_iGABA_IGABA = zeros(nsamp,p.L1I_Npop);
   L1I_L2I_iGABA_IGABA(1,:)=(p.L1I_L2I_iGABA_gGABA.*(L1I_L2I_iGABA_s_last*L1I_L2I_iGABA_netcon).*(L1I_v_last-p.L1I_L2I_iGABA_EGABA));
-L2E_Input1_iAMPA_IAMPA = zeros(nsamp,p.L2E_Npop);
-  L2E_Input1_iAMPA_IAMPA(1,:)=-p.L2E_Input1_iAMPA_gAMPA.*(L2E_Input1_iAMPA_s_last*L2E_Input1_iAMPA_netcon).*(L2E_v_last-p.L2E_Input1_iAMPA_EAMPA);
 L2E_L1E_iAMPA_IAMPA = zeros(nsamp,p.L2E_Npop);
   L2E_L1E_iAMPA_IAMPA(1,:)=-p.L2E_L1E_iAMPA_gAMPA.*(L2E_L1E_iAMPA_s_last*L2E_L1E_iAMPA_netcon).*(L2E_v_last-p.L2E_L1E_iAMPA_EAMPA);
 L2E_L2I_iGABA_IGABA = zeros(nsamp,p.L2E_Npop);
   L2E_L2I_iGABA_IGABA(1,:)=(p.L2E_L2I_iGABA_gGABA.*(L2E_L2I_iGABA_s_last*L2E_L2I_iGABA_netcon).*(L2E_v_last-p.L2E_L2I_iGABA_EGABA));
 L2E_L3E_iAMPA_IAMPA = zeros(nsamp,p.L2E_Npop);
   L2E_L3E_iAMPA_IAMPA(1,:)=-p.L2E_L3E_iAMPA_gAMPA.*(L2E_L3E_iAMPA_s_last*L2E_L3E_iAMPA_netcon).*(L2E_v_last-p.L2E_L3E_iAMPA_EAMPA);
-L2I_Input2_iAMPA_IAMPA = zeros(nsamp,p.L2I_Npop);
-  L2I_Input2_iAMPA_IAMPA(1,:)=-p.L2I_Input2_iAMPA_gAMPA.*(L2I_Input2_iAMPA_s_last*L2I_Input2_iAMPA_netcon).*(L2I_v_last-p.L2I_Input2_iAMPA_EAMPA);
 L2I_L1I_iGABA_IGABA = zeros(nsamp,p.L2I_Npop);
   L2I_L1I_iGABA_IGABA(1,:)=(p.L2I_L1I_iGABA_gGABA.*(L2I_L1I_iGABA_s_last*L2I_L1I_iGABA_netcon).*(L2I_v_last-p.L2I_L1I_iGABA_EGABA));
 L2I_L2E_iAMPA_IAMPA = zeros(nsamp,p.L2I_Npop);
@@ -256,35 +244,35 @@ end
 n=2;
 for k=2:ntime
   t=T(k-1);
-  L1I_v_k1 = 0.03*p.L1I_Iapp + ((((-p.L1I_iNa_gNa.*L1I_iNa_m_last.^3.*L1I_iNa_h_last.*(L1I_v_last-p.L1I_iNa_ENa))))+((((-p.L1I_iK_gK.*L1I_iK_n_last.^4.*(L1I_v_last-p.L1I_iK_EK))))+((((-p.L1I_L1E_iAMPA_gAMPA.*(L1I_L1E_iAMPA_s_last*L1I_L1E_iAMPA_netcon).*(L1I_v_last-p.L1I_L1E_iAMPA_EAMPA))))+((-(((p.L1I_L2I_iGABA_gGABA.*(L1I_L2I_iGABA_s_last*L1I_L2I_iGABA_netcon).*(L1I_v_last-p.L1I_L2I_iGABA_EGABA))))))))) + 0.7*p.L1I_noise*rand(1,p.L1I_Npop);
+  L1I_v_k1 = p.L1I_Iapp + ((((-p.L1I_iNa_gNa.*L1I_iNa_m_last.^3.*L1I_iNa_h_last.*(L1I_v_last-p.L1I_iNa_ENa))))+((((-p.L1I_iK_gK.*L1I_iK_n_last.^4.*(L1I_v_last-p.L1I_iK_EK))))+((((-p.L1I_L1E_iAMPA_gAMPA.*(L1I_L1E_iAMPA_s_last*L1I_L1E_iAMPA_netcon).*(L1I_v_last-p.L1I_L1E_iAMPA_EAMPA))))+((-(((p.L1I_L2I_iGABA_gGABA.*(L1I_L2I_iGABA_s_last*L1I_L2I_iGABA_netcon).*(L1I_v_last-p.L1I_L2I_iGABA_EGABA))))))))) + 0.7*p.L1I_noise*rand(1,p.L1I_Npop);
   L1I_iNa_m_k1 = (((2.5-.1*(L1I_v_last+65))./(exp(2.5-.1*(L1I_v_last+65))-1))).*(1-L1I_iNa_m_last)-((4*exp(-(L1I_v_last+65)/18))).*L1I_iNa_m_last;
   L1I_iNa_h_k1 = ((.07*exp(-(L1I_v_last+65)/20))).*(1-L1I_iNa_h_last)-((1./(exp(3-.1*(L1I_v_last+65))+1))).*L1I_iNa_h_last;
   L1I_iK_n_k1 = (((.1-.01*(L1I_v_last+65))./(exp(1-.1*(L1I_v_last+65))-1))).*(1-L1I_iK_n_last)-((.125*exp(-(L1I_v_last+65)/80))).*L1I_iK_n_last;
-  L2I_v_k1 = 0.15*p.L2I_Iapp + ((((-p.L2I_iNa_gNa.*L2I_iNa_m_last.^3.*L2I_iNa_h_last.*(L2I_v_last-p.L2I_iNa_ENa))))+((((-p.L2I_iK_gK.*L2I_iK_n_last.^4.*(L2I_v_last-p.L2I_iK_EK))))+((-(((p.L2I_L1I_iGABA_gGABA.*(L2I_L1I_iGABA_s_last*L2I_L1I_iGABA_netcon).*(L2I_v_last-p.L2I_L1I_iGABA_EGABA)))))+((((-p.L2I_L2E_iAMPA_gAMPA.*(L2I_L2E_iAMPA_s_last*L2I_L2E_iAMPA_netcon).*(L2I_v_last-p.L2I_L2E_iAMPA_EAMPA))))+((-(((p.L2I_L3I_iGABA_gGABA.*(L2I_L3I_iGABA_s_last*L2I_L3I_iGABA_netcon).*(L2I_v_last-p.L2I_L3I_iGABA_EGABA)))))+((((-p.L2I_Input2_iAMPA_gAMPA.*(L2I_Input2_iAMPA_s_last*L2I_Input2_iAMPA_netcon).*(L2I_v_last-p.L2I_Input2_iAMPA_EAMPA)))))))))) + 0.7*p.L2I_noise*rand(1,p.L2I_Npop);
+  L2I_v_k1 = 10*((exp(-10*((t)-( 50))^2)));
   L2I_iNa_m_k1 = (((2.5-.1*(L2I_v_last+65))./(exp(2.5-.1*(L2I_v_last+65))-1))).*(1-L2I_iNa_m_last)-((4*exp(-(L2I_v_last+65)/18))).*L2I_iNa_m_last;
   L2I_iNa_h_k1 = ((.07*exp(-(L2I_v_last+65)/20))).*(1-L2I_iNa_h_last)-((1./(exp(3-.1*(L2I_v_last+65))+1))).*L2I_iNa_h_last;
   L2I_iK_n_k1 = (((.1-.01*(L2I_v_last+65))./(exp(1-.1*(L2I_v_last+65))-1))).*(1-L2I_iK_n_last)-((.125*exp(-(L2I_v_last+65)/80))).*L2I_iK_n_last;
-  L3I_v_k1 = 0.15*p.L3I_Iapp + ((((-p.L3I_iNa_gNa.*L3I_iNa_m_last.^3.*L3I_iNa_h_last.*(L3I_v_last-p.L3I_iNa_ENa))))+((((-p.L3I_iK_gK.*L3I_iK_n_last.^4.*(L3I_v_last-p.L3I_iK_EK))))+((-(((p.L3I_L2I_iGABA_gGABA.*(L3I_L2I_iGABA_s_last*L3I_L2I_iGABA_netcon).*(L3I_v_last-p.L3I_L2I_iGABA_EGABA)))))+((((-p.L3I_L3E_iAMPA_gAMPA.*(L3I_L3E_iAMPA_s_last*L3I_L3E_iAMPA_netcon).*(L3I_v_last-p.L3I_L3E_iAMPA_EAMPA)))))))) + 0.7*p.L3I_noise*rand(1,p.L3I_Npop);
+  L3I_v_k1 = p.L3I_Iapp + ((((-p.L3I_iNa_gNa.*L3I_iNa_m_last.^3.*L3I_iNa_h_last.*(L3I_v_last-p.L3I_iNa_ENa))))+((((-p.L3I_iK_gK.*L3I_iK_n_last.^4.*(L3I_v_last-p.L3I_iK_EK))))+((-(((p.L3I_L2I_iGABA_gGABA.*(L3I_L2I_iGABA_s_last*L3I_L2I_iGABA_netcon).*(L3I_v_last-p.L3I_L2I_iGABA_EGABA)))))+((((-p.L3I_L3E_iAMPA_gAMPA.*(L3I_L3E_iAMPA_s_last*L3I_L3E_iAMPA_netcon).*(L3I_v_last-p.L3I_L3E_iAMPA_EAMPA)))))))) + 0.7*p.L3I_noise*rand(1,p.L3I_Npop);
   L3I_iNa_m_k1 = (((2.5-.1*(L3I_v_last+65))./(exp(2.5-.1*(L3I_v_last+65))-1))).*(1-L3I_iNa_m_last)-((4*exp(-(L3I_v_last+65)/18))).*L3I_iNa_m_last;
   L3I_iNa_h_k1 = ((.07*exp(-(L3I_v_last+65)/20))).*(1-L3I_iNa_h_last)-((1./(exp(3-.1*(L3I_v_last+65))+1))).*L3I_iNa_h_last;
   L3I_iK_n_k1 = (((.1-.01*(L3I_v_last+65))./(exp(1-.1*(L3I_v_last+65))-1))).*(1-L3I_iK_n_last)-((.125*exp(-(L3I_v_last+65)/80))).*L3I_iK_n_last;
-  L1E_v_k1 = 0.03*p.L1E_Iapp + ((((-p.L1E_iNa_gNa.*L1E_iNa_m_last.^3.*L1E_iNa_h_last.*(L1E_v_last-p.L1E_iNa_ENa))))+((((-p.L1E_iK_gK.*L1E_iK_n_last.^4.*(L1E_v_last-p.L1E_iK_EK))))+((-(((p.L1E_L1I_iGABA_gGABA.*(L1E_L1I_iGABA_s_last*L1E_L1I_iGABA_netcon).*(L1E_v_last-p.L1E_L1I_iGABA_EGABA)))))+((((-p.L1E_L2E_iAMPA_gAMPA.*(L1E_L2E_iAMPA_s_last*L1E_L2E_iAMPA_netcon).*(L1E_v_last-p.L1E_L2E_iAMPA_EAMPA)))))))) + 0.7*p.L1E_noise*rand(1,p.L1E_Npop);
+  L1E_v_k1 = p.L1E_Iapp + ((((-p.L1E_iNa_gNa.*L1E_iNa_m_last.^3.*L1E_iNa_h_last.*(L1E_v_last-p.L1E_iNa_ENa))))+((((-p.L1E_iK_gK.*L1E_iK_n_last.^4.*(L1E_v_last-p.L1E_iK_EK))))+((-(((p.L1E_L1I_iGABA_gGABA.*(L1E_L1I_iGABA_s_last*L1E_L1I_iGABA_netcon).*(L1E_v_last-p.L1E_L1I_iGABA_EGABA)))))+((((-p.L1E_L2E_iAMPA_gAMPA.*(L1E_L2E_iAMPA_s_last*L1E_L2E_iAMPA_netcon).*(L1E_v_last-p.L1E_L2E_iAMPA_EAMPA)))))))) + 0.7*p.L1E_noise*rand(1,p.L1E_Npop);
   L1E_iNa_m_k1 = (((2.5-.1*(L1E_v_last+65))./(exp(2.5-.1*(L1E_v_last+65))-1))).*(1-L1E_iNa_m_last)-((4*exp(-(L1E_v_last+65)/18))).*L1E_iNa_m_last;
   L1E_iNa_h_k1 = ((.07*exp(-(L1E_v_last+65)/20))).*(1-L1E_iNa_h_last)-((1./(exp(3-.1*(L1E_v_last+65))+1))).*L1E_iNa_h_last;
   L1E_iK_n_k1 = (((.1-.01*(L1E_v_last+65))./(exp(1-.1*(L1E_v_last+65))-1))).*(1-L1E_iK_n_last)-((.125*exp(-(L1E_v_last+65)/80))).*L1E_iK_n_last;
-  L2E_v_k1 = 0.15*p.L2E_Iapp + ((((-p.L2E_iNa_gNa.*L2E_iNa_m_last.^3.*L2E_iNa_h_last.*(L2E_v_last-p.L2E_iNa_ENa))))+((((-p.L2E_iK_gK.*L2E_iK_n_last.^4.*(L2E_v_last-p.L2E_iK_EK))))+((((-p.L2E_L1E_iAMPA_gAMPA.*(L2E_L1E_iAMPA_s_last*L2E_L1E_iAMPA_netcon).*(L2E_v_last-p.L2E_L1E_iAMPA_EAMPA))))+((-(((p.L2E_L2I_iGABA_gGABA.*(L2E_L2I_iGABA_s_last*L2E_L2I_iGABA_netcon).*(L2E_v_last-p.L2E_L2I_iGABA_EGABA)))))+((((-p.L2E_L3E_iAMPA_gAMPA.*(L2E_L3E_iAMPA_s_last*L2E_L3E_iAMPA_netcon).*(L2E_v_last-p.L2E_L3E_iAMPA_EAMPA))))+((((-p.L2E_Input1_iAMPA_gAMPA.*(L2E_Input1_iAMPA_s_last*L2E_Input1_iAMPA_netcon).*(L2E_v_last-p.L2E_Input1_iAMPA_EAMPA)))))))))) + 0.7*p.L2E_noise*rand(1,p.L2E_Npop);
+  L2E_v_k1 = -10*((exp(-10*((t)-( 50))^2)));
   L2E_iNa_m_k1 = (((2.5-.1*(L2E_v_last+65))./(exp(2.5-.1*(L2E_v_last+65))-1))).*(1-L2E_iNa_m_last)-((4*exp(-(L2E_v_last+65)/18))).*L2E_iNa_m_last;
   L2E_iNa_h_k1 = ((.07*exp(-(L2E_v_last+65)/20))).*(1-L2E_iNa_h_last)-((1./(exp(3-.1*(L2E_v_last+65))+1))).*L2E_iNa_h_last;
   L2E_iK_n_k1 = (((.1-.01*(L2E_v_last+65))./(exp(1-.1*(L2E_v_last+65))-1))).*(1-L2E_iK_n_last)-((.125*exp(-(L2E_v_last+65)/80))).*L2E_iK_n_last;
-  L3E_v_k1 = 0.15*p.L3E_Iapp + ((((-p.L3E_iNa_gNa.*L3E_iNa_m_last.^3.*L3E_iNa_h_last.*(L3E_v_last-p.L3E_iNa_ENa))))+((((-p.L3E_iK_gK.*L3E_iK_n_last.^4.*(L3E_v_last-p.L3E_iK_EK))))+((((-p.L3E_L2E_iAMPA_gAMPA.*(L3E_L2E_iAMPA_s_last*L3E_L2E_iAMPA_netcon).*(L3E_v_last-p.L3E_L2E_iAMPA_EAMPA))))+((-(((p.L3E_L3I_iGABA_gGABA.*(L3E_L3I_iGABA_s_last*L3E_L3I_iGABA_netcon).*(L3E_v_last-p.L3E_L3I_iGABA_EGABA))))))))) + 0.7*p.L3E_noise*rand(1,p.L3E_Npop);
+  L3E_v_k1 = p.L3E_Iapp + ((((-p.L3E_iNa_gNa.*L3E_iNa_m_last.^3.*L3E_iNa_h_last.*(L3E_v_last-p.L3E_iNa_ENa))))+((((-p.L3E_iK_gK.*L3E_iK_n_last.^4.*(L3E_v_last-p.L3E_iK_EK))))+((((-p.L3E_L2E_iAMPA_gAMPA.*(L3E_L2E_iAMPA_s_last*L3E_L2E_iAMPA_netcon).*(L3E_v_last-p.L3E_L2E_iAMPA_EAMPA))))+((-(((p.L3E_L3I_iGABA_gGABA.*(L3E_L3I_iGABA_s_last*L3E_L3I_iGABA_netcon).*(L3E_v_last-p.L3E_L3I_iGABA_EGABA))))))))) + 0.7*p.L3E_noise*rand(1,p.L3E_Npop);
   L3E_iNa_m_k1 = (((2.5-.1*(L3E_v_last+65))./(exp(2.5-.1*(L3E_v_last+65))-1))).*(1-L3E_iNa_m_last)-((4*exp(-(L3E_v_last+65)/18))).*L3E_iNa_m_last;
   L3E_iNa_h_k1 = ((.07*exp(-(L3E_v_last+65)/20))).*(1-L3E_iNa_h_last)-((1./(exp(3-.1*(L3E_v_last+65))+1))).*L3E_iNa_h_last;
   L3E_iK_n_k1 = (((.1-.01*(L3E_v_last+65))./(exp(1-.1*(L3E_v_last+65))-1))).*(1-L3E_iK_n_last)-((.125*exp(-(L3E_v_last+65)/80))).*L3E_iK_n_last;
-  Input1_v_k1 = 5*((exp(-5*(t-50)^2)));
+  Input1_v_k1 = 10*((exp(-10*((t)-( 50))^2)));
   Input1_iNa_m_k1 = (((2.5-.1*(Input1_v_last+65))./(exp(2.5-.1*(Input1_v_last+65))-1))).*(1-Input1_iNa_m_last)-((4*exp(-(Input1_v_last+65)/18))).*Input1_iNa_m_last;
   Input1_iNa_h_k1 = ((.07*exp(-(Input1_v_last+65)/20))).*(1-Input1_iNa_h_last)-((1./(exp(3-.1*(Input1_v_last+65))+1))).*Input1_iNa_h_last;
   Input1_iK_n_k1 = (((.1-.01*(Input1_v_last+65))./(exp(1-.1*(Input1_v_last+65))-1))).*(1-Input1_iK_n_last)-((.125*exp(-(Input1_v_last+65)/80))).*Input1_iK_n_last;
-  Input2_v_k1 = 20*(sin(t)) * u(t);
+  Input2_v_k1 = -10*((exp(-10*((t)-( 50))^2)));
   Input2_iNa_m_k1 = (((2.5-.1*(Input2_v_last+65))./(exp(2.5-.1*(Input2_v_last+65))-1))).*(1-Input2_iNa_m_last)-((4*exp(-(Input2_v_last+65)/18))).*Input2_iNa_m_last;
   Input2_iNa_h_k1 = ((.07*exp(-(Input2_v_last+65)/20))).*(1-Input2_iNa_h_last)-((1./(exp(3-.1*(Input2_v_last+65))+1))).*Input2_iNa_h_last;
   Input2_iK_n_k1 = (((.1-.01*(Input2_v_last+65))./(exp(1-.1*(Input2_v_last+65))-1))).*(1-Input2_iK_n_last)-((.125*exp(-(Input2_v_last+65)/80))).*Input2_iK_n_last;
@@ -302,8 +290,6 @@ for k=2:ntime
   L2I_L3I_iGABA_s_k1 = -L2I_L3I_iGABA_s_last./p.L2I_L3I_iGABA_tauGABA + ((1-L2I_L3I_iGABA_s_last)/p.L2I_L3I_iGABA_tauGABAr).*(1+tanh(L3I_v_last/10));
   L3I_L3E_iAMPA_s_k1 = -L3I_L3E_iAMPA_s_last./p.L3I_L3E_iAMPA_tauD + 1/2*(1+tanh(L3E_v_last/10)).*((1-L3I_L3E_iAMPA_s_last)/p.L3I_L3E_iAMPA_tauR);
   L3E_L3I_iGABA_s_k1 = -L3E_L3I_iGABA_s_last./p.L3E_L3I_iGABA_tauGABA + ((1-L3E_L3I_iGABA_s_last)/p.L3E_L3I_iGABA_tauGABAr).*(1+tanh(L3I_v_last/10));
-  L2E_Input1_iAMPA_s_k1 = -L2E_Input1_iAMPA_s_last./p.L2E_Input1_iAMPA_tauD + 1/2*(1+tanh(Input1_v_last/10)).*((1-L2E_Input1_iAMPA_s_last)/p.L2E_Input1_iAMPA_tauR);
-  L2I_Input2_iAMPA_s_k1 = -L2I_Input2_iAMPA_s_last./p.L2I_Input2_iAMPA_tauD + 1/2*(1+tanh(Input2_v_last/10)).*((1-L2I_Input2_iAMPA_s_last)/p.L2I_Input2_iAMPA_tauR);
 
   % ------------------------------------------------------------
   % Update state variables:
@@ -354,8 +340,6 @@ for k=2:ntime
   L2I_L3I_iGABA_s_last = L2I_L3I_iGABA_s_last+dt*L2I_L3I_iGABA_s_k1;
   L3I_L3E_iAMPA_s_last = L3I_L3E_iAMPA_s_last+dt*L3I_L3E_iAMPA_s_k1;
   L3E_L3I_iGABA_s_last = L3E_L3I_iGABA_s_last+dt*L3E_L3I_iGABA_s_k1;
-  L2E_Input1_iAMPA_s_last = L2E_Input1_iAMPA_s_last+dt*L2E_Input1_iAMPA_s_k1;
-  L2I_Input2_iAMPA_s_last = L2I_Input2_iAMPA_s_last+dt*L2I_Input2_iAMPA_s_k1;
 
   % ------------------------------------------------------------
   % Conditional actions:
@@ -436,8 +420,6 @@ for k=2:ntime
     L2I_L3I_iGABA_s(n,:) = L2I_L3I_iGABA_s_last;
     L3I_L3E_iAMPA_s(n,:) = L3I_L3E_iAMPA_s_last;
     L3E_L3I_iGABA_s(n,:) = L3E_L3I_iGABA_s_last;
-    L2E_Input1_iAMPA_s(n) = L2E_Input1_iAMPA_s_last;
-    L2I_Input2_iAMPA_s(n) = L2I_Input2_iAMPA_s_last;
 
   % ------------------------------------------------------------
   % Update monitors:
@@ -446,11 +428,9 @@ for k=2:ntime
   L1E_L2E_iAMPA_IAMPA(n,:)=-p.L1E_L2E_iAMPA_gAMPA.*(L1E_L2E_iAMPA_s(n,:)*L1E_L2E_iAMPA_netcon).*(L1E_v(n,:)-p.L1E_L2E_iAMPA_EAMPA);
   L1I_L1E_iAMPA_IAMPA(n,:)=-p.L1I_L1E_iAMPA_gAMPA.*(L1I_L1E_iAMPA_s(n,:)*L1I_L1E_iAMPA_netcon).*(L1I_v(n,:)-p.L1I_L1E_iAMPA_EAMPA);
   L1I_L2I_iGABA_IGABA(n,:)=(p.L1I_L2I_iGABA_gGABA.*(L1I_L2I_iGABA_s(n,:)*L1I_L2I_iGABA_netcon).*(L1I_v(n,:)-p.L1I_L2I_iGABA_EGABA));
-  L2E_Input1_iAMPA_IAMPA(n,:)=-p.L2E_Input1_iAMPA_gAMPA.*(L2E_Input1_iAMPA_s(n)*L2E_Input1_iAMPA_netcon).*(L2E_v(n,:)-p.L2E_Input1_iAMPA_EAMPA);
   L2E_L1E_iAMPA_IAMPA(n,:)=-p.L2E_L1E_iAMPA_gAMPA.*(L2E_L1E_iAMPA_s(n,:)*L2E_L1E_iAMPA_netcon).*(L2E_v(n,:)-p.L2E_L1E_iAMPA_EAMPA);
   L2E_L2I_iGABA_IGABA(n,:)=(p.L2E_L2I_iGABA_gGABA.*(L2E_L2I_iGABA_s(n,:)*L2E_L2I_iGABA_netcon).*(L2E_v(n,:)-p.L2E_L2I_iGABA_EGABA));
   L2E_L3E_iAMPA_IAMPA(n,:)=-p.L2E_L3E_iAMPA_gAMPA.*(L2E_L3E_iAMPA_s(n,:)*L2E_L3E_iAMPA_netcon).*(L2E_v(n,:)-p.L2E_L3E_iAMPA_EAMPA);
-  L2I_Input2_iAMPA_IAMPA(n,:)=-p.L2I_Input2_iAMPA_gAMPA.*(L2I_Input2_iAMPA_s(n)*L2I_Input2_iAMPA_netcon).*(L2I_v(n,:)-p.L2I_Input2_iAMPA_EAMPA);
   L2I_L1I_iGABA_IGABA(n,:)=(p.L2I_L1I_iGABA_gGABA.*(L2I_L1I_iGABA_s(n,:)*L2I_L1I_iGABA_netcon).*(L2I_v(n,:)-p.L2I_L1I_iGABA_EGABA));
   L2I_L2E_iAMPA_IAMPA(n,:)=-p.L2I_L2E_iAMPA_gAMPA.*(L2I_L2E_iAMPA_s(n,:)*L2I_L2E_iAMPA_netcon).*(L2I_v(n,:)-p.L2I_L2E_iAMPA_EAMPA);
   L2I_L3I_iGABA_IGABA(n,:)=(p.L2I_L3I_iGABA_gGABA.*(L2I_L3I_iGABA_s(n,:)*L2I_L3I_iGABA_netcon).*(L2I_v(n,:)-p.L2I_L3I_iGABA_EGABA));
