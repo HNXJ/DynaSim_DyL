@@ -173,8 +173,8 @@ dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'MAE';
-momentum = 1.0;
-iterations = 1;
+momentum = 0.9;
+iterations = 2;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
