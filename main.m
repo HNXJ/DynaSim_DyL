@@ -197,6 +197,7 @@ disp('done');
 
 %% Voltage visualization
 
+clc;
 dsPlot(m.data);
 
 %% Error plot
