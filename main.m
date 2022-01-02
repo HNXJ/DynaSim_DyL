@@ -146,11 +146,11 @@ s.connections(14).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)
 
 s.connections(15).direction='Input1->L2E';
 s.connections(15).mechanism_list={'iAMPA'};
-s.connections(15).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(15).parameters={'tauD',5,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(16).direction='Input2->L2I';
 s.connections(16).mechanism_list={'iAMPA'};
-s.connections(16).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(16).parameters={'tauD',5,'gAMPA',.1,'netcon', 'ones(N_pre,N_post)'}; 
 
 disp('init done.');
 
