@@ -206,7 +206,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode, momentum)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);
@@ -226,21 +226,21 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'last_inputs', inputs);
             
             obj.update_error(error_mode);
-            obj.train_step(lambda, mode, momentum);
+            obj.train_step(lambda, mode);
             
         end
         
-        function train_step(obj, lambda, mode, momentum) 
+        function train_step(obj, lambda, mode) 
                             
             error = get(obj, 'last_error');
             
             if strcmpi(mode, 'normal')
 
-                obj.update_weights_normal(lambda, error, momentum);
+                obj.update_weights_normal(lambda, error);
             
             elseif strcmpi(mode, 'uniform')
                 
-                obj.update_weights_uniform(lambda, error, momentum);
+                obj.update_weights_uniform(lambda, error);
                 
             else
                 
@@ -250,13 +250,13 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function update_weights_normal(obj, lambda, error, momentum)
+        function update_weights_normal(obj, lambda, error)
             
             for i = 1:size(obj.connections, 1)
                 
                 wp = obj.get_weight(i);
                 delta = lambda*error*randn(size(wp));
-                wn = momentum*wp + (1-momentum)*delta;
+                wn = wp + delta;
                 
                 if max(max(abs(wn))) > 1
 
@@ -270,13 +270,13 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function update_weights_uniform(obj, lambda, error, momentum)
+        function update_weights_uniform(obj, lambda, error)
             
             for i = 1:size(obj.connections, 1)
                 
                 wp = obj.get_weight(i);
                 delta = lambda*error*(rand(size(wp))-0.5);
-                wn = momentum*wp + (1-momentum)*delta;
+                wn = wp + delta;
 
                 if max(max(abs(wn))) > 1
 

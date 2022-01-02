@@ -12,27 +12,27 @@ m.save_model('Files/f2_r15_init.mat');
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.1*Iapp + @current + 0.5*noise*rand(1,N_pop);'
+  'dv/dt = 0.2*Iapp + @current + 0.2*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.1*Iapp + @current + 0.5*noise*rand(1,N_pop);'
+  'dv/dt = 0.2*Iapp + @current + 0.2*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input1={
   'u(t, T) = exp(-10*(t-T)^2);'
-  'dv/dt = 20*u(t, 50);'
+  'dv/dt = 20*u(t, 200);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_input2={
   'u(t, T) = exp(-10*(t-T)^2);'
-  'dv/dt = -20*u(t, 50);'
+  'dv/dt = - 20*u(t, 200);'
   'v(0) = 11.21;'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
@@ -90,67 +90,67 @@ s.populations(8).parameters={'Iapp', 0,'gNa',120,'gK',36,'noise', 0};
 
 s.connections(1).direction='L1E->L1I';
 s.connections(1).mechanism_list={'iAMPA'};
-s.connections(1).parameters={'tauD',5,'gAMPA',.1,'netcon','rand(N_pre,N_post)'};
+s.connections(1).parameters={'tauD',5,'gAMPA',.5, 'netcon','rand(N_pre,N_post)'};
 
 s.connections(2).direction='L1I->L1E';
 s.connections(2).mechanism_list={'iGABA'};
-s.connections(2).parameters={'tauD',5,'gGABAa',.1,'netcon','rand(N_pre,N_post)'};
+s.connections(2).parameters={'tauD',5,'gGABAa',.5,'netcon','rand(N_pre,N_post)'};
 
 s.connections(3).direction='L1I->L2I';
 s.connections(3).mechanism_list={'iGABA'};
-s.connections(3).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(3).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(4).direction='L2I->L1I';
 s.connections(4).mechanism_list={'iGABA'};
-s.connections(4).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(4).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(5).direction='L1E->L2E';
 s.connections(5).mechanism_list={'iAMPA'};
-s.connections(5).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(5).parameters={'tauD',5,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(6).direction='L2E->L1E';
 s.connections(6).mechanism_list={'iAMPA'};
-s.connections(6).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(6).parameters={'tauD',5,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(7).direction='L2E->L2I';
 s.connections(7).mechanism_list={'iAMPA'};
-s.connections(7).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(7).parameters={'tauD',5,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(8).direction='L2I->L2E';
 s.connections(8).mechanism_list={'iGABA'};
-s.connections(8).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(8).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(9).direction='L2E->L3E';
 s.connections(9).mechanism_list={'iAMPA'};
-s.connections(9).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(9).parameters={'tauD',5,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(10).direction='L2I->L3I';
 s.connections(10).mechanism_list={'iGABA'};
-s.connections(10).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(10).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(11).direction='L3E->L2E';
 s.connections(11).mechanism_list={'iAMPA'};
-s.connections(11).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(11).parameters={'tauD',5,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(12).direction='L3I->L2I';
 s.connections(12).mechanism_list={'iGABA'};
-s.connections(12).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(12).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(13).direction='L3E->L3I';
 s.connections(13).mechanism_list={'iAMPA'};
-s.connections(13).parameters={'tauD',5,'gAMPA',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(13).parameters={'tauD',5,'gAMPA',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(14).direction='L3I->L3E';
 s.connections(14).mechanism_list={'iGABA'};
-s.connections(14).parameters={'tauD',5,'gGABAa',.1,'netcon', 'rand(N_pre,N_post)'}; 
+s.connections(14).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)'}; 
 
 s.connections(15).direction='Input1->L2E';
 s.connections(15).mechanism_list={'iAMPA'};
-s.connections(15).parameters={'tauD',5,'gAMPA',.5,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(15).parameters={'tauD',5,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(16).direction='Input2->L2I';
 s.connections(16).mechanism_list={'iAMPA'};
-s.connections(16).parameters={'tauD',5,'gAMPA',.5,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(16).parameters={'tauD',5,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'}; 
 
 disp('init done.');
 
@@ -161,20 +161,20 @@ disp('done.');
 
 clc;
 
-lambda = 0.01;
+lambda = 0.1;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
 target_responses = [5, 10, 15];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
 output_indice = {53}; % L3I Spikes
-T = 100;
+T = 300;
 dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'MAE';
-momentum = 0.9;
-iterations = 1;
+momentum = 0.8;
+iterations = 20;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
@@ -185,7 +185,7 @@ for i = 1:iterations
         c_input = input_cues(j);
         c_input = c_input{1};
         c_target = target_responses(j);
-        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
     
     end
     
@@ -198,7 +198,7 @@ disp('done');
 %% Voltage visualization
 
 clc;
-dsPlot(m.data);x
+dsPlot(m.data);
 
 %% Error plot
 
