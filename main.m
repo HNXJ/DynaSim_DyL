@@ -172,7 +172,7 @@ T = 300;
 dT = 0.01;
 
 update_mode = 'uniform';
-error_mode = 'MAE';
+error_mode = 'MSE';
 % momentum = 0.8;
 iterations = 10;
 
