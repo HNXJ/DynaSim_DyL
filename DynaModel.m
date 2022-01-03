@@ -206,7 +206,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode)
+        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode, verbose)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);
@@ -226,6 +226,11 @@ classdef DynaModel < matlab.mixin.SetGet
             set(obj, 'last_inputs', inputs);
             
             obj.update_error(error_mode);
+            
+            if verbose
+                fprintf("Trial no. %d, %s = %f", obj.last_trial, error_mode, obj.last_error);
+            end
+            
             obj.train_step(lambda, mode);
             
         end

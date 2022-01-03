@@ -173,7 +173,7 @@ dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'MSE';
-% momentum = 0.8;
+verbose = 1;
 iterations = 10;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
@@ -185,7 +185,7 @@ for i = 1:iterations
         c_input = input_cues(j);
         c_input = c_input{1};
         c_target = target_responses(j);
-        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, verbose);
     
     end
     
@@ -212,7 +212,7 @@ j = 1;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
-m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
+m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, verbose);
 fprintf("O = %f, T = %f\n", m.get_outputs_spike(), m.last_targets);     
 
 %% Extract and see field names for input/output index checking
