@@ -3,7 +3,7 @@
 %% Save/load model
 
 clc;
-m.save_model('Files/f2_r15_init.mat');
+m.save_model('Files/f3_init.mat');
 % m = DynaModel('Files/f1_init.mat');
 
 %% Initialize model
@@ -18,7 +18,7 @@ eqns_superficial={
 };
 
 eqns_deep={
-  'dv/dt = 0.2*Iapp + @current + 0.2*noise*rand(1,N_pop);'
+  'dv/dt = 0.5*Iapp + @current + 0.4*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };

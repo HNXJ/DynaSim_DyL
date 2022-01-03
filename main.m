@@ -3,7 +3,7 @@
 %% Save/load model
 
 clc;
-m.save_model('Files/f2_r15_init.mat');
+m.save_model('Files/f3_init.mat');
 % m = DynaModel('Files/f1_init.mat');
 
 %% Initialize model
@@ -12,13 +12,13 @@ m.save_model('Files/f2_r15_init.mat');
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.2*Iapp + @current + 0.2*noise*rand(1,N_pop);'
+  'dv/dt = 0.2*Iapp + @current*0.4 + 0.2*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.5*Iapp + @current + 0.2*noise*rand(1,N_pop);'
+  'dv/dt = 0.5*Iapp + @current*0.9 + 0.5*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -161,9 +161,9 @@ disp('done.');
 
 clc;
 
-lambda = 0.1;
+lambda = 0.02;
 input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [5, 10, 15];
+target_responses = [7, 9, 11];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
@@ -174,7 +174,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MAE';
 % momentum = 0.8;
-iterations = 20;
+iterations = 10;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
@@ -208,7 +208,7 @@ m.error_plot('Error of target-output (MAE)');
 %% Single trial step
 
 clc;
-j = 2;
+j = 1;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
