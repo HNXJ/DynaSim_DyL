@@ -173,7 +173,7 @@ dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'MAE';
-momentum = 0.8;
+% momentum = 0.8;
 iterations = 20;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
@@ -207,11 +207,12 @@ m.error_plot('Error of target-output (MAE)');
 
 %% Single trial step
 
-j = 1;
+clc;
+j = 2;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
-m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, momentum);
+m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
 fprintf("O = %f, T = %f\n", m.get_outputs_spike(), m.last_targets);     
 
 %% Extract and see field names for input/output index checking
