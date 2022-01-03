@@ -18,7 +18,7 @@ eqns_superficial={
 };
 
 eqns_deep={
-  'dv/dt = 0.2*Iapp + @current + 0.2*noise*rand(1,N_pop);'
+  'dv/dt = 0.5*Iapp + @current + 0.2*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
