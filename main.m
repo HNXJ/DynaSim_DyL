@@ -3,8 +3,8 @@
 %% Save/load model
 
 clc;
-m.save_model('Files/f3_init.mat');
-% m = DynaModel('Files/f1_init.mat');
+% m.save_model('Files/f3_init.mat');
+m = DynaModel('Files/f3_init.mat');
 
 %% Initialize model
 % Equations
@@ -161,9 +161,9 @@ disp('done.');
 
 clc;
 
-lambda = 0.02;
-input_cues = {{eqns_input1, eqns_input1}, {eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [7, 9, 11];
+lambda = 0.1;
+input_cues = {{eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
+target_responses = [8, 10];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
@@ -189,7 +189,7 @@ for i = 1:iterations
     
     end
     
-    fprintf("Trial no. %d of current batch %d, MAE = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-2:end)));
+    fprintf("Trial no. %d of current batch %d, MAE = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-1:end)));
     
 end
 
