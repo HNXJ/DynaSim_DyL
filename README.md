@@ -6,8 +6,10 @@ You can use your model's Dynasim struct for it and define RL parameters in the t
 
 ### Short doc:
 
-s = <Your DynaSim Neural Model Struct>;
+s = [Your DynaSim Neural Model Struct];
+  
 m = DynaModel(s);
+  
 m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode);
 
 *c_input is the current input, the initial model has two inputs so it consists of two equations.
