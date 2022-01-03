@@ -228,7 +228,7 @@ classdef DynaModel < matlab.mixin.SetGet
             obj.update_error(error_mode);
             
             if verbose
-                fprintf("Trial no. %d, %s = %f, output = %g \n", obj.last_trial, error_mode, obj.last_error, obj.last_outputs);
+                fprintf("Trial no. %d, %s = %f, output = %f \n", obj.last_trial, error_mode, obj.last_error, obj.get_outputs_spike());
             end
             
             obj.train_step(lambda, mode);

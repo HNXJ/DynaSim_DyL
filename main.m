@@ -189,7 +189,7 @@ for i = 1:iterations
     
     end
     
-    fprintf("Trial no. %d of current batch %d, MAE = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-1:end)));
+    fprintf("Trial no. %d of current batch %d, Avg.MAE = %f \n", get(m, 'last_trial'), i, mean(m.errors_log(end-1:end)));
     
 end
 
