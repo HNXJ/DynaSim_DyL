@@ -219,12 +219,15 @@ m.error_plot('Error of target-output (MAE)');
 
 %% Single trial step
 
-j = 2;
-c_input = input_cues(j);
-c_input = c_input{1};
-c_target = target_responses(j);
-m.run_simulation(c_input, input_layers, output_indice, T, dT, verbose);
-fprintf("O = %f, T = %f\n", m.get_outputs_spike(), c_target);     
+disp("Testing ... ");
+
+for j = 1:2
+    c_input = input_cues(j);
+    c_input = c_input{1};
+    c_target = target_responses(j);
+    m.run_simulation(c_input, input_layers, output_indice, T, dT, verbose);
+    fprintf("O = %f, T = %f\n", m.get_outputs_spike(), c_target);     
+end
 
 %% Extract and see field names for input/output index checking
 
