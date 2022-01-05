@@ -3,8 +3,8 @@
 %% Save/load model
 
 clc;
-% m.save_model('Files/f3_init.mat');
-m = DynaModel('Files/f3_init.mat');
+m.save_model('Files/f4_init.mat');
+% m = DynaModel('Files/f4_init.mat');
 
 %% Initialize model
 % Equations
@@ -12,13 +12,13 @@ m = DynaModel('Files/f3_init.mat');
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.2*Iapp + @current*0.4 + 0.2*noise*rand(1,N_pop);'
+  'dv/dt = 0.2*Iapp + @current*0.3 + 0.2*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.5*Iapp + @current*0.9 + 0.5*noise*rand(1,N_pop);'
+  'dv/dt = 0.6*Iapp + @current*0.9 + 0.6*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -146,11 +146,11 @@ s.connections(14).parameters={'tauD',5,'gGABAa',.5,'netcon', 'rand(N_pre,N_post)
 
 s.connections(15).direction='Input1->L2E';
 s.connections(15).mechanism_list={'iAMPA'};
-s.connections(15).parameters={'tauD',5,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(15).parameters={'tauD',1,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'}; 
 
 s.connections(16).direction='Input2->L2I';
 s.connections(16).mechanism_list={'iAMPA'};
-s.connections(16).parameters={'tauD',5,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'}; 
+s.connections(16).parameters={'tauD',1,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'}; 
 
 disp('init done.');
 
