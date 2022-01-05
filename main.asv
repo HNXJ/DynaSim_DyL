@@ -1,25 +1,14 @@
 %% DynaModel example draft 
 
-% A sample of DynaSim/DynaNet trainable model step by step.
-
 %% Save/load model
 
-% If your model is complex you can save it at any time in order to save
-% time or memory.
-
 clc;
-
-% m.save_model('Files/f4_init.mat');
+m.save_model('Files/f4_init.mat');
 % m = DynaModel('Files/f4_init.mat');
 
-% m.save_model('Files/f4_trained.mat');
-% m = DynaModel('Files/f4_trained.mat');
-
 %% Initialize model
-
 % Equations are describing population behaviours and inputs. Define them
-% based on your model as you are going to pass a DynaSim model to this
-% class.
+% like 
 
 clc;clear;
 
@@ -186,7 +175,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MSE';
 verbose = 1;
-iterations = 1;
+iterations = 10;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
@@ -220,11 +209,11 @@ m.error_plot('Error of target-output (MAE)');
 %% Single trial step
 
 clc;
-j = 2;
+j = 1;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);
-m.run_simulation(c_input, input_layers, output_indice, T, dT, verbose);
+m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, verbose);
 fprintf("O = %f, T = %f\n", m.get_outputs_spike(), m.last_targets);     
 
 %% Extract and see field names for input/output index checking
