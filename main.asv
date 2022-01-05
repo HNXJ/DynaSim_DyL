@@ -12,7 +12,7 @@ clc;
 % m.save_model('Files/f4_init.mat');
 % m = DynaModel('Files/f4_init.mat');
 
-% m.save_model('Files/f4_trained.mat');
+% % m.save_model('Files/f4_trained.mat');
 % m = DynaModel('Files/f4_trained.mat');
 
 %% Initialize model
@@ -219,8 +219,7 @@ m.error_plot('Error of target-output (MAE)');
 
 %% Single trial step
 
-clc;
-j = 1;
+j = 2;
 c_input = input_cues(j);
 c_input = c_input{1};
 c_target = target_responses(j);

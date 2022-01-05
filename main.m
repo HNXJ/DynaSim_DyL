@@ -173,7 +173,7 @@ disp('done.');
 
 clc;
 
-lambda = 0.0003;
+lambda = 0.0001;
 input_cues = {{eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
 target_responses = [10, 12];
 batch_size = size(target_responses, 2);
@@ -186,7 +186,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MSE';
 verbose = 1;
-iterations = 1;
+iterations = 10;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
