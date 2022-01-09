@@ -12,7 +12,7 @@ clc;
 % m.save_model('Files/f4_init.mat');
 % m = DynaModel('Files/f4_init.mat');
 
-% m.save_model('Files/f4_trained.mat');
+m.save_model('Files/f5_trained.mat');
 % m = DynaModel('Files/f4_trained.mat');
 
 %% Initialize model
