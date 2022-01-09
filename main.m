@@ -13,7 +13,7 @@ clc;
 % m = DynaModel('Files/f4_init.mat');
 
 % m.save_model('Files/f4_trained.mat');
-% m = DynaModel('Files/f4_trained.mat');
+m = DynaModel('Files/f4_trained.mat');
 
 %% Initialize model
 
@@ -175,7 +175,7 @@ clc;
 
 lambda = 0.0001;
 input_cues = {{eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [10.5, 11.5];
+target_responses = [12.5, 10];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
