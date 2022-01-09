@@ -13,7 +13,7 @@ clc;
 % m = DynaModel('Files/f4_init.mat');
 
 % m.save_model('Files/f4_trained.mat');
-m = DynaModel('Files/f4_trained.mat');
+% m = DynaModel('Files/f4_trained.mat');
 
 %% Initialize model
 
@@ -24,13 +24,13 @@ m = DynaModel('Files/f4_trained.mat');
 clc;clear;
 
 eqns_superficial={
-  'dv/dt = 0.2*Iapp + @current*0.3 + 0.2*noise*rand(1,N_pop);'
+  'dv/dt = 0.2*Iapp + @current*0.4 + 0.2*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
 
 eqns_deep={
-  'dv/dt = 0.6*Iapp + @current*0.9 + 0.6*noise*rand(1,N_pop);'
+  'dv/dt = 0.7*Iapp + @current*0.8 + 0.3*noise*rand(1,N_pop);'
   'monitor iGABAa.functions, iAMPA.functions'
   'monitor v.spikes(0)'
 };
@@ -175,7 +175,7 @@ clc;
 
 lambda = 0.0001;
 input_cues = {{eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [12.5, 10];
+target_responses = [13, 9];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
@@ -186,7 +186,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MSE';
 verbose = 1;
-iterations = 10;
+iterations = 20;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
