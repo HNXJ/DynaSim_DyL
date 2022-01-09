@@ -175,7 +175,7 @@ clc;
 
 lambda = 0.0001;
 input_cues = {{eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [10, 12];
+target_responses = [10.5, 11.5];
 batch_size = size(target_responses, 2);
 
 input_layers = [7, 8];
