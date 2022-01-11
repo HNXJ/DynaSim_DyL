@@ -12,8 +12,8 @@ clc;
 % m.save_model('Files/f4_init.mat');
 % m = DynaModel('Files/f4_init.mat');
 
-m.save_model('Files/f5_trained.mat');
-% m = DynaModel('Files/f4_trained.mat');
+% m.save_model('Files/f5_trained.mat');
+m = DynaModel('Files/f5_trained.mat');
 
 %% Initialize model
 
@@ -186,7 +186,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MSE';
 verbose = 1;
-iterations = 20;
+iterations = 0;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
