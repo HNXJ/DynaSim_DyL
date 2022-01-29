@@ -10,9 +10,9 @@
 clc;
 
 % m.save_model('Files/f6_init.mat');
-% m = DynaModel('Files/f4_init.mat');
+m = DynaModel('Files/f6_init.mat');
 
-m.save_model('Files/f6_trained.mat');
+% m.save_model('Files/f6_trained.mat');
 % m = DynaModel('Files/f5_trained.mat');
 
 %% Initialize model
@@ -166,7 +166,7 @@ s.connections(16).parameters={'tauD',1,'gAMPA',.9,'netcon', 'ones(N_pre,N_post)'
 
 disp('init done.');
 
-m = DynaModel(s);
+% m = DynaModel(s);
 disp('done.');
 
 %% Trials' training script script
