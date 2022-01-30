@@ -149,6 +149,7 @@ classdef DynaModel < matlab.mixin.SetGet
             
             st = struct2cell(obj.data);
             inds = inds{1};
+%             disp(inds);
             o = st(inds);
             
         end

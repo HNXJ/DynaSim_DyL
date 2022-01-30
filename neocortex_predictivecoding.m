@@ -114,18 +114,18 @@ clc;
 
 lambda = 0.001;
 input_cues = {{eqns_input1}, {eqns_input2}};
-target_responses = [23];
+target_responses = [10, 20];
 batch_size = size(target_responses, 2);
 
 input_layers = [3];
-output_indice = {53}; % L3I Spikes
+output_indice = {23}; % L3I Spikes
 T = 300;
 dT = 0.01;
 
 update_mode = 'uniform';
 error_mode = 'MSE';
 verbose = 1;
-iterations = 1;
+iterations = 10;
 
 % m = DynaModel(s);
 
