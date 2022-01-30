@@ -1,5 +1,8 @@
 % 3-layer neocortical model
 
+clc;clear;
+fprintf("Initialization...");
+
 % Population sizes
 Ne = 4;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
@@ -61,7 +64,7 @@ ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'ne
 %vary = {'I->E','gGABAa',[0, .1, 1, 10]};
 %vary = {'I->E','gGABAa',[1, 5]; 
 %        'I->E','tauGABA',[5, 10]};
-
+%%
 % create independent layers
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
@@ -89,6 +92,65 @@ c = length(s.connections)+1;
 s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPA'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee};
+
+%%
+
+eqns_input1={
+  'u(t, T) = exp(-10*(t-T)^2);'
+  'dv/dt = 20*u(t, 200);'
+  'monitor iGABAa.functions, iAMPA.functions'
+  'monitor v.spikes(0)'
+};
+
+eqns_input2={
+  'u(t, T) = exp(-10*(t-T)^2);'
+  'dv/dt = - 20*u(t, 200);'
+  'v(0) = 11.21;'
+  'monitor iGABAa.functions, iAMPA.functions'
+  'monitor v.spikes(0)'
+};
+
+clc;
+
+lambda = 0.001;
+input_cues = {{eqns_input1}, {eqns_input2}};
+target_responses = [23];
+batch_size = size(target_responses, 2);
+
+input_layers = [3];
+output_indice = {53}; % L3I Spikes
+T = 300;
+dT = 0.01;
+
+update_mode = 'uniform';
+error_mode = 'MSE';
+verbose = 1;
+iterations = 1;
+
+% m = DynaModel(s);
+
+%%
+
+fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
+
+for i = 1:iterations
+    
+    for j = 1:batch_size
+        
+        c_input = input_cues(j);
+        c_input = c_input{1};
+        c_target = target_responses(j);
+        m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, verbose);
+    
+    end
+    
+    fprintf("Batch %d, Avg.MAE = %f \n", i, mean(m.errors_log(end-1:end)));
+    
+end
+
+disp('done');
+
+%%
 
 % Simulate
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
