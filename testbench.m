@@ -1,7 +1,7 @@
 %%
 
 clc;clear;
-fprintf("Initialization...");
+fprintf("Initialization...\n");
 
 % Population sizes
 Ne = 8;     % # of E cells per layer
@@ -84,9 +84,11 @@ ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'ne
 %        'I->E','tauGABA',[5, 10]};
 
 s = ping;
+fprintf("Done.\n");
 
 %% Simulate
 
+fprintf("Simulation...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 300]; % [beg, end] (ms)
 
@@ -100,7 +102,8 @@ vary = [];
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
-dsPlot(data);
 
+dsPlot(data);
+fprintf("Done.");
 
 %%
