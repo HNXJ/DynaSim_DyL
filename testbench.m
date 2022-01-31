@@ -6,12 +6,15 @@ fprintf("Initialization...");
 % Population sizes
 Ne = 8;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
+k = 0.5; % Randomness of initial weights
 
 % Connectivity matrices
+
 % E->I
-Kei = ones(Ne, Ni); % all-to-all, connectivity from E cells to I cells; mid, sup, deep
+Kei = k*rand(Ne, Ni) + (1-k); % all-to-all, connectivity from E cells to I cells; mid, sup, deep
 % I->E
-Kie = ones(Ni, Ne); % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+Kie = k*rand(Ni, Ne) + (1-k); % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+
 % E->E
 Kee = ones(Ne, Ne); % recurrent E-to-E: mid, sup, deep
 Kii = ones(Ni, Ni); % recurrent I-to-I: mid, sup, deep
@@ -44,22 +47,22 @@ g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs
 g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
-tOn_pfcInp =  500;            % onset in ms, transient
-tOff_pfcInp = 0+500; % 0 Was onset time in the PNAS, dyration was 1.5s
+tOn_pfcInp =  200;            % onset in ms, transient
+tOff_pfcInp = 0+300; % 0 Was onset time in the PNAS, dyration was 1.5s
 
 % E-cells
 ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_iPoisson','spn_ipfcPoisson'};
-ping.populations(1).parameters = {'Iapp',5,'noise',40,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
+ping.populations(1).parameters = {'Iapp',4,'noise',40,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
 ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_iPoisson','spn_ipfcPoisson'};
-ping.populations(2).parameters = {'Iapp',0,'noise',0,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
+ping.populations(2).parameters = {'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
@@ -83,10 +86,11 @@ s = ping;
 
 % Simulate
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
-tspan = [0 200]; % [beg, end] (ms)
+tspan = [0 600]; % [beg, end] (ms)
 
-%vary = [];
-vary = {'I->E', 'tauGABA', [2 4]};
+vary = {'E', 'onset_pfc_poisson', [100 300];
+    'I', 'onset_pfc_poisson', [100 300]};
+% vary = {'I->E', 'tauGABA', [2 4]};
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
