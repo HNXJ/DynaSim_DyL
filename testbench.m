@@ -47,8 +47,8 @@ g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs
 g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
-tOn_pfcInp =  200;            % onset in ms, transient
-tOff_pfcInp = 0+300; % 0 Was onset time in the PNAS, dyration was 1.5s
+tOn_pfcInp =  100;            % onset in ms, transient
+tOff_pfcInp = 0+200; % 0 Was onset time in the PNAS, dyration was 1.5s
 
 % E-cells
 ping.populations(1).name = 'E';
@@ -86,10 +86,11 @@ s = ping;
 
 % Simulate
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
-tspan = [0 600]; % [beg, end] (ms)
+tspan = [0 300]; % [beg, end] (ms)
 
-vary = {'E', 'onset_pfc_poisson', [100 300];
-    'I', 'onset_pfc_poisson', [100 300]};
+vary = [];
+% vary = {'E', 'onset_pfc_poisson', [100 300]};
+%     'I', 'onset_pfc_poisson', [100 300]};
 % vary = {'I->E', 'tauGABA', [2 4]};
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
