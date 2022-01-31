@@ -1,7 +1,7 @@
 % 3-layer neocortical model
 
 clc;clear;
-fprintf("Initialization...");
+fprintf("Initialization...\n");
 
 % Population sizes
 Ne = 4;     % # of E cells per layer
@@ -61,6 +61,8 @@ ping.connections(4).direction = 'I->I';
 ping.connections(4).mechanism_list = {'iGABAa'};
 ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kii};
 
+fprintf("Done.\n");
+
 %vary = {'I->E','gGABAa',[0, .1, 1, 10]};
 %vary = {'I->E','gGABAa',[1, 5]; 
 %        'I->E','tauGABA',[5, 10]};
@@ -92,6 +94,8 @@ c = length(s.connections)+1;
 s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPA'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee};
+
+fprintf("Done.");
 
 %%
 

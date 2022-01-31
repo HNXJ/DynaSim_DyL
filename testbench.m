@@ -54,14 +54,14 @@ tOff_pfcInp = 0+200; % 0 Was onset time in the PNAS, dyration was 1.5s
 ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
-ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_iPoisson','spn_ipfcPoisson'};
+ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_ipfcPoisson'};
 ping.populations(1).parameters = {'Iapp',4,'noise',40,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
-ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_iPoisson','spn_ipfcPoisson'};
+ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca'};
 ping.populations(2).parameters = {'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
 
 % E/I connectivity
@@ -92,9 +92,9 @@ fprintf("Simulation...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 300]; % [beg, end] (ms)
 
-vary = [];
+% vary = [];
 
-% vary = {'E', 'onset_pfc_poisson', [100 300]};
+vary = {'E', 'onset_pfc_poisson', [100 200]};
 %     'I', 'onset_pfc_poisson', [100 300]};
 
 % vary = {'I->E', 'tauGABA', [2 4]};
