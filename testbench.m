@@ -89,8 +89,10 @@ simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_fla
 tspan = [0 300]; % [beg, end] (ms)
 
 vary = [];
+
 % vary = {'E', 'onset_pfc_poisson', [100 300]};
 %     'I', 'onset_pfc_poisson', [100 300]};
+
 % vary = {'I->E', 'tauGABA', [2 4]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
