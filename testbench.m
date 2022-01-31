@@ -79,6 +79,7 @@ ping.connections(4).mechanism_list = {'iGABAa'};
 ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kii};
 
 %vary = {'I->E','gGABAa',[0, .1, 1, 10]};
+
 %vary = {'I->E','gGABAa',[1, 5]; 
 %        'I->E','tauGABA',[5, 10]};
 
