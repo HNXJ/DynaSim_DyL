@@ -85,6 +85,7 @@ ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'ne
 s = ping;
 
 %% Simulate
+
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 300]; % [beg, end] (ms)
 
