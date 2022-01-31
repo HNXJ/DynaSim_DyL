@@ -105,7 +105,7 @@ data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 % Plots results
 
 dsPlot(data,'plot_type','raster');
-% dsPlot(data);
+dsPlot(data);
 
 fprintf("Done.\n");
 
