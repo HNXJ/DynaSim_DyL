@@ -156,19 +156,27 @@ disp('done');
 
 %%
 
+clc;
+s = ping;
+
 % Simulate
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
-tspan = [0 200]; % [beg, end] (ms)
+tspan = [0 300]; % [beg, end] (ms)
 
-%vary = [];
-vary = {'supI->supE','tauGABA',[2]; 
-       'deepI->deepE','tauGABA',[20]};
+% vary = [];
+
+% vary = {'supI->supE','tauGABA',[2]; 
+%        'deepI->deepE','tauGABA',[20]};
+   
+vary = {'I->E','tauGABA',[2 20]};
+
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
 dsPlot(data);
 %dsPlot(data,'plot_type','raster');
 
+fprintf("Done.");
 
 %{
 beta2 (25Hz):
