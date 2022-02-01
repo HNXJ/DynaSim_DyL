@@ -96,8 +96,6 @@ tspan = [0 300]; % [beg, end] (ms)
 % vary = [];
 
 vary = {'E', 'g_pfc_poisson', [3e-10 3e-3 3e-2]};
-%     'I', 'onset_pfc_poisson', [100 300]};
-
 % vary = {'I->E', 'tauGABA', [2 4]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
