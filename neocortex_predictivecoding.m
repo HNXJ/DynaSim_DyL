@@ -1,17 +1,20 @@
-% 3-layer neocortical model
+%%
 
 clc;clear;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 4;     % # of E cells per layer
+Ne = 8;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
+k = 0.5; % Randomness of initial weights
 
 % Connectivity matrices
+
 % E->I
-Kei = ones(Ne, Ni); % all-to-all, connectivity from E cells to I cells; mid, sup, deep
+Kei = k*rand(Ne, Ni) + (1-k); % all-to-all, connectivity from E cells to I cells; mid, sup, deep
 % I->E
-Kie = ones(Ni, Ne); % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+Kie = k*rand(Ni, Ne) + (1-k); % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+
 % E->E
 Kee = ones(Ne, Ne); % recurrent E-to-E: mid, sup, deep
 Kii = ones(Ni, Ni); % recurrent I-to-I: mid, sup, deep
@@ -35,18 +38,32 @@ gGABAa_ii = 0; % I->I within layer
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; {iNa,iK}; Iapp=0; noise=0; C=1';
 
 % create DynaSim specification structure
+
 ping=[];
-% Superficial layer
+
+% Mechanism parameters
+
+g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs 
+g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
+g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
+g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
+tOn_pfcInp =  100;            % onset in ms, transient
+tOff_pfcInp = 0+200; % 0 Was onset time in the PNAS, dyration was 1.5s
+
 % E-cells
 ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
-ping.populations(1).parameters = {'Iapp',5,'noise',40};
+ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_ipfcPoisson'};
+ping.populations(1).parameters = {'Iapp',4,'noise',40,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
+
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
-ping.populations(2).parameters = {'Iapp',0,'noise',10};
+ping.populations(1).mechanism_list = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca','spn_ipfcPoisson'};
+ping.populations(2).parameters = {'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
+
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
 ping.connections(1).mechanism_list = {'iAMPA'};
@@ -68,6 +85,7 @@ fprintf("Done.\n");
 %        'I->E','tauGABA',[5, 10]};
 %%
 % create independent layers
+
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
 deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
