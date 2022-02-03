@@ -4,7 +4,7 @@ clc;clear;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 8;     % # of E cells per layer
+Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
 k = 0.5; % Randomness of initial weights
 
@@ -16,10 +16,10 @@ Kei = k*rand(Ne, Ni) + (1-k); % all-to-all, connectivity from E cells to I cells
 Kie = k*rand(Ni, Ne) + (1-k); % all-to-all, connectivity from I cells to E cells; mid, sup, deep
 
 % E->E
-Kee = ones(Ne, Ne); % recurrent E-to-E: mid, sup, deep
-Kii = ones(Ni, Ni); % recurrent I-to-I: mid, sup, deep
-Kffee = ones(Ne, Ne); % feedforward E-to-E: mid->sup, sup->deep
-Kffie = ones(Ni, Ne); % feedforward I-to-E: mid->deep
+Kee = k*rand(Ne, Ni) + (1-k); % recurrent E-to-E: mid, sup, deep
+Kii = k*rand(Ne, Ni) + (1-k); % recurrent I-to-I: mid, sup, deep
+Kffee = k*rand(Ne, Ni) + (1-k); % feedforward E-to-E: mid->sup, sup->deep
+Kffie = k*rand(Ne, Ni) + (1-k); % feedforward I-to-E: mid->deep
 
 % Time constants
 tauGABA_gamma = 5; % ms, decay time constant of inhibition for gamma (50Hz)
