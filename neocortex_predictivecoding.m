@@ -100,6 +100,7 @@ deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 s = dsCombineSpecifications(sup, mid, deep);
 
 % connect the layers
+
 % midE -> supE
 c = length(s.connections)+1;
 s.connections(c).direction = 'midE->supE';
@@ -152,7 +153,7 @@ error_mode = 'MSE';
 verbose = 1;
 iterations = 10;
 
-% m = DynaModel(s);
+m = DynaModel(s);
 
 %%
 
