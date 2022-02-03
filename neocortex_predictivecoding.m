@@ -66,17 +66,17 @@ ping.populations(2).parameters = {'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
-ping.connections(1).mechanism_list = {'iAMPA'};
-ping.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',Kei};
+ping.connections(1).mechanism_list = {'spn_iAMPA'};
+ping.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'conn_prob_gaba',Kei};
 ping.connections(2).direction = 'E->E';
-ping.connections(2).mechanism_list = {'iAMPA'};
-ping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'netcon',Kee};
+ping.connections(2).mechanism_list = {'spn_iAMPA'};
+ping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'conn_prob_gaba',Kee};
 ping.connections(3).direction = 'I->E';
-ping.connections(3).mechanism_list = {'iGABAa'};
-ping.connections(3).parameters = {'gGABAa',gGABAa_ie,'tauGABA',tauGABA_gamma,'netcon',Kie};
+ping.connections(3).mechanism_list = {'spn_iGABA'};
+ping.connections(3).parameters = {'gGABA',gGABAa_ie,'tauGABA',tauGABA_gamma,'conn_prob_gaba',Kie};
 ping.connections(4).direction = 'I->I';
-ping.connections(4).mechanism_list = {'iGABAa'};
-ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kii};
+ping.connections(4).mechanism_list = {'spn_iGABA'};
+ping.connections(4).parameters = {'gGABA',gGABAa_ii,'tauGABA',tauGABA_gamma,'conn_prob_gaba',Kii};
 
 fprintf("Done.\n");
 
@@ -197,9 +197,9 @@ tspan = [0 400]; % [beg, end] (ms)
 %        'deepI->deepE','tauGABA',[20]};   
 % vary = {'I->E','tauGABA',[2 20]};
 
-% vary = {'deepI', 'baseline_pfc_poisson=0', [18]};
-% vary = {'deepI', 'tau_pfc_poisson', [2 20]};
-% vary = {'deepI', 'g_pfc_poisson', [3e-2 3e-0]};
+% vary = {'deepE', 'baseline_pfc_poisson=0', [18]};
+% vary = {'deepE', 'tau_pfc_poisson', [2 20]};
+% vary = {'deepE', 'g_pfc_poisson', [3e-2 3e-0]};
 vary = {'midI', 'f_pfc_poisson', [44]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
