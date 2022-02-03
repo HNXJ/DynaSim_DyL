@@ -30,9 +30,9 @@ tauAMPA = 2.25; % ms, decay time constant of fast excitation (AMPA)
 gAMPA_ei = .1; % E->I within layer
 gAMPA_ffee = .1; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = 0; % feedforward I->E, mid->deep
-gAMPA_ee = 0; % E->E within layer
+gAMPA_ee = 1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
-gGABAa_ii = 0; % I->I within layer
+gGABAa_ii = 1; % I->I within layer
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; {iNa,iK}; Iapp=0; noise=0; C=1';
@@ -66,17 +66,17 @@ ping.populations(2).parameters = {'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
-ping.connections(1).mechanism_list = {'spn_iAMPA'};
-ping.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'conn_prob_gaba',Kei};
+ping.connections(1).mechanism_list = {'iAMPA'};
+ping.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',Kei};
 ping.connections(2).direction = 'E->E';
-ping.connections(2).mechanism_list = {'spn_iAMPA'};
-ping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'conn_prob_gaba',Kee};
+ping.connections(2).mechanism_list = {'iAMPA'};
+ping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'netcon',Kee};
 ping.connections(3).direction = 'I->E';
-ping.connections(3).mechanism_list = {'spn_iGABA'};
-ping.connections(3).parameters = {'gGABA',gGABAa_ie,'tauGABA',tauGABA_gamma,'conn_prob_gaba',Kie};
+ping.connections(3).mechanism_list = {'iGABA'};
+ping.connections(3).parameters = {'gGABA',gGABAa_ie,'tauGABA',tauGABA_gamma,'netcon',Kie};
 ping.connections(4).direction = 'I->I';
-ping.connections(4).mechanism_list = {'spn_iGABA'};
-ping.connections(4).parameters = {'gGABA',gGABAa_ii,'tauGABA',tauGABA_gamma,'conn_prob_gaba',Kii};
+ping.connections(4).mechanism_list = {'iGABA'};
+ping.connections(4).parameters = {'gGABA',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kii};
 
 fprintf("Done.\n");
 
@@ -192,7 +192,7 @@ fprintf("Starting simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 400]; % [beg, end] (ms)
 
-% vary = [];
+vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[20]};   
 % vary = {'I->E','tauGABA',[2 20]};
@@ -200,13 +200,13 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = {'deepE', 'baseline_pfc_poisson=0', [18]};
 % vary = {'deepE', 'tau_pfc_poisson', [2 20]};
 % vary = {'deepE', 'g_pfc_poisson', [3e-2 3e-0]};
-vary = {'midI', 'f_pfc_poisson', [44]};
+% vary = {'midI', 'f_pfc_poisson', [44]};
 
-data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
+% data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
-dsPlot(data);
-%dsPlot(data,'plot_type','raster');
+% dsPlot(data);
+dsPlot(data,'plot_type','raster');
 
 fprintf("Done.\n");
 
