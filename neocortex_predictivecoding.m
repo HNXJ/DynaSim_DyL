@@ -176,6 +176,9 @@ disp('done');
 %%
 
 clc;
+
+fprintf("Starting simulation ...\n");
+
 % s = ping;
 
 % Simulate
