@@ -80,10 +80,6 @@ ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'ne
 
 fprintf("Done.\n");
 
-%vary = {'I->E','gGABAa',[0, .1, 1, 10]};
-%vary = {'I->E','gGABAa',[1, 5]; 
-%        'I->E','tauGABA',[5, 10]};
-
 %%
 % create independent layers
 
@@ -100,9 +96,13 @@ deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 deep = dsApplyModifications(deep,{'deepI','tau_pfc_poisson', 21});
 deep = dsApplyModifications(deep,{'deepE','tau_pfc_poisson', 18});
 
-% update ipoisson mechanism for deep layers
-deep = dsApplyModifications(deep,{'deepI','tau_pfc_poisson', 21});
-deep = dsApplyModifications(deep,{'deepE','tau_pfc_poisson', 18});
+% update ipoisson mechanism for mid layers
+mid = dsApplyModifications(mid,{'midI','tau_pfc_poisson', 17});
+mid = dsApplyModifications(mid,{'midE','tau_pfc_poisson', 17});
+
+% update ipoisson mechanism for superficial layers
+sup = dsApplyModifications(sup,{'supI','tau_pfc_poisson', 16});
+sup = dsApplyModifications(sup,{'supE','tau_pfc_poisson', 16});
 
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep);
