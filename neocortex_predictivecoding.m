@@ -83,6 +83,7 @@ fprintf("Done.\n");
 %vary = {'I->E','gGABAa',[0, .1, 1, 10]};
 %vary = {'I->E','gGABAa',[1, 5]; 
 %        'I->E','tauGABA',[5, 10]};
+
 %%
 % create independent layers
 
