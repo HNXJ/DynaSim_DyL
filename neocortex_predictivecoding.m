@@ -87,6 +87,8 @@ fprintf("Done.\n");
 %%
 % create independent layers
 
+fprintf("Creating structure of model ...\n");
+
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
 deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
@@ -189,7 +191,7 @@ vary = [];
 %        'deepI->deepE','tauGABA',[20]};
    
 % vary = {'I->E','tauGABA',[2 20]};
-vary = {'deepI->deepE', 'tauGABA', [25]};
+vary = {'deepI->deepE', 'tauGABA', [22.5]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
