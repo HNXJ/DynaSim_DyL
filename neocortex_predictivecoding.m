@@ -192,7 +192,7 @@ fprintf("Starting simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 400]; % [beg, end] (ms)
 
-vary = [];
+% vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[20]};   
 % vary = {'I->E','tauGABA',[2 20]};
@@ -200,7 +200,7 @@ vary = [];
 % vary = {'deepI->deepE', 'tauGABA', [22.5]};
 % vary = {'deepI', 'tau_pfc_poisson', [2 20]};
 % vary = {'deepI', 'g_pfc_poisson', [3e-2 3e-0]};
-% vary = {'deepI', 'g_pfc_poisson', [3e-2 3e-0]};
+vary = {'deepI', 'f_pfc_poisson', [24]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
