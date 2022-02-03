@@ -93,8 +93,16 @@ sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % super
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
 deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
 
-% uppdate deep layer parameters to produce beta rhythm (25Hz)
+% update deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
+
+% update ipoisson mechanism for deep layers
+deep = dsApplyModifications(deep,{'deepI','tau_pfc_poisson', 21});
+deep = dsApplyModifications(deep,{'deepE','tau_pfc_poisson', 18});
+
+% update ipoisson mechanism for deep layers
+deep = dsApplyModifications(deep,{'deepI','tau_pfc_poisson', 21});
+deep = dsApplyModifications(deep,{'deepE','tau_pfc_poisson', 18});
 
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep);
@@ -190,7 +198,7 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = {'I->E','tauGABA',[2 20]};
 
 % vary = {'deepI->deepE', 'tauGABA', [22.5]};
-vary = {'deepI', 'tau_pfc_poisson', [2 8 16]};
+vary = {'deepI', 'tau_pfc_poisson', [20]};
 % vary = {'deepI', 'g_pfc_poisson', [3e-2 3e-0]};
 % vary = {'deepI', 'g_pfc_poisson', [3e-2 3e-0]};
 
