@@ -23,7 +23,7 @@ Kffie = ones(Ni, Ne); % feedforward I-to-E: mid->deep
 
 % Time constants
 tauGABA_gamma = 5; % ms, decay time constant of inhibition for gamma (50Hz)
-tauGABA_beta = 10; % ms, decay time constant of inhibition for beta (25Hz)
+tauGABA_beta = 20; % ms, decay time constant of inhibition for beta (25Hz)
 tauAMPA = 2; % ms, decay time constant of fast excitation (AMPA)
 
 % Maximal synaptic strengths
@@ -189,6 +189,7 @@ vary = [];
 %        'deepI->deepE','tauGABA',[20]};
    
 % vary = {'I->E','tauGABA',[2 20]};
+vary = {'deepI->deepE', 'tauGABA', [25]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
