@@ -177,8 +177,6 @@ disp('done');
 
 %%
 
-clc;
-
 fprintf("Starting simulation ...\n");
 
 % Simulate
