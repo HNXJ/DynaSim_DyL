@@ -195,7 +195,7 @@ data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 dsPlot(data);
 %dsPlot(data,'plot_type','raster');
 
-fprintf("Done.");
+fprintf("Done.\n");
 
 %{
 beta2 (25Hz):
