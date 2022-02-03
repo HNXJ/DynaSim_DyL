@@ -214,5 +214,3 @@ tauAMPA = 2; % ms, decay time constant of fast excitation (AMPA)
 gAMPA = .1;
 gGABAa = 5;
 %}
-
-%%
