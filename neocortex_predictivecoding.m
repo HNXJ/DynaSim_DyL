@@ -190,7 +190,7 @@ tspan = [0 300]; % [beg, end] (ms)
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[20]};
    
-vary = {'I->E','tauGABA',[2 20]};
+% vary = {'I->E','tauGABA',[2 20]};
 
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
