@@ -185,7 +185,7 @@ fprintf("Starting simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 300]; % [beg, end] (ms)
 
-vary = [];
+% vary = [];
 
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[20]};
