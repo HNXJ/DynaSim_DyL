@@ -113,7 +113,7 @@ s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPA'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee};
 
-fprintf("Done.");
+fprintf("Done.\n");
 
 %%
 
