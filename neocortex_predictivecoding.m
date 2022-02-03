@@ -6,7 +6,7 @@ fprintf("Initialization...\n");
 % Population sizes
 Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
-k = 0.5; % Randomness of initial weights
+k = 0.75; % Randomness of initial weights
 
 % Connectivity matrices
 
@@ -22,9 +22,9 @@ Kffee = k*rand(Ne, Ne) + (1-k); % feedforward E-to-E: mid->sup, sup->deep
 Kffie = k*rand(Ni, Ne) + (1-k); % feedforward I-to-E: mid->deep
 
 % Time constants
-tauGABA_gamma = 5; % ms, decay time constant of inhibition for gamma (50Hz)
-tauGABA_beta = 20; % ms, decay time constant of inhibition for beta (25Hz)
-tauAMPA = 2; % ms, decay time constant of fast excitation (AMPA)
+tauGABA_gamma = 4.5; % ms, decay time constant of inhibition for gamma (50Hz)
+tauGABA_beta = 22.5; % ms, decay time constant of inhibition for beta (25Hz)
+tauAMPA = 2.25; % ms, decay time constant of fast excitation (AMPA)
 
 % Maximal synaptic strengths
 gAMPA_ei = .1; % E->I within layer
