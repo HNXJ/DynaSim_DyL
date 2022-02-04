@@ -4,9 +4,9 @@ clc;clear;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 16;     % # of E cells per layer
+Ne = 20;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
-k = 0.75; % Randomness of initial weights
+k = 0.5; % Randomness of initial weights
 
 % Connectivity matrices
 
@@ -30,6 +30,7 @@ tauAMPA = 2.25; % ms, decay time constant of fast excitation (AMPA)
 gAMPA_ei = .1; % E->I within layer
 gAMPA_ffee = .1; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = 0; % feedforward I->E, mid->deep
+
 gAMPA_ee = 1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
 gGABAa_ii = 1; % I->I within layer
@@ -40,17 +41,15 @@ eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1;
 
 % create DynaSim specification structure
 
-ping=[];
-
 % Mechanism parameters
 
 g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs 
 g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
+
 tOn_pfcInp =  100;            % onset in ms, transient
 tOff_pfcInp = 0+300; % 0 Was onset time in the PNAS, dyration was 1.5s
-
 g_pfc_poisson = 3.5e-4;
 DC_pfc_poisson = .1;
 
@@ -75,9 +74,9 @@ ping.populations(1).parameters = {'Iapp',5,'noise',40};
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
-ping.populations(2).mechanism_list = {cell_type{:}};%,'ctx_iPoisson'};
+ping.populations(2).mechanism_list = {cell_type};
 ping.populations(2).equations = eqns;
-ping.populations(2).parameters = {'Iapp',0,'noise',10,'input_mask',I_input_mask};
+ping.populations(2).parameters = {'Iapp',0,'noise',10};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
