@@ -91,6 +91,9 @@ deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % de
 
 % update deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
+deep = dsApplyModifications(deep,{'deepE->deepE','tauGABA',tauGABA_beta});
+deep = dsApplyModifications(deep,{'deepE->deepI','tauGABA',tauGABA_beta});
+deep = dsApplyModifications(deep,{'deepI->deepI','tauGABA',tauGABA_beta});
 
 % update ipoisson mechanism for deep layers
 deep = dsApplyModifications(deep,{'deepI','tau_pfc_poisson', 21});

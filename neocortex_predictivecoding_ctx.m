@@ -31,9 +31,9 @@ gAMPA_ei = .1; % E->I within layer
 gAMPA_ffee = .1; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = 0; % feedforward I->E, mid->deep
 
-gAMPA_ee = 1; % E->E within layer
+gAMPA_ee = 0; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
-gGABAa_ii = 1; % I->I within layer
+gGABAa_ii = 0; % I->I within layer
 
 % neuronal dynamics
 %eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; {iNa,iK}; Iapp=0; noise=0; C=1';
@@ -54,7 +54,7 @@ g_pfc_poisson = 3.5e-4;
 DC_pfc_poisson = .1;
 
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'spn_iPoisson'};
-ctx_cells = {'iNa','iK', 'ctx_iPoisson'};
+ctx_cells = {'iNa','iK'};%, 'ctx_iPoisson'};
 
 cell_type = ctx_cells; % choose spn_cells and ctx_cells
 
@@ -91,8 +91,6 @@ ping.connections(3).parameters = {'gGABAa',gGABAa_ie,'tauGABA',tauGABA_gamma,'ne
 ping.connections(4).direction = 'I->I';
 ping.connections(4).mechanism_list = {'iGABAa'};
 ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kii};
-
-%ping = dsApplyModifications(ping, {'E','DC_pfc_poisson',DC_pfc_poisson; 'E','g_pfc_poisson',g_pfc_poisson});
 
 % E-cells
 % ping.populations(1).name = 'E';
