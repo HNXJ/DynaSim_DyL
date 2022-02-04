@@ -54,20 +54,14 @@ tOff_pfcInp = 0+300; % 0 Was onset time in the PNAS, dyration was 1.5s
 g_pfc_poisson = 3.5e-4;
 DC_pfc_poisson = .1;
 
-spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca'};
-ctx_cells = {'iNa','iK'};
+spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'spn_iPoisson'};
+ctx_cells = {'iNa','iK', 'ctx_iPoisson'};
 
 cell_type = ctx_cells; % choose spn_cells and ctx_cells
 
 t_end = 500;
 dt = .01;
 tspan = [0 t_end]; % [beg, end] (ms)
-T = 0:dt:t_end;
-Ntime = length(T);
-assembly_size = Ne/2;
-assembly_mask = [ones(1,assembly_size), zeros(1,Ne-assembly_size)];
-E_input_mask = repmat(assembly_mask, [Ntime, 1]); % time x cells
-I_input_mask = zeros(Ntime, Ni);
 
 ping=[];
 % Superficial layer
@@ -75,14 +69,16 @@ ping=[];
 ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
-ping.populations(1).mechanism_list = {cell_type{:}};%,'ctx_iPoisson'};
-ping.populations(1).parameters = {'Iapp',5,'noise',40,'input_mask',E_input_mask};
+ping.populations(1).mechanism_list = {cell_type};
+ping.populations(1).parameters = {'Iapp',5,'noise',40};
+
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).mechanism_list = {cell_type{:}};%,'ctx_iPoisson'};
 ping.populations(2).equations = eqns;
 ping.populations(2).parameters = {'Iapp',0,'noise',10,'input_mask',I_input_mask};
+
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
 ping.connections(1).mechanism_list = {'iAMPA'};
