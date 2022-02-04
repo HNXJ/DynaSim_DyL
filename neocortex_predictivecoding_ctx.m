@@ -133,6 +133,7 @@ deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % de
 
 % update deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
+deep = dsApplyModifications(deep,{'deepI->deepE','tauAMPA',tauGABA_beta});
 
 % % update ipoisson mechanism for deep layers
 % deep = dsApplyModifications(deep,{'deepI','tau_pfc_poisson', 21});
@@ -175,15 +176,13 @@ fprintf("Done.\n");
 simulator_options = {'solver','rk1','dt',dt,'downsample_factor',1,'verbose_flag',1};
 
 vary = [];
-vary = {'supE','g_pfc_poisson',[.05]; 'supE','g_pfc_poisson',[1]; 'supE','DC_pfc_poisson',[0 100 1000]};%DC_pfc_poisson*[10]};
-vary = {'supE','g_pfc_poisson',[.05]; 'supE','g_pfc_poisson',[1]; 'supE','DC_pfc_poisson',[1000]};%DC_pfc_poisson*[10]};
+% vary = {'supE','g_pfc_poisson',[.05]; 'supE','g_pfc_poisson',[1]; 'supE','DC_pfc_poisson',[0 100 1000]};%DC_pfc_poisson*[10]};
+% vary = {'supE','g_pfc_poisson',[.05]; 'supE','g_pfc_poisson',[1]; 'supE','DC_pfc_poisson',[1000]};%DC_pfc_poisson*[10]};
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
 dsPlot(data);
 dsPlot(data,'variable','supE_V');
-
-return
 
 %%
 
