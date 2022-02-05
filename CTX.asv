@@ -76,11 +76,11 @@ io.populations(2).parameters = {'g_poisson',g_pfc_poisson,'Iapp',0,'noise',10,'c
 
 io.connections(1).direction = 'A->B';
 io.connections(1).mechanism_list = {'iAMPActx'};
-io.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',0};
+io.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',1};
 
 io.connections(2).direction = 'B->A';
 io.connections(2).mechanism_list = {'iAMPActx'};
-io.connections(2).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',0};
+io.connections(2).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',1};
 
 % PING template
 ping=[];
@@ -153,9 +153,8 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
-vary = {'A','g_poisson',[3.5e-4]; 'A','DC_poisson', [1e5];'A','AC_poisson', [1]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
-       'B','g_poisson',[3.5e-4]; 'B','DC_poisson', [1e5];'B','AC_poisson', [1e0 1e3 1e6]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
-   
+vary = {'A','g_poisson',[3.5e-4]; 'A','DC_poisson', [1e5];'A','AC_poisson', [1e0 1]};%DC_pfc_poisson*[10]};
+
 data=dsSimulate(io,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
