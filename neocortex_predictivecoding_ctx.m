@@ -4,7 +4,7 @@ clc;clear;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 20;     % # of E cells per layer
+Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
 k = 0.5; % Randomness of initial weights
 
@@ -22,9 +22,9 @@ Kffee = k*rand(Ne, Ne) + (1-k); % feedforward E-to-E: mid->sup, sup->deep
 Kffie = k*rand(Ni, Ne) + (1-k); % feedforward I-to-E: mid->deep
 
 % Time constants
-tauGABA_gamma = 4.5; % ms, decay time constant of inhibition for gamma (50Hz)
-tauGABA_beta = 22.5; % ms, decay time constant of inhibition for beta (25Hz)
-tauAMPA = 2.25; % ms, decay time constant of fast excitation (AMPA)
+tauGABA_gamma = 10; % ms, decay time constant of inhibition for gamma (50Hz)
+tauGABA_beta = 50; % ms, decay time constant of inhibition for beta (25Hz)
+tauAMPA = 10; % ms, decay time constant of fast excitation (AMPA)
 
 % Maximal synaptic strengths
 gAMPA_ei = .1; % E->I within layer
@@ -86,10 +86,10 @@ ping.connections(2).direction = 'E->E';
 ping.connections(2).mechanism_list = {'iAMPA'};
 ping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'netcon',Kee};
 ping.connections(3).direction = 'I->E';
-ping.connections(3).mechanism_list = {'iGABAa'};
+ping.connections(3).mechanism_list = {'iGABA'};
 ping.connections(3).parameters = {'gGABAa',gGABAa_ie,'tauGABA',tauGABA_gamma,'netcon',Kie};
 ping.connections(4).direction = 'I->I';
-ping.connections(4).mechanism_list = {'iGABAa'};
+ping.connections(4).mechanism_list = {'iGABA'};
 ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kii};
 
 % E-cells
@@ -257,11 +257,11 @@ vary = [];
 % vary = {'deepE', 'g_pfc_poisson', [3e-2 3e-0]};
 % vary = {'midI', 'f_pfc_poisson', [44]};
 
-% data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
+data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
-% dsPlot(data);
-dsPlot(data,'plot_type','raster');
+dsPlot(data);
+% dsPlot(data,'plot_type','raster');
 
 fprintf("Done.\n");
 

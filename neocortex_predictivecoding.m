@@ -6,7 +6,7 @@ fprintf("Initialization...\n");
 % Population sizes
 Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
-k = 0.75; % Randomness of initial weights
+k = 0.5; % Randomness of initial weights
 
 % Connectivity matrices
 
