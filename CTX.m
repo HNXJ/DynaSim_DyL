@@ -155,8 +155,8 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
-vary = {'A','g_poisson',[g_poisson/10]; 'A','DC_poisson', [1e7];'A','AC_poisson', [1]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
-       'B','g_poisson',[g_poisson/10]; 'B','DC_poisson', [1e7];'B','AC_poisson', [1]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
+vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [1]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
+       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e7];'B','AC_poisson', [1]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
