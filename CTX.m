@@ -120,7 +120,7 @@ Aconn = [ones(16, 8), zeros(16, 8)];
 c = length(s.connections)+1;
 s.connections(c).direction = 'A->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Aconn};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aconn};
 
 % InB -> midE
 Bconn = [zeros(4, 8), ones(4, 8)];
@@ -128,7 +128,7 @@ Bconn = [zeros(4, 8), ones(4, 8)];
 c = length(s.connections)+1;
 s.connections(c).direction = 'B->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Bconn};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bconn};
 
 % midE -> supE
 c = length(s.connections)+1;
