@@ -45,15 +45,11 @@ g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
 
-tOn_pfcInp =  100;            % onset in ms, transient
-tOff_pfcInp = 200; % 0 Was onset time in the PNAS, dyration was 1.5s
-g_pfc_poisson = 3.5e-4;
-DC_pfc_poisson = .1;
-
+g_poisson = 3.5e-4;
 
 % cell type
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
-ctx_cells = {'iNa','iK'};%, 'ctx_iPoisson'};
+ctx_cells = {'iNa','iK', 'ctx_iPoisson'};
 
 cell_type = ctx_cells; % choose spn_cells and ctx_cells
 
@@ -65,15 +61,16 @@ io = [];
 io.populations(1).name = 'A';
 io.populations(1).size = 1;
 io.populations(1).equations = eqns;
-io.populations(1).mechanism_list = spn_cells;
-io.populations(1).parameters = {'g_poisson',g_pfc_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',tOn_pfcInp,'offset_poisson',tOff_pfcInp};
+io.populations(1).mechanism_list = cell_type;
+io.populations(1).parameters = {'g_poisson',g_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',0,'offset_poisson',100};
 
 io.populations(2).name = 'B';
 io.populations(2).size = 1;
 io.populations(2).equations = eqns;
-io.populations(2).mechanism_list = spn_cells;
-io.populations(2).parameters = {'g_poisson',g_pfc_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',tOn_pfcInp,'offset_poisson',tOff_pfcInp};
+io.populations(2).mechanism_list = cell_type;
+io.populations(2).parameters = {'g_poisson',g_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',0,'offset_poisson',100};
 
+% Null connections for IO sync
 io.connections(1).direction = 'A->B';
 io.connections(1).mechanism_list = {'iAMPActx'};
 io.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',0};
@@ -90,14 +87,14 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp',5,'noise', 60};
+ping.populations(1).parameters = {'Iapp',5,'noise', 60, 'g_poisson',g_poisson,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
 ping.populations(2).mechanism_list = cell_type;
-ping.populations(2).parameters = {'Iapp',0,'noise', 16};
+ping.populations(2).parameters = {'Iapp',0,'noise', 16, 'g_poisson',g_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',0,'offset_poisson',0};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
@@ -120,14 +117,32 @@ ping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'ne
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
 deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
+io = dsApplyModifications(ping,{'E','name','A'; 'I','name','B'}); % I/O layer 
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
+io = dsApplyModifications(io,{'A','size',1});
+io = dsApplyModifications(io,{'B','size',1});
 
 % create full cortical specification
-s = dsCombineSpecifications(sup, mid, deep);
+s = dsCombineSpecifications(sup, mid, deep, io);
 
 % connect the layers
+% InA -> midE
+Aconn = [ones(1, 8), zeros(1, 8)];
+
+c = length(s.connections)+1;
+s.connections(c).direction = 'A->midE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Aconn};
+
+% InB -> midE
+Bconn = [zeros(1, 8), ones(1, 8)];
+
+c = length(s.connections)+1;
+s.connections(c).direction = 'A->midE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Bconn};
 % midE -> supE
 c = length(s.connections)+1;
 s.connections(c).direction = 'midE->supE';
@@ -153,10 +168,10 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
-vary = {'A','g_poisson',[3e-4]; 'A','DC_poisson', [1e5];'A','AC_poisson', [1]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
-       'B','g_poisson',[3e-4]; 'B','DC_poisson', [1e5];'B','AC_poisson', [1]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
+vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e5];'A','AC_poisson', [1]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
+       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e5];'B','AC_poisson', [1]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
    
-data=dsSimulate(io,'vary',vary,'tspan',tspan,simulator_options{:});
+data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
 dsPlot(data);
