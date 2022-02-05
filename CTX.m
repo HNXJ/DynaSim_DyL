@@ -105,30 +105,30 @@ io = dsApplyModifications(io,{'B','Iapp',0});
 io = dsApplyModifications(io,{'A','noise',1});
 io = dsApplyModifications(io,{'B','noise',1});
 
-% io = dsApplyModifications(io,{'A->B','netcon',[0]});
-% io = dsApplyModifications(io,{'B->A','netcon',[0]});
-% io = dsApplyModifications(io,{'A->B','netcon',[0]});
-% io = dsApplyModifications(io,{'B->A','netcon',[0]});
+io = dsApplyModifications(io,{'A->B','netcon','zeros(N_pre, N_post)'});
+io = dsApplyModifications(io,{'B->A','netcon','zeros(N_pre, N_post)'});
+io = dsApplyModifications(io,{'A->B','netcon','zeros(N_pre, N_post)'});
+io = dsApplyModifications(io,{'B->A','netcon','zeros(N_pre, N_post)'});
 
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep, io);
 
 % connect the layers
-% % InA -> midE
-% Aconn = [ones(1, 8), zeros(1, 8)];
-% 
-% c = length(s.connections)+1;
-% s.connections(c).direction = 'A->midE';
-% s.connections(c).mechanism_list={'iAMPActx'};
-% s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Aconn};
-% 
-% % InB -> midE
-% Bconn = [zeros(1, 8), ones(1, 8)];
-% 
-% c = length(s.connections)+1;
-% s.connections(c).direction = 'B->midE';
-% s.connections(c).mechanism_list={'iAMPActx'};
-% s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Bconn};
+% InA -> midE
+Aconn = [ones(16, 8), zeros(16, 8)];
+
+c = length(s.connections)+1;
+s.connections(c).direction = 'A->midE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Aconn};
+
+% InB -> midE
+Bconn = [zeros(4, 8), ones(4, 8)];
+
+c = length(s.connections)+1;
+s.connections(c).direction = 'B->midE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Bconn};
 
 % midE -> supE
 c = length(s.connections)+1;
@@ -155,8 +155,8 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
-vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e5];'A','AC_poisson', [1e3]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
-       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e5];'B','AC_poisson', [1e3]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
+vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e6];'A','AC_poisson', [100]; 'A', 'onset_poisson', [100]; 'A', 'offset_poisson', [200];
+       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e6];'B','AC_poisson', [100]; 'B', 'onset_poisson', [200]; 'B', 'offset_poisson', [300]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
