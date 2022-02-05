@@ -55,29 +55,6 @@ cell_type = ctx_cells; % choose spn_cells and ctx_cells
 
 % create DynaSim specification structure
 
-% I/O 
-io = [];
-
-io.populations(1).name = 'A';
-io.populations(1).size = 1;
-io.populations(1).equations = eqns;
-io.populations(1).mechanism_list = cell_type;
-io.populations(1).parameters = {'g_poisson',g_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',0,'offset_poisson',100};
-
-io.populations(2).name = 'B';
-io.populations(2).size = 1;
-io.populations(2).equations = eqns;
-io.populations(2).mechanism_list = cell_type;
-io.populations(2).parameters = {'g_poisson',g_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_poisson',0,'offset_poisson',100};
-
-% Null connections for IO sync
-io.connections(1).direction = 'A->B';
-io.connections(1).mechanism_list = {'iAMPActx'};
-io.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',0};
-
-io.connections(2).direction = 'B->A';
-io.connections(2).mechanism_list = {'iAMPActx'};
-io.connections(2).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',0};
 
 % PING template
 ping=[];
@@ -121,12 +98,28 @@ io = dsApplyModifications(ping,{'E','name','A'; 'I','name','B'}); % I/O layer
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
+io = dsApplyModifications(io,{'A','size',1});
+io = dsApplyModifications(io,{'B','size',1});
 
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep, io);
 
 % connect the layers
-% InA -> InB
+% InA -> midE
+Aconn = [ones(1, 8), zeros(1, 8)];
+
+c = length(s.connections)+1;
+s.connections(c).direction = 'A->midE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Aconn};
+
+% InB -> midE
+Bconn = [zeros(1, 8), ones(1, 8)];
+
+c = length(s.connections)+1;
+s.connections(c).direction = 'B->midE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Bconn};
 
 % midE -> supE
 c = length(s.connections)+1;
