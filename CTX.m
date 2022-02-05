@@ -1,6 +1,7 @@
 % 3-layer neocortical model
 
 clear;clc;
+fprintf("Initialization...\n");
 
 % Population sizes
 Ne = 16;     % # of E cells per layer
@@ -38,16 +39,47 @@ gGABAa_ii = 0; % I->I within layer
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
 
+% SPN
+g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs 
+g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
+g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
+g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
+
+tOn_pfcInp =  100;            % onset in ms, transient
+tOff_pfcInp = 0+300; % 0 Was onset time in the PNAS, dyration was 1.5s
+g_pfc_poisson = 3.5e-4;
+DC_pfc_poisson = .1;
+
+
 % cell type
-spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'spn_iPoisson'};
+spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
 ctx_cells = {'iNa','iK'};%, 'ctx_iPoisson'};
 
 cell_type = ctx_cells; % choose spn_cells and ctx_cells
 
 % create DynaSim specification structure
-ping=[];
+
+% I/O 
+io = [];
+
+io.populations(1).name = 'A';
+io.populations(1).size = 1;
+io.populations(1).equations = eqns;
+io.populations(1).mechanism_list = spn_cells;
+io.populations(1).parameters = {'g_pfc_poisson',g_pfc_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
+
+io.populations(2).name = 'B';
+io.populations(2).size = 1;
+io.populations(2).equations = eqns;
+io.populations(2).mechanism_list = spn_cells;
+io.populations(2).parameters = {'g_pfc_poisson',g_pfc_poisson,'Iapp',0,'noise',10,'cm',1,'g_l',g_l_D2,'g_cat',g_cat_D2,'onset_pfc_poisson',tOn_pfcInp,'offset_pfc_poisson',tOff_pfcInp};
+
+io.connections(1).direction = 'A->B';
+io.connections(1).mechanism_list = {'iAMPActx'};
+io.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',1};
 
 % PING template
+ping=[];
 
 % E-cells
 ping.populations(1).name = 'E';
@@ -114,10 +146,12 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 400]; % [beg, end] (ms)
 
-vary = [];
+% vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
-data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
+vary = {'A','g_pfc_poisson',[.05]; 'A','g_pfc_poisson',[1]; 'A','DC_pfc_poisson',[1000]};%DC_pfc_poisson*[10]};
+
+data=dsSimulate(io,'vary',vary,'tspan',tspan,simulator_options{:});
 
 % Plots results
 dsPlot(data);
