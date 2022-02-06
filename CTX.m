@@ -159,7 +159,7 @@ vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [
        'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e7];'B','AC_poisson', [0]; 'B', 'onset_poisson', [200 300]; 'B', 'offset_poisson', [300]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
-
+% raster{1} = computeRaster(data_ACcond.time,data_ACcond.D1_SPN_V);
 % Plots results
 dsPlot(data);
 %dsPlot(data,'plot_type','raster');
