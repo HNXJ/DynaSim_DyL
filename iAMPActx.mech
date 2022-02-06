@@ -8,7 +8,7 @@ IC = [0]
 IC_noise = [0]
  
 % fixed variables
-% netcon = ones(N_pre,N_post) % default connectivity matrix (all-to-all)
+netcon = ones(N_pre,N_post) % default connectivity matrix (all-to-all)
 
 % functions
 IAMPA(X,s) = (gAMPA.*(s*netcon).*(X-EAMPA))
