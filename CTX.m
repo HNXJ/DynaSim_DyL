@@ -45,7 +45,7 @@ g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
 
-g_poisson = 3.5e-4;
+g_poisson = 1e-3;
 
 % cell type
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
@@ -155,7 +155,7 @@ tspan = [0 400]; % [beg, end] (ms)
 % vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
-vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [0]; 'A', 'onset_poisson', [100 200]; 'A', 'offset_poisson', [200];
+vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [0]; 'A', 'onset_poisson', [200]; 'A', 'offset_poisson', [200];
        'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e7];'B','AC_poisson', [0]; 'B', 'onset_poisson', [200 300]; 'B', 'offset_poisson', [300]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
