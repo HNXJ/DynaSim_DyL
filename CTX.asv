@@ -166,6 +166,13 @@ dsPlot(data);
 
 %% iFR 
 
-raster = computeRaster(data.time, mean(double(data.deepI_V)));
+t = data.time;
+x = data.deepI_V;
+raster = computeRaster(t, x);
+ifr = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, [1, 2, 3, 4], 5, 1, 1);
+
+figure();
+subplot(2, 1, 1);plot(t, x(:, 1));
+subplot(2, 1, 2);stem(raster(:, 1), raster(:, 2));
 
 

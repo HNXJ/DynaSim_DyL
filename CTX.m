@@ -166,7 +166,16 @@ dsPlot(data);
 
 %% iFR 
 
+clc;
+pool = [1];
+t = data.time;
 x = data.deepI_V;
-raster = computeRaster(data.time, x(:, 1);
+
+raster = computeRaster(t, x);
+ifr = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool, 5, 1, 1);
+
+figure();
+subplot(2, 1, 1);plot(t, ifr);
+subplot(2, 1, 2);plot(t, x);
 
 
