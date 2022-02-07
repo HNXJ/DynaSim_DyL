@@ -164,7 +164,7 @@ data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 dsPlot(data);
 %dsPlot(data,'plot_type','raster');
 
-%% iFR 
+%% iFR & comparison
 
 clc;
 pool1 = [1:8];
