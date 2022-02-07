@@ -166,7 +166,6 @@ dsPlot(data);
 
 %% iFR 
 
-x = data.deepI_V;
-raster = computeRaster(data.time, x(:, 1);
+raster = computeRaster(data.time, mean(double(data.deepI_V)));
 
 
