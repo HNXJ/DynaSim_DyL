@@ -171,14 +171,15 @@ clc;
 pool1 = [1:8];
 pool2 = [9:16];
 t = data.time;
-x = data.midE_V;
+x = data(4).midE_V;
 
 raster = computeRaster(t, x);
 ifr1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
 ifr2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
 
 figure();
-subplot(2, 2, 1);plot(t, ifr1);title('iFR for midE cells 1-8');
+
+subplot(2, 2, 1);plot(t, ifr1);title('S4: iFR for midE cells 1-8');
 subplot(2, 2, 2);plot(t, x(:, pool1));title('V(t)');
 subplot(2, 2, 3);plot(t, ifr2);title('iFR for midE cells 9-16');
 subplot(2, 2, 4);plot(t, x(:, pool2));title('V(t)');
