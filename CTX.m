@@ -161,6 +161,7 @@ vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 %% Plots results
+
 dsPlot(data);
 %dsPlot(data,'plot_type','raster');
 
