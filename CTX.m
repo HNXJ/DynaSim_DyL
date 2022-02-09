@@ -211,6 +211,7 @@ t = data.time;
 x = data.midE_V;
 
 raster = computeRaster(t, x);
+
 ifr1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
 ifr2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
 
