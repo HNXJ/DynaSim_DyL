@@ -163,7 +163,7 @@ data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
 %% Plots results
 
-% dsPlot(data);
+dsPlot(data);
 % dsPlot(data,'plot_type','raster');
 
 %% iFR & comparison
