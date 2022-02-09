@@ -208,7 +208,7 @@ clc;
 pool1 = [1:8];
 pool2 = [9:16];
 t = data.time;
-x = data(4).midE_V;
+x = data.supE_V;
 
 raster = computeRaster(t, x);
 ifr1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
