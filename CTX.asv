@@ -6,7 +6,6 @@ fprintf("Initialization...\n");
 % Population sizes
 Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
-Nio = 8; % # of Input cells
 k = 0.7; % Randomness of initial weights
 
 % Connectivity matrices
@@ -22,7 +21,8 @@ Kii = k*rand(Ni, Ni) + (1-k); % recurrent I-to-I: mid, sup, deep
 Kffee = k*rand(Ne, Ne) + (1-k); % feedforward E-to-E: mid->sup, sup->deep
 Kffie = k*rand(Ni, Ne) + (1-k); % feedforward I-to-E: mid->deep
 
-kzio = zeros(Nio, Nio);
+kzio = zeros(Nio, N
+k1io = 
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
@@ -96,14 +96,14 @@ IOping=[];
 
 % E-cells
 IOping.populations(1).name = 'E';
-IOping.populations(1).size = Nio;
+IOping.populations(1).size = 16;
 IOping.populations(1).equations = eqns;
 IOping.populations(1).mechanism_list = cell_type;
 IOping.populations(1).parameters = {'Iapp',1,'noise', 10, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 IOping.populations(2).name = 'I';
-IOping.populations(2).size = Nio;
+IOping.populations(2).size = 16;
 IOping.populations(2).equations = eqns;
 IOping.populations(2).mechanism_list = cell_type;
 IOping.populations(2).parameters = {'Iapp',1,'noise', 10, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
@@ -111,19 +111,19 @@ IOping.populations(2).parameters = {'Iapp',1,'noise', 10, 'g_poisson',g_poisson,
 % E/I connectivity
 IOping.connections(1).direction = 'E->I';
 IOping.connections(1).mechanism_list = {'iAMPActx'};
-IOping.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',kzio};
+IOping.connections(1).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',Kee};
 
 IOping.connections(2).direction = 'E->E';
 IOping.connections(2).mechanism_list = {'iAMPActx'};
-IOping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'netcon',kzio};
+IOping.connections(2).parameters = {'gAMPA',gAMPA_ee,'tauAMPA',tauAMPA,'netcon',Kee};
 
 IOping.connections(3).direction = 'I->E';
 IOping.connections(3).mechanism_list = {'iGABActx'};
-IOping.connections(3).parameters = {'gGABAa',gGABAa_ie,'tauGABA',tauGABA_gamma,'netcon',kzio};
+IOping.connections(3).parameters = {'gGABAa',gGABAa_ie,'tauGABA',tauGABA_gamma,'netcon',Kee};
 
 IOping.connections(4).direction = 'I->I';
 IOping.connections(4).mechanism_list = {'iGABActx'};
-IOping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',kzio};
+IOping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',Kee};
 
 % create independent layers
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
@@ -151,7 +151,7 @@ s = dsCombineSpecifications(sup, mid, deep, io);
 
 % connect the layers
 % InA -> midE
-Aconn = [ones(Nio, Ne/2), zeros(Nio, Ne/2)];
+Aconn = [ones(16, 8), zeros(16, 8)];
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'A->midE';
@@ -159,7 +159,7 @@ s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aconn};
 
 % InB -> midE
-Bconn = [zeros(Nio, Ne/2), ones(Nio, Ne/2)];
+Bconn = [zeros(16, 8), ones(16, 8)];
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'B->midE';
