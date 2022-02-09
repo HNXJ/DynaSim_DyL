@@ -98,7 +98,7 @@ io = dsApplyModifications(ping,{'E','name','A'; 'I','name','B'}); % I/O layer
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 % io = dsApplyModifications(io,{'A','size',1});
-% io = dsApplyModifications(io,{'B','size',1});
+io = dsApplyModifications(io,{'B','size',16});
 
 io = dsApplyModifications(io,{'A','Iapp',1});
 io = dsApplyModifications(io,{'B','Iapp',1});
@@ -122,13 +122,13 @@ s.connections(c).direction = 'A->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aconn};
 
-% InB -> midE
-Bconn = [zeros(4, 8), ones(4, 8)];
-
-c = length(s.connections)+1;
-s.connections(c).direction = 'B->midE';
-s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bconn};
+% % InB -> midE
+% Bconn = [zeros(16, 8), ones(16, 8)];
+% 
+% c = length(s.connections)+1;
+% s.connections(c).direction = 'B->midE';
+% s.connections(c).mechanism_list={'iAMPActx'};
+% s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bconn};
 
 % midE -> supE
 c = length(s.connections)+1;
