@@ -226,4 +226,4 @@ subplot(2, 2, 2);plot(t, x(:, pool1));title('V(t)');
 subplot(2, 2, 3);plot(t, ifr2);title("iFR for " + lname + "E cells 9-16");grid("on");
 subplot(2, 2, 4);plot(t, x(:, pool2));title('V(t)');
 
-
+%%
