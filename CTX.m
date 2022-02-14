@@ -188,7 +188,6 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 500]; % [beg, end] (ms)
 
-% vary = [];
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
 
@@ -202,7 +201,7 @@ fprintf("Done.\n");
 %% Plots results
 
 dsPlot(data); % Normal
-% dsPlot(data,'plot_type','raster'); % Raster
+dsPlot(data,'plot_type','raster'); % Raster
 
 %% iFR & comparison
 
