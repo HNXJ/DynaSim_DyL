@@ -201,16 +201,18 @@ fprintf("Done.\n");
 
 %% Plots results
 
-dsPlot(data);
-% dsPlot(data,'plot_type','raster');
+dsPlot(data); % Normal
+% dsPlot(data,'plot_type','raster'); % Raster
 
 %% iFR & comparison
 
 clc;
 pool1 = [1:8];
 pool2 = [9:16];
+
 t = data.time;
-x = data.midE_V;
+x = data.deepE_V;
+lname = "deep";
 
 raster = computeRaster(t, x);
 
@@ -219,9 +221,9 @@ ifr2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
 
 figure();
 
-subplot(2, 2, 1);plot(t, ifr1);title('S4: iFR for midE cells 1-8');
+subplot(2, 2, 1);plot(t, ifr1);title("S4: iFR for " + lname + "E cells 1-8");grid("on");
 subplot(2, 2, 2);plot(t, x(:, pool1));title('V(t)');
-subplot(2, 2, 3);plot(t, ifr2);title('iFR for midE cells 9-16');
+subplot(2, 2, 3);plot(t, ifr2);title("iFR for " + lname + "E cells 9-16");grid("on");
 subplot(2, 2, 4);plot(t, x(:, pool2));title('V(t)');
 
 
