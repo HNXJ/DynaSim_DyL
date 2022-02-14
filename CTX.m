@@ -4,9 +4,9 @@ clear;clc;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 16;     % # of E cells per layer
+Ne = 12;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
-Nio = 8; % # of Input cells
+Nio = 6; % # of Input cells
 k = 0.7; % Randomness of initial weights
 
 % Connectivity matrices
