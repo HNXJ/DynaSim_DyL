@@ -169,7 +169,7 @@ disp('init done.');
 % m = DynaModel(s);
 disp('done.');
 
-%% Trials' training script script
+%% Trial: training script
 
 clc;
 
