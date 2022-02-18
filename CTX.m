@@ -191,8 +191,8 @@ tspan = [0 500]; % [beg, end] (ms)
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
 
-vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [0]; 'A', 'onset_poisson', [200]; 'A', 'offset_poisson', [300];
-       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e7];'B','AC_poisson', [0]; 'B', 'onset_poisson', [300]; 'B', 'offset_poisson', [400]};
+vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [0]; 'A', 'onset_poisson', [200 300]; 'A', 'offset_poisson', [300];
+       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e7];'B','AC_poisson', [0]; 'B', 'onset_poisson', [300 400]; 'B', 'offset_poisson', [400]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
@@ -224,5 +224,10 @@ subplot(2, 2, 1);plot(t, ifr1);title("S4: iFR for " + lname + "E cells 1-8");gri
 subplot(2, 2, 2);plot(t, x(:, pool1));title('V(t)');
 subplot(2, 2, 3);plot(t, ifr2);title("iFR for " + lname + "E cells 9-16");grid("on");
 subplot(2, 2, 4);plot(t, x(:, pool2));title('V(t)');
+
+%%
+
+clc;
+plot_rasters(data(1));
 
 %%
