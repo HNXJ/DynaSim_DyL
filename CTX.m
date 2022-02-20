@@ -190,19 +190,19 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx2
 c = length(s.connections)+1;
 s.connections(c).direction = 'midE->supE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KmidEsupE};
 
 % midI -> deepE
 c = length(s.connections)+1;
 s.connections(c).direction = 'midI->deepE';
 s.connections(c).mechanism_list={'iGABActx'};
-s.connections(c).parameters={'gGABAa',gGABAa_ffie,'tauGABA',tauGABA_beta,'netcon',Kffie};
+s.connections(c).parameters={'gGABAa',gGABAa_ffie,'tauGABA',tauGABA_beta,'netcon',KmidIdeepE};
 
 % supE -> deepE
 c = length(s.connections)+1;
 s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupEdeepE};
 
 % Outputs: deepE [1-6] as O1
 % deepE [7-12] as O2
@@ -222,6 +222,11 @@ vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson'
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Done.\n");
+
+%% Get outputs
+
+clc;
+x = data.deepE_V;
 
 %% Plots results
 
