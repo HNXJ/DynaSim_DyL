@@ -39,7 +39,10 @@ KmidEdeepE(1:3, 1:6) = 0.1*rand(3, 6) + 0.9;
 KmidEdeepE(4:6, 7:12) = 0.1*rand(3, 6) + 0.9;
 
 KsupEdeepE = Kee;
+
 KmidIdeepE = Kie;
+KmidIdeepE(1, 7:12) = 0.1*rand(1, 6) + 0.9;
+KmidIdeepE(2, 7:12) = 0.1*rand(1, 6) + 0.9;
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
@@ -157,6 +160,8 @@ s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
 
 %% connect the layers and inputs
 
+fprintf("Connecting separate layers and inputs...\n");
+
 % Input SA -> midE [1-3]
 tempconn = zeros(Nio, Ne);
 Aconn = tempconn;
@@ -200,6 +205,12 @@ s.connections(c).direction = 'midE->supE';
 s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KmidEsupE};
 
+% midE -> deepE
+c = length(s.connections)+1;
+s.connections(c).direction = 'midE->deepE';
+s.connections(c).mechanism_list={'iAMPActx'};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KmidEdeepE};
+
 % midI -> deepE
 c = length(s.connections)+1;
 s.connections(c).direction = 'midI->deepE';
@@ -217,6 +228,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupE
 
 %% Simulate
 
+fprintf("Running simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 500]; % [beg, end] (ms)
 
@@ -226,15 +238,34 @@ tspan = [0 500]; % [beg, end] (ms)
 vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 400]; 'SA', 'offset_poisson', [400];
        'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e7];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 400]; 'SB', 'offset_poisson', [400];
        'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [400];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [300]; 'Cx2', 'offset_poisson', [400]};
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [400]; 'Cx2', 'offset_poisson', [400]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
-fprintf("Done.\n");
+fprintf("Simulation done.\n");
 
-%% Get outputs
+%% Extract outputs
 
 clc;
-x = data.deepE_V;
+pool1 = 1:6;
+pool2 = 7:12;
+
+figure();
+
+for i = 1:4
+    t = data(i).time;
+    x = data(i).deepE_V;
+    raster = computeRaster(t, x);
+
+    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
+    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
+    
+%     subplot(2, 2, i);
+    plot(t, O1-O2);hold("on");
+
+end
+
+grid("on");
+legend("A&B", "A", "B", "No stimulus");
 
 %% Plots results
 
