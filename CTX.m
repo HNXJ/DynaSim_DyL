@@ -9,28 +9,35 @@ fprintf("Initialization...\n");
 Ne = 12;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
 Nio = 6; % # of Input cells
-k = 0.75; % Randomness of initial weights
+k1 = 0.5; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.1; % Min connectivity weight
 
 % Connectivity matrices
 
 % E->I
-Kei = k*rand(Ne, Ni) + (1-k); % all-to-all, connectivity from E cells to I cells; mid, sup, deep
+Kei = k1*rand(Ne, Ni) + k2; % all-to-all, connectivity from E cells to I cells; mid, sup, deep
 % I->E
-Kie = k*rand(Ni, Ne) + (1-k); % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+Kie = k1*rand(Ni, Ne) + k2; % all-to-all, connectivity from I cells to E cells; mid, sup, deep
 
 % E->E
-Kee = k*rand(Ne, Ne) + (1-k); % recurrent E-to-E: mid, sup, deep
-Kii = k*rand(Ni, Ni) + (1-k); % recurrent I-to-I: mid, sup, deep
-Kffee = k*rand(Ne, Ne) + (1-k); % feedforward E-to-E: mid->sup, sup->deep
-Kffie = k*rand(Ni, Ne) + (1-k); % feedforward I-to-E: mid->deep
+Kee = k1*rand(Ne, Ne) + k2; % recurrent E-to-E: mid, sup, deep
+Kii = k1*rand(Ni, Ni) + k2; % recurrent I-to-I: mid, sup, deep
+Kffee = k1*rand(Ne, Ne) + k2; % feedforward E-to-E: mid->sup, sup->deep
+Kffie = k1*rand(Ni, Ne) + k2; % feedforward I-to-E: mid->deep
 
 kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
 KmidEmidI = Kei;
-% KmidEmidI() = ;
+KmidEmidI(1:3, 4:6) = 0.1*rand(3, 3) + 0.9;
+KmidEmidI(4:6, 1:3) = 0.1*rand(3, 3) + 0.9;
+
 KmidEsupE = Kee;
+
 KmidEdeepE = Kee;
+KmidEdeepE(1:3, 1:6) = 0.1*rand(3, 6) + 0.9;
+KmidEdeepE(4:6, 7:12) = 0.1*rand(3, 6) + 0.9;
+
 KsupEdeepE = Kee;
 KmidIdeepE = Kie;
 
@@ -149,6 +156,7 @@ deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
 
 %% connect the layers and inputs
+
 % Input SA -> midE [1-3]
 tempconn = zeros(Nio, Ne);
 Aconn = tempconn;
