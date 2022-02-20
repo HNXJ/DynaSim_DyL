@@ -7,7 +7,7 @@ fprintf("Initialization...\n");
 Ne = 12;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
 Nio = 6; % # of Input cells
-k = 0.75; % Randomness of initial weights
+k = 0.7; % Randomness of initial weights
 
 % Connectivity matrices
 
@@ -129,8 +129,8 @@ IOping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
 deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
-stimuli = dsApplyModifications(IOping,{'E','name','SA'; 'I','name','SB'}); % I/O layer 
-contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/O layer 
+stimuli = dsApplyModifications(IOping,{'E','name','A'; 'I','name','B'}); % I/O layer 
+contex = dsApplyModifications(IOping,{'E','name','C1'; 'I','name','C2'}); % I/O layer 
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
@@ -151,42 +151,21 @@ deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
 
 % connect the layers
-% Input SA -> midE [1-3]
-tempconn = zeros(Nio, Ne);
-Aconn = tempconn;
-Aconn(:, 1:3) =  1;
+% InA -> midE [1-3]
+Aconn = [ones(Nio, Ne/2), zeros(Nio, Ne/2)];
 
-c = length(s.connections) + 1;
-s.connections(c).direction = 'SA->midE';
+c = length(s.connections)+1;
+s.connections(c).direction = 'A->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aconn};
 
-% Input SB -> midE [4-6]
-Bconn = tempconn;
-Bconn(:, 4:6) =  1;
+% InB -> midE [4-6]
+Bconn = [zeros(Nio, Ne/2), ones(Nio, Ne/2)];
 
 c = length(s.connections)+1;
-s.connections(c).direction = 'SB->midE';
+s.connections(c).direction = 'B->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bconn};
-
-% Contex Cx1 -> midE [7-9]
-Cx1conn = tempconn;
-Cx1conn(:, 7:9) =  1;
-
-c = length(s.connections)+1;
-s.connections(c).direction = 'Cx1->midE';
-s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx1conn};
-
-% Contex Cx2 -> midE [10-12]
-Cx2conn = tempconn;
-Cx2conn(:, 10:12) =  1;
-
-c = length(s.connections)+1;
-s.connections(c).direction = 'Cx2->midE';
-s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx2conn};
 
 % midE -> supE
 c = length(s.connections)+1;
