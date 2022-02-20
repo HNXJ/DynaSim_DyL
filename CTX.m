@@ -24,6 +24,8 @@ Kffie = k*rand(Ni, Ne) + (1-k); % feedforward I-to-E: mid->deep
 
 kzio = zeros(Nio, Nio);
 
+% Manual weight adjustment
+
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
 tauGABA_beta = 20; % ms, decay time constant of inhibition for beta (25Hz)
