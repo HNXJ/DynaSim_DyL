@@ -126,11 +126,11 @@ IOping.connections(4).mechanism_list = {'iGABActx'};
 IOping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'netcon',kzio};
 
 % create independent layers
-sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
-mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
-deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
-stimuli = dsApplyModifications(IOping,{'E','name','SA'; 'I','name','SB'}); % I/O layer 
-contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/O layer 
+sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer (~gamma)
+mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer (~gamma)
+deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer (~beta)
+stimuli = dsApplyModifications(IOping,{'E','name','SA'; 'I','name','SB'}); % I/O layer (stimuli)
+contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/O layer (contex)
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
@@ -213,8 +213,10 @@ tspan = [0 500]; % [beg, end] (ms)
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
 
-vary = {'A','g_poisson',[g_poisson]; 'A','DC_poisson', [1e7];'A','AC_poisson', [0]; 'A', 'onset_poisson', [200 300]; 'A', 'offset_poisson', [300];
-       'B','g_poisson',[g_poisson]; 'B','DC_poisson', [1e7];'B','AC_poisson', [0]; 'B', 'onset_poisson', [300 400]; 'B', 'offset_poisson', [400]};
+vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 400]; 'SA', 'offset_poisson', [400];
+       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e7];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 400]; 'SB', 'offset_poisson', [400];
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [400];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [300]; 'Cx2', 'offset_poisson', [400]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 
@@ -228,12 +230,12 @@ dsPlot(data,'plot_type','raster'); % Raster
 %% iFR & comparison
 
 clc;
-pool1 = [1:8];
-pool2 = [9:16];
+pool1 = [1:6];
+pool2 = [7:12];
 
 t = data.time;
-x = data.deepE_V;
-lname = "deep";
+x = data.midE_V;
+lname = "mid";
 
 raster = computeRaster(t, x);
 
