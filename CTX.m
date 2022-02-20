@@ -129,7 +129,8 @@ IOping.connections(4).parameters = {'gGABAa',gGABAa_ii,'tauGABA',tauGABA_gamma,'
 sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer 
 mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer 
 deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer 
-io = dsApplyModifications(IOping,{'E','name','A'; 'I','name','B'}); % I/O layer 
+stimuli = dsApplyModifications(IOping,{'E','name','A'; 'I','name','B'}); % I/O layer 
+contex = dsApplyModifications(IOping,{'E','name','C1'; 'I','name','C2'}); % I/O layer 
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
@@ -147,7 +148,7 @@ deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 % io = dsApplyModifications(io,{'B->A','netcon','zeros(N_pre, N_post)'});
 
 % create full cortical specification
-s = dsCombineSpecifications(sup, mid, deep, io);
+s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
 
 % connect the layers
 % InA -> midE
