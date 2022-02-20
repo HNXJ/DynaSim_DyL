@@ -1,5 +1,7 @@
 %% 3-layer neocortical model
 
+%% Model parameters
+
 clear;clc;
 fprintf("Initialization...\n");
 
@@ -25,6 +27,12 @@ Kffie = k*rand(Ni, Ne) + (1-k); % feedforward I-to-E: mid->deep
 kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
+KmidEmidI = Kei;
+% KmidEmidI() = ;
+KmidEsupE = Kee;
+KmidEdeepE = Kee;
+KsupEdeepE = Kee;
+KmidIdeepE = Kie;
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
