@@ -144,23 +144,11 @@ contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
-% io = dsApplyModifications(io,{'A','size',1});
-% io = dsApplyModifications(io,{'B','size',1});
-
-% io = dsApplyModifications(io,{'A','Iapp',1});
-% io = dsApplyModifications(io,{'B','Iapp',1});
-% io = dsApplyModifications(io,{'A','noise',10});
-% io = dsApplyModifications(io,{'B','noise',10});
-
-% io = dsApplyModifications(io,{'A->B','netcon','zeros(N_pre, N_post)'});
-% io = dsApplyModifications(io,{'B->A','netcon','zeros(N_pre, N_post)'});
-% io = dsApplyModifications(io,{'A->B','netcon','zeros(N_pre, N_post)'});
-% io = dsApplyModifications(io,{'B->A','netcon','zeros(N_pre, N_post)'});
 
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
 
-% connect the layers
+%% connect the layers and inputs
 % Input SA -> midE [1-3]
 tempconn = zeros(Nio, Ne);
 Aconn = tempconn;
@@ -216,7 +204,11 @@ s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',Kffee};
 
-% Simulate
+% Outputs: deepE [1-6] as O1
+% deepE [7-12] as O2
+
+%% Simulate
+
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
 tspan = [0 500]; % [beg, end] (ms)
 
@@ -229,7 +221,6 @@ vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson'
        'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [300]; 'Cx2', 'offset_poisson', [400]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
-
 fprintf("Done.\n");
 
 %% Plots results
