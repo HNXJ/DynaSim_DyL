@@ -246,6 +246,7 @@ fprintf("Simulation done.\n");
 %% Extract outputs
 
 clc;
+
 pool1 = 1:6;
 pool2 = 7:12;
 
