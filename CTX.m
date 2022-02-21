@@ -29,8 +29,8 @@ kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
 KmidEmidI = Kei;
-KmidEmidI(1:3, 4:6) = 0.1*rand(3, 3) + 0.9;
-KmidEmidI(4:6, 1:3) = 0.1*rand(3, 3) + 0.9;
+% KmidEmidI(1:3, 1) = 0.1*rand(3, 1) + 0.9;
+% KmidEmidI(4:6, 2) = 0.1*rand(3, 1) + 0.9;
 
 KmidEsupE = Kee;
 
@@ -41,8 +41,8 @@ KmidEdeepE(4:6, 7:12) = 0.1*rand(3, 6) + 0.9;
 KsupEdeepE = Kee;
 
 KmidIdeepE = Kie;
-KmidIdeepE(1, 7:12) = 0.1*rand(1, 6) + 0.9;
-KmidIdeepE(2, 7:12) = 0.1*rand(1, 6) + 0.9;
+% KmidIdeepE(1, 7:12) = 0.1*rand(1, 6) + 0.9;
+% KmidIdeepE(2, 7:12) = 0.1*rand(1, 6) + 0.9;
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
