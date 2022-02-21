@@ -266,7 +266,7 @@ for i = 1:4
 end
 
 grid("on");title("iFR(O1) - iFR (O2)");
-legend("A&B", "A", "B", "No stimulus");
+legend("A&B", "only A", "only B", "No stimulus");
 fprintf("Done.\n");
 
 %% Plots results
