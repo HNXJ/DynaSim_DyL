@@ -243,7 +243,7 @@ vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson'
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");
 
-%% Extract outputs
+%% Extract outputs & compare
 
 clc;
 
@@ -265,8 +265,9 @@ for i = 1:4
 
 end
 
-grid("on");
+grid("on");title("iFR(O1) - iFR (O2)");
 legend("A&B", "A", "B", "No stimulus");
+fprintf("Done.\n");
 
 %% Plots results
 
