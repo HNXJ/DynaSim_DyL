@@ -226,7 +226,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupE
 % Outputs: deepE [1-6] as O1
 % deepE [7-12] as O2
 
-
+fprintf("Initialization done.\n");
 
 %% Simulate
 
