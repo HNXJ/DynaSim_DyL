@@ -253,7 +253,7 @@ pool1 = 1:6;
 pool2 = 7:12;
 
 figure();
-patch([300 400 400 300], [0 0 40*[1 1]], [0.8 0.8 0.8]);hold("on");
+patch([300 400 400 300], [-40 -40 +40 +40], [0.5 0.9 0.9]);hold("on");
 
 for i = 1:4
     t = data(i).time;
@@ -268,7 +268,7 @@ for i = 1:4
 
 end
 
-grid("on");title("iFR(O1) - iFR (O2)");
+grid("on");title("iFR(O1) - iFR (O2)");xlabel("time (ms)");ylabel("iFR difference");
 legend("Target interval", "A&B", "only A", "only B", "No stimulus");
 
 fprintf("Done.\n");
