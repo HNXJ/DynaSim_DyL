@@ -158,7 +158,7 @@ deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
 
-%% connect the layers and inputs
+% connect the layers and inputs
 
 fprintf("Connecting separate layers and inputs...\n");
 
@@ -226,6 +226,8 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupE
 % Outputs: deepE [1-6] as O1
 % deepE [7-12] as O2
 
+
+
 %% Simulate
 
 fprintf("Running simulation ...\n");
@@ -251,6 +253,7 @@ pool1 = 1:6;
 pool2 = 7:12;
 
 figure();
+patch([300 400 400 300], [0 0 40*[1 1]], [0.8 0.8 0.8]);hold("on");
 
 for i = 1:4
     t = data(i).time;
@@ -261,12 +264,12 @@ for i = 1:4
     O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
     
 %     subplot(2, 2, i);
-    plot(t, O1-O2);hold("on");
+    plot(t, O1-O2, 'o');hold("on");
 
 end
 
 grid("on");title("iFR(O1) - iFR (O2)");
-legend("A&B", "only A", "only B", "No stimulus");
+legend("Target interval", "A&B", "only A", "only B", "No stimulus");
 
 fprintf("Done.\n");
 
