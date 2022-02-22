@@ -10,6 +10,7 @@ application.macosx
 out
 
 solve/
+Files/
 DynaSim-dev/
 UnbiasedCompetitionPNAS2019_tutorial.m
 UnbiasedCompetitionPNAS2019_tutorial.mlx
