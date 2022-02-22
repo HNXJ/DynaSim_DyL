@@ -6,9 +6,9 @@ clear;clc;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 12;     % # of E cells per layer
+Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
-Nio = 6; % # of Input cells
+Nio = 8; % # of Input cells
 k1 = 0.5; % Difference between min and max connectivity weights (uniform random)
 k2 = 0.1; % Min connectivity weight
 
