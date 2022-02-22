@@ -9,7 +9,7 @@ fprintf("Initialization...\n");
 Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
 Nio = 8; % # of Input cells
-k1 = 0.3; % Difference between min and max connectivity weights (uniform random)
+k1 = 0.5; % Difference between min and max connectivity weights (uniform random)
 k2 = 0.1; % Min connectivity weight
 
 % Connectivity matrices
@@ -29,10 +29,10 @@ kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
 KmidEmidI = Kei;
-KmidEmidI(1:4, [1, 2]) = 0.1*rand(4, 2) + 0.9; % !A -> Z1, Z2
-KmidEmidI(5:8, [3, 4]) = 0.1*rand(4, 2) + 0.9; % !B -> Z3, Z4
-KmidEmidI(9:12, [1, 4]) = 0.1*rand(4, 2) + 0.9; % !C1 -> Z1, Z4
-KmidEmidI(13:16, [2, 3]) = 0.1*rand(4, 2) + 0.9; % !C2 -> Z2, Z3
+KmidEmidI(1:4, [1, 2]) = 0.1*rand(4, 1) + 0.9; % !A -> Z1, Z2
+KmidEmidI(5:8, [3, 4]) = 0.1*rand(4, 1) + 0.9; % !B -> Z3, Z4
+KmidEmidI(9:12, [1, 4]) = 0.1*rand(4, 1) + 0.9; % !C1 -> Z1, Z4
+KmidEmidI(13:16, [2, 3]) = 0.1*rand(4, 1) + 0.9; % !C2 -> Z2, Z3
 
 KmidEsupE = Kee;
 KmidEsupE(1:4, [1:4, 9:12]) = 0.1*rand(4, 8) + 0.9; % A -> X1, Y1
@@ -41,8 +41,8 @@ KmidEsupE(9:12, 1:8) = 0.1*rand(4, 8) + 0.9; % C1 -> X1, X2
 KmidEsupE(13:16, 9:16) = 0.1*rand(4, 8) + 0.9; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee;
-% KmidEdeepE(1:4, 1:8) = 0.1*rand(4, 8) + 0.9; % A -> O1
-% KmidEdeepE(5:8, 9:16) = 0.1*rand(4, 8) + 0.9; % B -> O2
+KmidEdeepE(1:4, 1:8) = 0.1*rand(4, 8) + 0.9; % A -> O1
+KmidEdeepE(5:8, 9:16) = 0.1*rand(4, 8) + 0.9; % B -> O2
 
 KsupEdeepE = Kee;
 KsupEdeepE(1:4, 1:8) = 0.1*rand(4, 8) + 0.9; % X1 -> O1
@@ -52,9 +52,9 @@ KsupEdeepE(13:16, 1:8) = 0.1*rand(4, 8) + 0.9; % Y2 -> O1
 
 KmidIdeepE = Kie;
 KmidIdeepE(1, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C1) -> O2 
-KmidIdeepE(2, 1:8) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
-KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !(B & C2) -> O2
-KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
+KmidIdeepE(2, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
+KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !() -> O1
+KmidIdeepE(4, 9:16) = 0.1*rand(1, 8) + 0.9;
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
