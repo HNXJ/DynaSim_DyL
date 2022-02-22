@@ -97,14 +97,14 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp',5,'noise', 60, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp',5,'noise', 36, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
 ping.populations(2).mechanism_list = cell_type;
-ping.populations(2).parameters = {'Iapp',0,'noise', 16, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(2).parameters = {'Iapp',0,'noise', 12, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
@@ -131,14 +131,14 @@ IOping.populations(1).name = 'E';
 IOping.populations(1).size = Nio;
 IOping.populations(1).equations = eqns;
 IOping.populations(1).mechanism_list = cell_type;
-IOping.populations(1).parameters = {'Iapp',1,'noise', 10, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+IOping.populations(1).parameters = {'Iapp',1,'noise', 2, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 IOping.populations(2).name = 'I';
 IOping.populations(2).size = Nio;
 IOping.populations(2).equations = eqns;
 IOping.populations(2).mechanism_list = cell_type;
-IOping.populations(2).parameters = {'Iapp',1,'noise', 10, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+IOping.populations(2).parameters = {'Iapp',1,'noise', 2, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % E/I connectivity
 IOping.connections(1).direction = 'E->I';
@@ -240,7 +240,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupE
 
 fprintf("Initialization done.\n");
 
-%% Simulate
+% %% Simulate
 
 fprintf("Running simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
@@ -261,13 +261,14 @@ fprintf("Simulation done.\n");
 
 clc;
 
+fprintf("Saving progress ...\n");
 dsfname = "Files/dataT.mat";
 
 try
    
-    dataset = load(dsfname);
-    n = size(dataset);
-    
+    load(dsfname);
+    n = max(size(dataset));
+
 catch
     
     dataset = {};
@@ -275,29 +276,46 @@ catch
     
 end
 
-dataset(n+1).data = data;
-save(dsfname, dataset);
+x = zeros([4, size(data(1).deepE_V)]);
+for i = 1:4
+    x(i, :, :) = data(i).deepE_V;
+end
+
+dataset(n+1).x = x;
+save(dsfname, 'dataset');
+fprintf("Done.\n");
 
 %% Extract outputs & compare
 
 clc;
 
-pool1 = 1:6;
-pool2 = 7:12;
+pool1 = 1:8;
+pool2 = 9:16;
 
 figure();
 patch([300 400 400 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
+x = dataset(1).x;
+n = size(dataset, 2);
+
+for i = 2:n
+   
+    x = x + dataset(i).x;
+    
+end
+
+x = x / n;
 
 for i = 1:4
     t = data(i).time;
     x = data(i).deepE_V;
     raster = computeRaster(t, x);
+%     raster = computeRaster(t, squeeze(x(i, :, :)));
 
     O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
     O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
     
 %     subplot(2, 2, i);
-    plot(t, O1-O2, 'o');hold("on");
+    plot(t, O1, 'o');hold("on");
 
 end
 
@@ -318,7 +336,7 @@ pool1 = [1:6];
 pool2 = [7:12];
 
 t = data.time;
-x = data.midE_V;
+x = data(2).deepE_V;
 lname = "mid";
 
 raster = computeRaster(t, x);
