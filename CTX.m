@@ -97,7 +97,7 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp',5,'noise', 36, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp',5,'noise', 48, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
@@ -177,7 +177,7 @@ fprintf("Connecting separate layers and inputs...\n");
 % Input SA -> midE [1-3]
 tempconn = zeros(Nio, Ne);
 Aconn = tempconn;
-Aconn(:, 1:3) =  1;
+Aconn(:, 1:4) =  1;
 
 c = length(s.connections) + 1;
 s.connections(c).direction = 'SA->midE';
@@ -186,7 +186,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aco
 
 % Input SB -> midE [4-6]
 Bconn = tempconn;
-Bconn(:, 4:6) =  1;
+Bconn(:, 5:8) =  1;
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'SB->midE';
@@ -195,7 +195,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bco
 
 % Contex Cx1 -> midE [7-9]
 Cx1conn = tempconn;
-Cx1conn(:, 7:9) =  1;
+Cx1conn(:, 9:12) =  1;
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'Cx1->midE';
@@ -204,7 +204,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx1
 
 % Contex Cx2 -> midE [10-12]
 Cx2conn = tempconn;
-Cx2conn(:, 10:12) =  1;
+Cx2conn(:, 13:16) =  1;
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'Cx2->midE';
@@ -235,8 +235,8 @@ s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPActx'};
 s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupEdeepE};
 
-% Outputs: deepE [1-6] as O1
-% deepE [7-12] as O2
+% Outputs: deepE [1-8] as O1
+% deepE [9-16] as O2
 
 fprintf("Initialization done.\n");
 
@@ -307,15 +307,15 @@ x = x / n;
 
 for i = 1:4
     t = data(i).time;
-    x = data(i).deepE_V;
-    raster = computeRaster(t, x);
-%     raster = computeRaster(t, squeeze(x(i, :, :)));
+%     x = data(i).deepE_V;
+%     raster = computeRaster(t, x);
+    raster = computeRaster(t, squeeze(x(i, :, :)));
 
-    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
-    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
+    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 25, 1, 1);
+    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 25, 1, 1);
     
 %     subplot(2, 2, i);
-    plot(t, O1, 'o');hold("on");
+    plot(t, O1-O2, 'o');hold("on");
 
 end
 
