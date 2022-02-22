@@ -58,7 +58,7 @@ KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
-tauGABA_beta = 20; % ms, decay time constant of inhibition for beta (25Hz)
+tauGABA_beta = 24; % ms, decay time constant of inhibition for beta (25Hz)
 tauAMPA = 3; % ms, decay time constant of fast excitation (AMPA)
 
 % Maximal synaptic strengths
@@ -321,7 +321,6 @@ end
 
 grid("on");title("iFR(O1) - iFR (O2)");xlabel("time (ms)");ylabel("iFR difference");
 legend("Target interval", "A&B", "only A", "only B", "No stimulus");
-
 fprintf("Done.\n");
 
 %% Plots results
