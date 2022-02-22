@@ -257,6 +257,27 @@ vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson'
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");
 
+%% 
+
+clc;
+
+dsfname = "Files/dataT.mat";
+
+try
+   
+    dataset = load(dsfname);
+    n = size(dataset);
+    
+catch
+    
+    dataset = {};
+    n = 0;
+    
+end
+
+dataset(n+1).data = data;
+save(dsfname, dataset);
+
 %% Extract outputs & compare
 
 clc;
