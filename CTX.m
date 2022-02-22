@@ -97,14 +97,14 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp',5,'noise', 48, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp',5,'noise', 24, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
 ping.populations(2).mechanism_list = cell_type;
-ping.populations(2).parameters = {'Iapp',0,'noise', 12, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(2).parameters = {'Iapp',0,'noise', 8, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
