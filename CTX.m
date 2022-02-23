@@ -51,10 +51,10 @@ KsupEdeepE(9:12, 9:16) = 0.1*rand(4, 8) + 0.9; % Y1 -> O2
 KsupEdeepE(13:16, 1:8) = 0.1*rand(4, 8) + 0.9; % Y2 -> O1
 
 KmidIdeepE = Kie;
-% KmidIdeepE(1, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C1) -> O2 
-% KmidIdeepE(2, 1:8) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
-% KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !(B & C2) -> O2
-% KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
+KmidIdeepE(1, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C1) -> O2 
+KmidIdeepE(2, 1:8) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
+KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !(B & C2) -> O2
+KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
@@ -245,7 +245,7 @@ fprintf("Initialization done.\n");
 
 fprintf("Running simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
-tspan = [0 500]; % [beg, end] (ms)
+tspan = [0 750]; % [beg, end] (ms)
 
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
@@ -297,23 +297,21 @@ figure();
 patch([300 400 400 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
 % x = dataset(1).x;
 % n = size(dataset, 2);
-% 
 % for i = 2:n
 %    
 %     x = x + dataset(i).x;
 %     
 % end
-% 
 % x = x / n;
 
 for i = 1:4
     t = data(i).time;
-    x = data(i).deepE_V;
+%     x = data(i).deepE_V;
     raster = computeRaster(t, x);
 %     raster = computeRaster(t, squeeze(x(i, :, :)));
 
-    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 25, 1, 1);
-    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 25, 1, 1);
+    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 71, 1, 1);
+    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 71, 1, 1);
     
 %     subplot(2, 2, i);
     plot(t, O1-O2, 'o');hold("on");
@@ -332,8 +330,8 @@ dsPlot(data,'plot_type','raster'); % Raster
 %% iFR & comparison
 
 clc;
-pool1 = [1:6];
-pool2 = [7:12];
+pool1 = [1:8];
+pool2 = [9:16];
 
 t = data.time;
 x = data(2).deepE_V;
