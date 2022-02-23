@@ -60,6 +60,7 @@ KmidIdeepE = Kie;
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
 tauGABA_beta = 24; % ms, decay time constant of inhibition for beta (25Hz)
 tauAMPA = 3; % ms, decay time constant of fast excitation (AMPA)
+tauAMPA_beta = 24;
 
 % Maximal synaptic strengths
 gAMPA_ei = .2; % E->I within layer
