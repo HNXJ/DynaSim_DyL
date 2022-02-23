@@ -9,8 +9,8 @@ fprintf("Initialization...\n");
 Ne = 16;     % # of E cells per layer
 Ni = Ne/4;  % # of I cells per layer
 Nio = 8; % # of Input cells
-k1 = 0.3; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.1; % Min connectivity weight
+k1 = 0.2; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.6; % Min connectivity weight
 
 % Connectivity matrices
 
@@ -222,7 +222,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KmidE
 c = length(s.connections)+1;
 s.connections(c).direction = 'midE->deepE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KmidEdeepE};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA_beta,'netcon',KmidEdeepE};
 
 % midI -> deepE
 c = length(s.connections)+1;
@@ -234,7 +234,7 @@ s.connections(c).parameters={'gGABAa',gGABAa_ffie,'tauGABA',tauGABA_beta,'netcon
 c = length(s.connections)+1;
 s.connections(c).direction = 'supE->deepE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupEdeepE};
+s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA_beta,'netcon',KsupEdeepE};
 
 % Outputs: deepE [1-8] as O1
 % deepE [9-16] as O2
