@@ -29,10 +29,10 @@ kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
 KmidEmidI = Kei;
-KmidEmidI(1:4, [1, 2]) = 0.1*rand(4, 2) + 0.9; % !A -> Z1, Z2
-KmidEmidI(5:8, [3, 4]) = 0.1*rand(4, 2) + 0.9; % !B -> Z3, Z4
-KmidEmidI(9:12, [1, 4]) = 0.1*rand(4, 2) + 0.9; % !C1 -> Z1, Z4
-KmidEmidI(13:16, [2, 3]) = 0.1*rand(4, 2) + 0.9; % !C2 -> Z2, Z3
+% KmidEmidI(1:4, [1, 2]) = 0.1*rand(4, 2) + 0.9; % !A -> Z1, Z2
+% KmidEmidI(5:8, [3, 4]) = 0.1*rand(4, 2) + 0.9; % !B -> Z3, Z4
+% KmidEmidI(9:12, [1, 4]) = 0.1*rand(4, 2) + 0.9; % !C1 -> Z1, Z4
+% KmidEmidI(13:16, [2, 3]) = 0.1*rand(4, 2) + 0.9; % !C2 -> Z2, Z3
 
 KmidEsupE = Kee;
 KmidEsupE(1:4, [1:4, 9:12]) = 0.1*rand(4, 8) + 0.9; % A -> X1, Y1
@@ -51,10 +51,10 @@ KsupEdeepE(9:12, 9:16) = 0.1*rand(4, 8) + 0.9; % Y1 -> O2
 KsupEdeepE(13:16, 1:8) = 0.1*rand(4, 8) + 0.9; % Y2 -> O1
 
 KmidIdeepE = Kie;
-KmidIdeepE(1, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C1) -> O2 
-KmidIdeepE(2, 1:8) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
-KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !(B & C2) -> O2
-KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
+% KmidIdeepE(1, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C1) -> O2 
+% KmidIdeepE(2, 1:8) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
+% KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !(B & C2) -> O2
+% KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
@@ -294,22 +294,22 @@ pool2 = 9:16;
 
 figure();
 patch([300 400 400 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
-x = dataset(1).x;
-n = size(dataset, 2);
-
-for i = 2:n
-   
-    x = x + dataset(i).x;
-    
-end
-
-x = x / n;
+% x = dataset(1).x;
+% n = size(dataset, 2);
+% 
+% for i = 2:n
+%    
+%     x = x + dataset(i).x;
+%     
+% end
+% 
+% x = x / n;
 
 for i = 1:4
     t = data(i).time;
-%     x = data(i).deepE_V;
-%     raster = computeRaster(t, x);
-    raster = computeRaster(t, squeeze(x(i, :, :)));
+    x = data(i).deepE_V;
+    raster = computeRaster(t, x);
+%     raster = computeRaster(t, squeeze(x(i, :, :)));
 
     O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 25, 1, 1);
     O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 25, 1, 1);
