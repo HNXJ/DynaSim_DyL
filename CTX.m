@@ -259,11 +259,6 @@ fprintf("Simulation done.\n");
 
 %% 
 
-clc;
-
-fprintf("Saving progress ...\n");
-dsfname = "Files/dataT.mat";
-
 try
    
     load(dsfname);
@@ -276,14 +271,8 @@ catch
     
 end
 
-x = zeros([4, size(data(1).deepE_V)]);
-for i = 1:4
-    x(i, :, :) = data(i).deepE_V;
-end
-
-dataset(n+1).x = x;
-save(dsfname, 'dataset');
-fprintf("Done.\n");
+dsfname = "Files/dataT.mat";
+savetrial(dsfname, dataset, n);
 
 %% Extract outputs & compare
 
