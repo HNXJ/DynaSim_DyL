@@ -12,8 +12,8 @@ Nio = 10; % # of Input cells
 
 k1 = 0.15; % Difference between min and max connectivity weights (uniform random)
 k2 = 0.15; % Min connectivity weight
-k3 = 0; %
-k4 = 0; % 
+k3 = 0.25; %
+k4 = 0.75; % 
 
 % Connectivity matrices
 
@@ -44,8 +44,8 @@ KmidEsupE = Kee;
 % KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee;
-KmidEdeepE(1:5, 1:10) = 0.25*rand(5, 10) + 0.75; % A -> O1
-KmidEdeepE(6:10, 11:20) = 0.25*rand(5, 10) + 0.75; % B -> O2
+KmidEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % A -> O1
+KmidEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % B -> O2
 
 KsupEdeepE = Kee;
 % KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
@@ -254,8 +254,8 @@ tspan = [0 750]; % [beg, end] (ms)
 
 vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson', [1e3]; 'SA', 'onset_poisson', [300 500]; 'SA', 'offset_poisson', [500];
        'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e7];'SB','AC_poisson', [1e3]; 'SB', 'onset_poisson', [300 500]; 'SB', 'offset_poisson', [500];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [1e3]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [500];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [1e3]; 'Cx2', 'onset_poisson', [400]; 'Cx2', 'offset_poisson', [400]};
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [1e3]; 'Cx1', 'onset_poisson', [500]; 'Cx1', 'offset_poisson', [500];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [1e3]; 'Cx2', 'onset_poisson', [500]; 'Cx2', 'offset_poisson', [500]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");
