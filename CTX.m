@@ -9,8 +9,11 @@ fprintf("Initialization...\n");
 Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
-k1 = 0.2; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.1; % Min connectivity weight
+
+k1 = 0.15; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.15; % Min connectivity weight
+k3 = 0; %
+k4 = 0; % 
 
 % Connectivity matrices
 
@@ -41,8 +44,8 @@ KmidEsupE = Kee;
 % KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee;
-KmidEdeepE(1:5, 1:10) = 0.2*rand(5, 10) + 0.6; % A -> O1
-KmidEdeepE(6:10, 11:20) = 0.2*rand(5, 10) + 0.6; % B -> O2
+KmidEdeepE(1:5, 1:10) = 0.25*rand(5, 10) + 0.75; % A -> O1
+KmidEdeepE(6:10, 11:20) = 0.25*rand(5, 10) + 0.75; % B -> O2
 
 KsupEdeepE = Kee;
 % KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
@@ -299,8 +302,8 @@ for i = 1:4
     raster = computeRaster(t, x);
 %     raster = computeRaster(t, squeeze(x(i, :, :)));
 
-    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 71, 1, 1);
-    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 71, 1, 1);
+    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 51, 10, 10);
+    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
     
 %     subplot(2, 2, i);
     plot(t, O1-O2, 'o');hold("on");
