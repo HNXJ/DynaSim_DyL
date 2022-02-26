@@ -6,8 +6,8 @@ clear;clc;
 fprintf("Initialization...\n");
 
 % Population sizes
-Ne = 16;     % # of E cells per layer
-Ni = Ne/4;  % # of I cells per layer
+Ne = 20;     % # of E cells per layer
+Ni = Ne/5;  % # of I cells per layer
 Nio = 8; % # of Input cells
 k1 = 0.2; % Difference between min and max connectivity weights (uniform random)
 k2 = 0.6; % Min connectivity weight
@@ -29,32 +29,32 @@ kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
 KmidEmidI = Kei;
-% KmidEmidI(1:4, [1, 2]) = 0.1*rand(4, 2) + 0.9; % !A -> Z1, Z2
-% KmidEmidI(5:8, [3, 4]) = 0.1*rand(4, 2) + 0.9; % !B -> Z3, Z4
-% KmidEmidI(9:12, [1, 4]) = 0.1*rand(4, 2) + 0.9; % !C1 -> Z1, Z4
-% KmidEmidI(13:16, [2, 3]) = 0.1*rand(4, 2) + 0.9; % !C2 -> Z2, Z3
+% KmidEmidI(1:5, [1, 2]) = 0.1*rand(5, 2) + 0.9; % !A -> Z1, Z2
+% KmidEmidI(6:10, [3, 4]) = 0.1*rand(5, 2) + 0.9; % !B -> Z3, Z4
+% KmidEmidI(11:15, [1, 4]) = 0.1*rand(5, 2) + 0.9; % !C1 -> Z1, Z4
+% KmidEmidI(16:20, [2, 3]) = 0.1*rand(5, 2) + 0.9; % !C2 -> Z2, Z3
 
 KmidEsupE = Kee;
-KmidEsupE(1:4, [1:4, 9:12]) = 0.1*rand(4, 8) + 0.9; % A -> X1, Y1
-KmidEsupE(5:8, [5:8, 13:16]) = 0.1*rand(4, 8) + 0.9; % B -> X2, Y2
-KmidEsupE(9:12, 1:8) = 0.1*rand(4, 8) + 0.9; % C1 -> X1, X2
-KmidEsupE(13:16, 9:16) = 0.1*rand(4, 8) + 0.9; % C2 -> Y1, Y2
+KmidEsupE(1:5, [1:5, 11:15]) = 0.1*rand(5, 10) + 0.9; % A -> X1, Y1
+KmidEsupE(6:10, [6:10, 16:20]) = 0.1*rand(5, 10) + 0.9; % B -> X2, Y2
+KmidEsupE(11:15, 1:10) = 0.1*rand(5, 10) + 0.9; % C1 -> X1, X2
+KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee;
-% KmidEdeepE(1:4, 1:8) = 0.1*rand(4, 8) + 0.9; % A -> O1
-% KmidEdeepE(5:8, 9:16) = 0.1*rand(4, 8) + 0.9; % B -> O2
+% KmidEdeepE(1:5, 1:8) = 0.1*rand(4, 8) + 0.9; % A -> O1
+% KmidEdeepE(6:10, 9:16) = 0.1*rand(4, 8) + 0.9; % B -> O2
 
 KsupEdeepE = Kee;
-KsupEdeepE(1:4, 1:8) = 0.1*rand(4, 8) + 0.9; % X1 -> O1
-KsupEdeepE(5:8, 9:16) = 0.1*rand(4, 8) + 0.9; % X2 -> O2
-KsupEdeepE(9:12, 9:16) = 0.1*rand(4, 8) + 0.9; % Y1 -> O2
-KsupEdeepE(13:16, 1:8) = 0.1*rand(4, 8) + 0.9; % Y2 -> O1
+KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
+KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
+KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
+KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
 
 KmidIdeepE = Kie;
-KmidIdeepE(1, 9:16) = 0.1*rand(1, 8) + 0.9; % !(A & C1) -> O2 
-KmidIdeepE(2, 1:8) = 0.1*rand(1, 8) + 0.9; % !(A & C2) -> O1
-KmidIdeepE(3, 9:16) = 0.1*rand(1, 8) + 0.9; % !(B & C2) -> O2
-KmidIdeepE(4, 1:8) = 0.1*rand(1, 8) + 0.9; % !(B & C1) -> O1
+KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
+KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
+KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
+KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.9; % !(B & C1) -> O1
 
 % Time constants
 tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
@@ -98,7 +98,7 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp',5,'noise', 24, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp',5,'noise', 18, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
@@ -178,7 +178,7 @@ fprintf("Connecting separate layers and inputs...\n");
 % Input SA -> midE [1-3]
 tempconn = zeros(Nio, Ne);
 Aconn = tempconn;
-Aconn(:, 1:4) =  1;
+Aconn(:, 1:5) =  1;
 
 c = length(s.connections) + 1;
 s.connections(c).direction = 'SA->midE';
@@ -187,8 +187,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aco
 
 % Input SB -> midE [4-6]
 Bconn = tempconn;
-Bconn(:, 5:8) =  1;
-
+Bconn(:, 6:10) =  1;
 c = length(s.connections)+1;
 s.connections(c).direction = 'SB->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
@@ -196,7 +195,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bco
 
 % Contex Cx1 -> midE [7-9]
 Cx1conn = tempconn;
-Cx1conn(:, 9:12) =  1;
+Cx1conn(:, 11:15) =  1;
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'Cx1->midE';
@@ -205,7 +204,7 @@ s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx1
 
 % Contex Cx2 -> midE [10-12]
 Cx2conn = tempconn;
-Cx2conn(:, 13:16) =  1;
+Cx2conn(:, 16:20) =  1;
 
 c = length(s.connections)+1;
 s.connections(c).direction = 'Cx2->midE';
