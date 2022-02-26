@@ -98,7 +98,7 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp',5,'noise', 18, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp', 3,'noise', 18, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
@@ -293,7 +293,7 @@ pool1 = 1:8;
 pool2 = 9:16;
 
 figure();
-patch([300 400 400 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
+patch([300 500 500 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
 
 % x = dataset(1).x;
 % n = size(dataset, 2);
