@@ -41,8 +41,8 @@ KmidEsupE = Kee;
 % KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee;
-KmidEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % A -> O1
-KmidEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % B -> O2
+KmidEdeepE(1:5, 1:10) = 0.2*rand(5, 10) + 0.6; % A -> O1
+KmidEdeepE(6:10, 11:20) = 0.2*rand(5, 10) + 0.6; % B -> O2
 
 KsupEdeepE = Kee;
 % KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
@@ -98,14 +98,14 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp', 3,'noise', 18, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp', 3,'noise', 12, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
 ping.populations(2).mechanism_list = cell_type;
-ping.populations(2).parameters = {'Iapp',0,'noise', 8, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(2).parameters = {'Iapp',0,'noise', 4, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
