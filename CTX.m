@@ -8,9 +8,9 @@ fprintf("Initialization...\n");
 % Population sizes
 Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
-Nio = 8; % # of Input cells
+Nio = 10; % # of Input cells
 k1 = 0.2; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.6; % Min connectivity weight
+k2 = 0.1; % Min connectivity weight
 
 % Connectivity matrices
 
@@ -35,26 +35,26 @@ KmidEmidI = Kei;
 % KmidEmidI(16:20, [2, 3]) = 0.1*rand(5, 2) + 0.9; % !C2 -> Z2, Z3
 
 KmidEsupE = Kee;
-KmidEsupE(1:5, [1:5, 11:15]) = 0.1*rand(5, 10) + 0.9; % A -> X1, Y1
-KmidEsupE(6:10, [6:10, 16:20]) = 0.1*rand(5, 10) + 0.9; % B -> X2, Y2
-KmidEsupE(11:15, 1:10) = 0.1*rand(5, 10) + 0.9; % C1 -> X1, X2
-KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
+% KmidEsupE(1:5, [1:5, 11:15]) = 0.1*rand(5, 10) + 0.9; % A -> X1, Y1
+% KmidEsupE(6:10, [6:10, 16:20]) = 0.1*rand(5, 10) + 0.9; % B -> X2, Y2
+% KmidEsupE(11:15, 1:10) = 0.1*rand(5, 10) + 0.9; % C1 -> X1, X2
+% KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee;
-% KmidEdeepE(1:5, 1:8) = 0.1*rand(4, 8) + 0.9; % A -> O1
-% KmidEdeepE(6:10, 9:16) = 0.1*rand(4, 8) + 0.9; % B -> O2
+KmidEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % A -> O1
+KmidEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % B -> O2
 
 KsupEdeepE = Kee;
-KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
-KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
-KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
-KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
+% KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
+% KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
+% KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
+% KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
 
 KmidIdeepE = Kie;
-KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
-KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
-KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
-KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.9; % !(B & C1) -> O1
+% KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
+% KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
+% KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
+% KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.9; % !(B & C1) -> O1
 
 % Time constants
 tauGABA_gamma = 2.4; % ms, decay time constant of inhibition for gamma (50Hz)
@@ -249,10 +249,10 @@ tspan = [0 750]; % [beg, end] (ms)
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
 
-vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 500]; 'SA', 'offset_poisson', [500];
-       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e7];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 500]; 'SB', 'offset_poisson', [500];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [500];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [400]; 'Cx2', 'offset_poisson', [400]};
+vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson', [1e3]; 'SA', 'onset_poisson', [300 500]; 'SA', 'offset_poisson', [500];
+       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e7];'SB','AC_poisson', [1e3]; 'SB', 'onset_poisson', [300 500]; 'SB', 'offset_poisson', [500];
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [1e3]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [500];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [1e3]; 'Cx2', 'onset_poisson', [400]; 'Cx2', 'offset_poisson', [400]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");
@@ -272,14 +272,14 @@ catch
 end
 
 dsfname = "Files/dataT.mat";
-savetrial(dsfname, dataset, n);
+savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
 
 clc;
 
-pool1 = 1:8;
-pool2 = 9:16;
+pool1 = 1:10;
+pool2 = 11:20;
 
 figure();
 patch([300 500 500 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
@@ -319,8 +319,8 @@ dsPlot(data,'plot_type','raster'); % Raster
 %% iFR & comparison
 
 clc;
-pool1 = [1:8];
-pool2 = [9:16];
+pool1 = [1:10];
+pool2 = [11:16];
 
 t = data.time;
 x = data(2).deepE_V;

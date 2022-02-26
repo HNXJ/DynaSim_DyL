@@ -1,4 +1,4 @@
-function [] = savetrial(dsfname, dataset, n)
+function [] = savetrial(dsfname, dataset, n, data)
 
     clc;
     fprintf("Saving progress ...\n");
