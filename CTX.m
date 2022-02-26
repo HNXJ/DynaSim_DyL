@@ -306,7 +306,7 @@ patch([300 400 400 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
 
 for i = 1:4
     t = data(i).time;
-%     x = data(i).deepE_V;
+    x = data(i).deepE_V;
     raster = computeRaster(t, x);
 %     raster = computeRaster(t, squeeze(x(i, :, :)));
 
