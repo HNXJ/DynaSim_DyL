@@ -57,19 +57,19 @@ KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
 KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.9; % !(B & C1) -> O1
 
 % Time constants
-tauGABA_gamma = 3; % ms, decay time constant of inhibition for gamma (50Hz)
-tauGABA_beta = 24; % ms, decay time constant of inhibition for beta (25Hz)
-tauAMPA = 3; % ms, decay time constant of fast excitation (AMPA)
-tauAMPA_beta = 24;
+tauGABA_gamma = 2.4; % ms, decay time constant of inhibition for gamma (50Hz)
+tauGABA_beta = 19.2; % ms, decay time constant of inhibition for beta (25Hz)
+tauAMPA = 2.4; % ms, decay time constant of fast excitation (AMPA)
+tauAMPA_beta = 19.2;
 
 % Maximal synaptic strengths
 gAMPA_ei = .2; % E->I within layer
 gAMPA_ffee = .2; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = .1; % feedforward I->E, mid->deep
 
-gAMPA_ee = 0; % E->E within layer
+gAMPA_ee = 0.1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
-gGABAa_ii = 0; % I->I within layer
+gGABAa_ii = 0.1; % I->I within layer
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
