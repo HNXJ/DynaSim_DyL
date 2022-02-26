@@ -80,7 +80,7 @@ g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
 
-g_poisson = 1e-4;
+g_poisson = 1e-3;
 
 % cell type
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
