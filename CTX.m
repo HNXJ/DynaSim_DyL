@@ -71,6 +71,7 @@ tauAMPA_beta = 19.2;
 gAMPA_ei = .2; % E->I within layer
 gAMPA_ffee = .2; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = .1; % feedforward I->E, mid->deep
+gAMPA_in = .1;
 
 gAMPA_ee = 0.1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
@@ -189,7 +190,7 @@ Aconn(:, 1:5) =  1;
 c = length(s.connections) + 1;
 s.connections(c).direction = 'SA->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Aconn};
+s.connections(c).parameters={'gGABA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
 
 % Input SB -> midE [4-6]
 Bconn = tempconn;
@@ -197,7 +198,7 @@ Bconn(:, 6:10) =  1;
 c = length(s.connections)+1;
 s.connections(c).direction = 'SB->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Bconn};
+s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
 
 % Contex Cx1 -> midE [7-9]
 Cx1conn = tempconn;
@@ -257,8 +258,8 @@ tspan = [0 900]; % [beg, end] (ms)
 
 vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e6];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
        'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e6];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e6];'Cx1','AC_poisson', [1]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e6];'Cx2','AC_poisson', [1e3]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e8];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");  
@@ -310,7 +311,7 @@ for i = 1:4
     O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
     
 %     subplot(2, 2, i);
-    plot(t, O1, 'o');hold("on");
+    plot(t, O1 - O2, 'o');hold("on");
 
 end
 
