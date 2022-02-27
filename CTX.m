@@ -75,6 +75,7 @@ gGABAa_ffie = .1; % feedforward I->E, mid->deep
 gAMPA_ee = 0.1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
 gGABAa_ii = 0.1; % I->I within layer
+noise_rate = 1;
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
@@ -103,14 +104,14 @@ ping.populations(1).name = 'E';
 ping.populations(1).size = Ne;
 ping.populations(1).equations = eqns;
 ping.populations(1).mechanism_list = cell_type;
-ping.populations(1).parameters = {'Iapp', 3,'noise', 12, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(1).parameters = {'Iapp', 3,'noise', noise_rate*3, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % I-cells
 ping.populations(2).name = 'I';
 ping.populations(2).size = Ni;
 ping.populations(2).equations = eqns;
 ping.populations(2).mechanism_list = cell_type;
-ping.populations(2).parameters = {'Iapp',0,'noise', 4, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
+ping.populations(2).parameters = {'Iapp',0,'noise', noise_rate, 'g_poisson',g_poisson,'onset_poisson',0,'offset_poisson',0};
 
 % E/I connectivity
 ping.connections(1).direction = 'E->I';
