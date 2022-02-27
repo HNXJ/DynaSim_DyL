@@ -265,6 +265,8 @@ fprintf("Simulation done.\n");
 
 %% 
 
+dsfname = "Files/dataT.mat";
+
 try
    
     load(dsfname);
@@ -277,7 +279,7 @@ catch
     
 end
 
-dsfname = "Files/dataT.mat";
+
 savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
