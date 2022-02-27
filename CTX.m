@@ -190,7 +190,7 @@ Aconn(:, 1:5) =  1;
 c = length(s.connections) + 1;
 s.connections(c).direction = 'SA->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gGABA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
+s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
 
 % Input SB -> midE [4-6]
 Bconn = tempconn;
@@ -207,7 +207,7 @@ Cx1conn(:, 11:15) =  1;
 c = length(s.connections)+1;
 s.connections(c).direction = 'Cx1->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx1conn};
+s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Cx1conn};
 
 % Contex Cx2 -> midE [10-12]
 Cx2conn = tempconn;
@@ -216,7 +216,7 @@ Cx2conn(:, 16:20) =  1;
 c = length(s.connections)+1;
 s.connections(c).direction = 'Cx2->midE';
 s.connections(c).mechanism_list={'iAMPActx'};
-s.connections(c).parameters={'gAMPA',gAMPA_ffee*3,'tauAMPA',tauAMPA,'netcon',Cx2conn};
+s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Cx2conn};
 
 % midE -> supE
 c = length(s.connections)+1;
