@@ -310,7 +310,6 @@ for i = 1:4
     O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 51, 10, 10);
     O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
     
-%     subplot(2, 2, i);
     plot(t, O1 - O2, 'o');hold("on");
 
 end
