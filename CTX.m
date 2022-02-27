@@ -75,7 +75,7 @@ gGABAa_ffie = .1; % feedforward I->E, mid->deep
 gAMPA_ee = 0.1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
 gGABAa_ii = 0.1; % I->I within layer
-noise_rate = 1;
+noise_rate = 0;
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
@@ -250,18 +250,18 @@ fprintf("Initialization done.\n");
 
 fprintf("Running simulation ...\n");
 simulator_options = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
-tspan = [0 750]; % [beg, end] (ms)
+tspan = [0 900]; % [beg, end] (ms)
 
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
 
-vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e7];'SA','AC_poisson', [1e3]; 'SA', 'onset_poisson', [300 500]; 'SA', 'offset_poisson', [500];
-       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e7];'SB','AC_poisson', [1e3]; 'SB', 'onset_poisson', [300 500]; 'SB', 'offset_poisson', [500];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [1e3]; 'Cx1', 'onset_poisson', [500]; 'Cx1', 'offset_poisson', [500];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e7];'Cx2','AC_poisson', [1e3]; 'Cx2', 'onset_poisson', [500]; 'Cx2', 'offset_poisson', [500]};
+vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e6];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
+       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e6];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e6];'Cx1','AC_poisson', [1]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e6];'Cx2','AC_poisson', [1e3]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
-fprintf("Simulation done.\n");
+fprintf("Simulation done.\n");  
 
 %% 
 
@@ -279,7 +279,6 @@ catch
     
 end
 
-
 savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
@@ -290,7 +289,7 @@ pool1 = 1:10;
 pool2 = 11:20;
 
 figure();
-patch([300 500 500 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
+patch([300 600 600 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
 
 % x = dataset(1).x;
 % n = size(dataset, 2);
@@ -311,7 +310,7 @@ for i = 1:4
     O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
     
 %     subplot(2, 2, i);
-    plot(t, O1-O2, 'o');hold("on");
+    plot(t, O1, 'o');hold("on");
 
 end
 
