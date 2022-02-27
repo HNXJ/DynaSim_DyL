@@ -12,8 +12,8 @@ Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
 
-k1 = 0.15; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.15; % Min connectivity weight
+k1 = 0.2; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.2; % Min connectivity weight
 k3 = 0.25; %
 k4 = 0.75; % 
 
@@ -87,7 +87,7 @@ g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
 
-g_poisson = 1e-3;
+g_poisson = 5e-4;
 
 % cell type
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
@@ -256,10 +256,10 @@ tspan = [0 900]; % [beg, end] (ms)
 % vary = {'supI->supE','tauGABA',[2]; 
 %        'deepI->deepE','tauGABA',[2 20]};
 
-vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [1e6];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
-       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [1e6];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [1e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [1e8];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
+vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [3e7];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
+       'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [3e7];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [3e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [3e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");  
