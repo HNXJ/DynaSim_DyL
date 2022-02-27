@@ -1,5 +1,7 @@
 %% 3-layer neocortical model
 
+% Manually determined weights version. 
+
 %% Model parameters
 
 clear;clc;
