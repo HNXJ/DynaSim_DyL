@@ -13,10 +13,10 @@ Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
 
-k1 = 0.26; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.16; % Min connectivity weight
-k3 = 0.25; % 
-k4 = 0.75; % 
+k1 = 0.07; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.3; % Min connectivity weight
+k3 = 0.17; % 
+k4 = 0.84; % 
 
 % Connectivity matrices
 
@@ -56,7 +56,7 @@ KsupEdeepE = Kee*0.5;
 % KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
 % KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
 
-KmidIdeepE = Kie;
+KmidIdeepE = Kie*0.5;
 % KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
 % KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
 % KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
@@ -285,11 +285,10 @@ savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
 
-ift_compare_plot(data);
+ifr_compare_plot(data);
 
 %% Plots results
 
-% dsPlot(data); % Normal
 dsPlot(data,'plot_type','raster'); % Raster
 
 %%

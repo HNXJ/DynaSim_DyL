@@ -1,4 +1,3 @@
-
 function ifr_compare_plot(data)
 
 clc;
