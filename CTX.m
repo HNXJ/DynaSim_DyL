@@ -8,6 +8,7 @@ clear;clc;
 fprintf("Initialization...\n");
 
 % Population sizes
+
 Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
