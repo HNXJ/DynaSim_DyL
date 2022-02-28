@@ -289,7 +289,7 @@ ifr_compare_plot(data);
 
 %% Plots results
 
-dsPlot(data);
+% dsPlot(data);
 dsPlot(data,'plot_type','raster'); % Raster
 
 %%
