@@ -74,10 +74,10 @@ gAMPA_ffee = .2; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = .2; % feedforward I->E, mid->deep
 gAMPA_in = .2;
 
-gAMPA_ee = 0.1; % E->E within layer
+gAMPA_ee = 0.12; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
-gGABAa_ii = 0.1; % I->I within layer
-noise_rate = 0;
+gGABAa_ii = 0.12; % I->I within layer
+noise_rate = 10;
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
@@ -88,7 +88,7 @@ g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
 
-g_poisson = 1e-3;
+g_poisson = 6.4e-4;
 
 % cell type
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
@@ -265,6 +265,22 @@ vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [3e7];'SA','AC_poisson'
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");  
 
+%% Extract outputs & compare
+
+clc;
+ifr_compare_plot(data);
+
+%% Plots results
+
+clc;
+% dsPlot(data);
+dsPlot(data,'plot_type','raster'); % Raster
+
+%%
+
+clc;
+plot_rasters(data(1));
+
 %% 
 
 dsfname = "Files/dataT.mat";
@@ -282,21 +298,5 @@ catch
 end
 
 savetrial(dsfname, dataset, n, data);
-
-%% Extract outputs & compare
-
-clc;
-ifr_compare_plot(data);
-
-%% Plots results
-
-clc;
-% dsPlot(data);
-dsPlot(data,'plot_type','raster'); % Raster
-
-%%
-
-clc;
-plot_rasters(data(1));
 
 %%
