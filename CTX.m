@@ -295,6 +295,7 @@ clc;
 dsPlot(data,'plot_type','raster'); % Raster
 
 %%
+
 clc;
 plot_rasters(data(1));
 
