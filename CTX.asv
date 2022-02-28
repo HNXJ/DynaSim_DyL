@@ -50,7 +50,7 @@ KmidEdeepE = Kee;
 KmidEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % A -> O1
 KmidEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % B -> O2
 
-KsupEdeepE = Kee*0.5;
+KsupEdeepE = Kee;
 % KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
 % KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
 % KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
@@ -285,14 +285,69 @@ savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
 
-ift_compare_plot(data);
+clc;
+
+pool1 = 1:10;
+pool2 = 11:20;
+
+figure();
+patch([300 600 600 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
+
+% x = dataset(1).x;
+% n = size(dataset, 2);
+% for i = 2:n
+%    
+%     x = x + dataset(i).x;
+%     
+% end
+% x = x / n;
+
+for i = 1:4
+    t = data(i).time;
+    x = data(i).deepE_V;
+    raster = computeRaster(t, x);
+%     raster = computeRaster(t, squeeze(x(i, :, :)));
+
+    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 51, 10, 10);
+    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
+    
+    plot(t, O1 - O2, 'o');hold("on");
+
+end
+
+grid("on");title("iFR(O1) - iFR (O2)");xlabel("time (ms)");ylabel("iFR difference");
+legend("Target interval", "A&B", "only A", "only B", "No stimulus");
+fprintf("Done.\n");
 
 %% Plots results
 
 % dsPlot(data); % Normal
 dsPlot(data,'plot_type','raster'); % Raster
 
+%% iFR & comparison
+
+clc;
+pool1 = [1:10];
+pool2 = [11:16];
+
+t = data.time;
+x = data(2).deepE_V;
+lname = "mid";
+
+raster = computeRaster(t, x);
+
+ifr1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
+ifr2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
+
+figure();
+
+subplot(2, 2, 1);plot(t, ifr1);title("S4: iFR for " + lname + "E cells 1-8");grid("on");
+subplot(2, 2, 2);plot(t, x(:, pool1));title('V(t)');
+subplot(2, 2, 3);plot(t, ifr2);title("iFR for " + lname + "E cells 9-16");grid("on");
+subplot(2, 2, 4);plot(t, x(:, pool2));title('V(t)');
+
 %%
+
 clc;
 plot_rasters(data(1));
 
