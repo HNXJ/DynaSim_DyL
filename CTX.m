@@ -285,6 +285,7 @@ savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
 
+clc;
 ifr_compare_plot(data);
 
 %% Plots results
