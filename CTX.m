@@ -35,26 +35,26 @@ kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
 KmidEmidI = Kei * 0.3;
-% KmidEmidI(1:5, [1, 2]) = 0.1*rand(5, 2) + 0.9; % !A -> Z1, Z2
-% KmidEmidI(6:10, [3, 4]) = 0.1*rand(5, 2) + 0.9; % !B -> Z3, Z4
-% KmidEmidI(11:15, [1, 4]) = 0.1*rand(5, 2) + 0.9; % !C1 -> Z1, Z4
-% KmidEmidI(16:20, [2, 3]) = 0.1*rand(5, 2) + 0.9; % !C2 -> Z2, Z3
+% KmidEmidI(1:5, [1, 2]) = k3*rand(5, 2) + k4; % !A -> Z1, Z2
+% KmidEmidI(6:10, [3, 4]) = k3*rand(5, 2) + k4; % !B -> Z3, Z4
+% KmidEmidI(11:15, [1, 4]) = k3*rand(5, 2) + k4; % !C1 -> Z1, Z4
+% KmidEmidI(16:20, [2, 3]) = k3*rand(5, 2) + k4; % !C2 -> Z2, Z3
 
 KmidEsupE = Kee * 0.3;
-% KmidEsupE(1:5, [1:5, 11:15]) = 0.1*rand(5, 10) + 0.9; % A -> X1, Y1
-% KmidEsupE(6:10, [6:10, 16:20]) = 0.1*rand(5, 10) + 0.9; % B -> X2, Y2
-% KmidEsupE(11:15, 1:10) = 0.1*rand(5, 10) + 0.9; % C1 -> X1, X2
-% KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
+KmidEsupE(1:5, [1:5, 11:15]) = k3*rand(5, 10) + k4; % A -> X1, Y1
+KmidEsupE(6:10, [6:10, 16:20]) = k3*rand(5, 10) + k4; % B -> X2, Y2
+KmidEsupE(11:15, 1:10) = k3*rand(5, 10) + k4; % C1 -> X1, X2
+KmidEsupE(16:20, 11:20) = k3*rand(5, 10) + k4; % C2 -> Y1, Y2
 
 KmidEdeepE = Kee * 0.3;
-KmidEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % A -> O1
-KmidEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % B -> O2
+% KmidEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % A -> O1
+% KmidEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % B -> O2
 
 KsupEdeepE = Kee*0.3;
-% KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
-% KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
-% KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
-% KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
+KsupEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % X1 -> O1
+KsupEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % X2 -> O2
+KsupEdeepE(11:15, 11:20) = k3*rand(5, 10) + k4; % Y1 -> O2
+KsupEdeepE(16:20, 1:10) = k3*rand(5, 10) + k4; % Y2 -> O1
 
 KmidIdeepE = Kie*0.3;
 % KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
@@ -259,7 +259,7 @@ tspan = [0 900]; % [beg, end] (ms)
 
 vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [3e7];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
        'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [3e7];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [3e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [3e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [600];
        'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [3e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
