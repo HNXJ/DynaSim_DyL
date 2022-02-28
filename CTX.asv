@@ -13,10 +13,10 @@ Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
 
-k1 = 0.26; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.16; % Min connectivity weight
-k3 = 0.25; % 
-k4 = 0.75; % 
+k1 = 0.1; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.2; % Min connectivity weight
+k3 = 0.1; % 
+k4 = 0.9; % 
 
 % Connectivity matrices
 
@@ -34,13 +34,13 @@ Kffie = k1*rand(Ni, Ne) + k2; % feedforward I-to-E: mid->deep
 kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
-KmidEmidI = Kei;
+KmidEmidI = Kei * 0.3;
 % KmidEmidI(1:5, [1, 2]) = 0.1*rand(5, 2) + 0.9; % !A -> Z1, Z2
 % KmidEmidI(6:10, [3, 4]) = 0.1*rand(5, 2) + 0.9; % !B -> Z3, Z4
 % KmidEmidI(11:15, [1, 4]) = 0.1*rand(5, 2) + 0.9; % !C1 -> Z1, Z4
 % KmidEmidI(16:20, [2, 3]) = 0.1*rand(5, 2) + 0.9; % !C2 -> Z2, Z3
 
-KmidEsupE = Kee;
+KmidEsupE = Kee * 0.3;
 % KmidEsupE(1:5, [1:5, 11:15]) = 0.1*rand(5, 10) + 0.9; % A -> X1, Y1
 % KmidEsupE(6:10, [6:10, 16:20]) = 0.1*rand(5, 10) + 0.9; % B -> X2, Y2
 % KmidEsupE(11:15, 1:10) = 0.1*rand(5, 10) + 0.9; % C1 -> X1, X2
@@ -50,13 +50,13 @@ KmidEdeepE = Kee;
 KmidEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % A -> O1
 KmidEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % B -> O2
 
-KsupEdeepE = Kee;
+KsupEdeepE = Kee*0.5;
 % KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
 % KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
 % KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
 % KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
 
-KmidIdeepE = Kie;
+KmidIdeepE = Kie*0.5;
 % KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
 % KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
 % KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
@@ -285,69 +285,14 @@ savetrial(dsfname, dataset, n, data);
 
 %% Extract outputs & compare
 
-clc;
-
-pool1 = 1:10;
-pool2 = 11:20;
-
-figure();
-patch([300 600 600 300], [-20 -20 +20 +20], [0.5 0.9 0.9]);hold("on");
-
-% x = dataset(1).x;
-% n = size(dataset, 2);
-% for i = 2:n
-%    
-%     x = x + dataset(i).x;
-%     
-% end
-% x = x / n;
-
-for i = 1:4
-    t = data(i).time;
-    x = data(i).deepE_V;
-    raster = computeRaster(t, x);
-%     raster = computeRaster(t, squeeze(x(i, :, :)));
-
-    O1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 51, 10, 10);
-    O2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
-    
-    plot(t, O1 - O2, 'o');hold("on");
-
-end
-
-grid("on");title("iFR(O1) - iFR (O2)");xlabel("time (ms)");ylabel("iFR difference");
-legend("Target interval", "A&B", "only A", "only B", "No stimulus");
-fprintf("Done.\n");
+ifr_compare_plot(data);
 
 %% Plots results
 
-% dsPlot(data); % Normal
+dsPlot(data);
 dsPlot(data,'plot_type','raster'); % Raster
 
-%% iFR & comparison
-
-clc;
-pool1 = [1:10];
-pool2 = [11:16];
-
-t = data.time;
-x = data(2).deepE_V;
-lname = "mid";
-
-raster = computeRaster(t, x);
-
-ifr1 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 49, 1, 1);
-ifr2 = 1e3 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 49, 1, 1);
-
-figure();
-
-subplot(2, 2, 1);plot(t, ifr1);title("S4: iFR for " + lname + "E cells 1-8");grid("on");
-subplot(2, 2, 2);plot(t, x(:, pool1));title('V(t)');
-subplot(2, 2, 3);plot(t, ifr2);title("iFR for " + lname + "E cells 9-16");grid("on");
-subplot(2, 2, 4);plot(t, x(:, pool2));title('V(t)');
-
 %%
-
 clc;
 plot_rasters(data(1));
 

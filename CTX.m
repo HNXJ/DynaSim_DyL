@@ -13,10 +13,10 @@ Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
 
-k1 = 0.07; % Difference between min and max connectivity weights (uniform random)
-k2 = 0.3; % Min connectivity weight
-k3 = 0.17; % 
-k4 = 0.84; % 
+k1 = 0.1; % Difference between min and max connectivity weights (uniform random)
+k2 = 0.2; % Min connectivity weight
+k3 = 0.1; % 
+k4 = 0.9; % 
 
 % Connectivity matrices
 
@@ -34,29 +34,29 @@ Kffie = k1*rand(Ni, Ne) + k2; % feedforward I-to-E: mid->deep
 kzio = zeros(Nio, Nio);
 
 % Manual weight adjustment
-KmidEmidI = Kei;
+KmidEmidI = Kei * 0.3;
 % KmidEmidI(1:5, [1, 2]) = 0.1*rand(5, 2) + 0.9; % !A -> Z1, Z2
 % KmidEmidI(6:10, [3, 4]) = 0.1*rand(5, 2) + 0.9; % !B -> Z3, Z4
 % KmidEmidI(11:15, [1, 4]) = 0.1*rand(5, 2) + 0.9; % !C1 -> Z1, Z4
 % KmidEmidI(16:20, [2, 3]) = 0.1*rand(5, 2) + 0.9; % !C2 -> Z2, Z3
 
-KmidEsupE = Kee;
+KmidEsupE = Kee * 0.3;
 % KmidEsupE(1:5, [1:5, 11:15]) = 0.1*rand(5, 10) + 0.9; % A -> X1, Y1
 % KmidEsupE(6:10, [6:10, 16:20]) = 0.1*rand(5, 10) + 0.9; % B -> X2, Y2
 % KmidEsupE(11:15, 1:10) = 0.1*rand(5, 10) + 0.9; % C1 -> X1, X2
 % KmidEsupE(16:20, 11:20) = 0.1*rand(5, 10) + 0.9; % C2 -> Y1, Y2
 
-KmidEdeepE = Kee;
+KmidEdeepE = Kee * 0.3;
 KmidEdeepE(1:5, 1:10) = k3*rand(5, 10) + k4; % A -> O1
 KmidEdeepE(6:10, 11:20) = k3*rand(5, 10) + k4; % B -> O2
 
-KsupEdeepE = Kee*0.5;
+KsupEdeepE = Kee*0.3;
 % KsupEdeepE(1:5, 1:10) = 0.1*rand(5, 10) + 0.9; % X1 -> O1
 % KsupEdeepE(6:10, 11:20) = 0.1*rand(5, 10) + 0.9; % X2 -> O2
 % KsupEdeepE(11:15, 11:20) = 0.1*rand(5, 10) + 0.9; % Y1 -> O2
 % KsupEdeepE(16:20, 1:10) = 0.1*rand(5, 10) + 0.9; % Y2 -> O1
 
-KmidIdeepE = Kie*0.5;
+KmidIdeepE = Kie*0.3;
 % KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
 % KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
 % KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
@@ -71,8 +71,8 @@ tauAMPA_beta = 19.2;
 % Maximal synaptic strengths
 gAMPA_ei = .2; % E->I within layer
 gAMPA_ffee = .2; % feedforward E->E, mid->sup, sup->deep
-gGABAa_ffie = .1; % feedforward I->E, mid->deep
-gAMPA_in = .1;
+gGABAa_ffie = .2; % feedforward I->E, mid->deep
+gAMPA_in = .2;
 
 gAMPA_ee = 0.1; % E->E within layer
 gGABAa_ie = 5; % I->E within layer
@@ -88,7 +88,7 @@ g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
 g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
 g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
 
-g_poisson = 5e-4;
+g_poisson = 1e-3;
 
 % cell type
 spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
@@ -289,6 +289,7 @@ ifr_compare_plot(data);
 
 %% Plots results
 
+dsPlot(data);
 dsPlot(data,'plot_type','raster'); % Raster
 
 %%
