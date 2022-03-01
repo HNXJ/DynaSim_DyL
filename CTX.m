@@ -1,4 +1,4 @@
-%% 3-layer neocortical model
+%% 3-layer neocortical model of PFC
 
 % Manually determined weights version. 
 
