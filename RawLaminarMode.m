@@ -1,8 +1,8 @@
 %% 6-Layer laminar example
 
 clc;
-m = DynaModel('Files/f6_init.mat'); % Loading
-m.save_model('Files/f6_init.mat'); % Saving
+m = DynaModel('Files/f1_init.mat'); % Loading
+m.save_model('Files/f1_init.mat'); % Saving
 
 %% Raw laminar example
 
@@ -43,7 +43,7 @@ dT = 0.01;
 update_mode = 'uniform';
 error_mode = 'MSE';
 verbose = 1;
-iterations = 10;
+iterations = 4;
 
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 

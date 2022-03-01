@@ -31,7 +31,7 @@ classdef DynaModel < matlab.mixin.SetGet
                     
                     model_ = varargin{1};           
                     set(obj, 'model', model_);
-%                     set(obj, 'data', obj.init());
+                    set(obj, 'data', obj.init());
                     set(obj, 'connections', obj.get_connections_list());
                     
                 elseif isstring(varargin{1}) || ischar(varargin{1})
