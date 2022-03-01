@@ -13,10 +13,10 @@ Ne = 20;     % # of E cells per layer
 Ni = Ne/5;  % # of I cells per layer
 Nio = 10; % # of Input cells
 
-k1 = 0.1; % Difference between min and max connectivity weights (uniform random)
+k1 = 0.1; % Diff. for normal weights (uniform random)
 k2 = 0.2; % Min connectivity weight
-k3 = 0.1; % 
-k4 = 0.9; % 
+k3 = 0.1; % Diff. for strengthen weights
+k4 = 0.9; % Min. for strengthen weights
 
 % Connectivity matrices
 
