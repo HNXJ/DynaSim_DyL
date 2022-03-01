@@ -8,13 +8,12 @@
 % time or memory and simply load it later.
 
 clc;
-m = DynaModel('Files/f6_init.mat'); % Loading
-m.save_model('Files/f6_init.mat'); % Saving
 
-%% Raw laminar example
+% m.save_model('Files/f6_init.mat');
+% m = DynaModel('Files/f6_init.mat');
 
-clc;
-m = RawLaminar();
+% m.save_model('Files/f6_trained.mat');
+% m = DynaModel('Files/f5_trained.mat');
 
 %% Trial: training script
 
