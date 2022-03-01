@@ -21,9 +21,9 @@ k4 = 0.9; % Min. for strengthen weights
 % Connectivity matrices
 
 % E->I
-Kei = k1*rand(Ne, Ni) + k2; % all-to-all, connectivity from E cells to I cells; mid, sup, deep
+Kei = k1*rand(Ne, Ni) + 0.4; % all-to-all, connectivity from E cells to I cells; mid, sup, deep
 % I->E
-Kie = k1*rand(Ni, Ne) + k2; % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+Kie = k1*rand(Ni, Ne) + 0.4; % all-to-all, connectivity from I cells to E cells; mid, sup, deep
 
 % E->E
 Kee = k1*rand(Ne, Ne) + k2; % recurrent E-to-E: mid, sup, deep
@@ -63,10 +63,10 @@ KmidIdeepE = Kie*0.3;
 % KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.9; % !(B & C1) -> O1
 
 % Time constants
-tauGABA_gamma = 2.4; % ms, decay time constant of inhibition for gamma (50Hz)
-tauGABA_beta = 19.2; % ms, decay time constant of inhibition for beta (25Hz)
-tauAMPA = 2.4; % ms, decay time constant of fast excitation (AMPA)
-tauAMPA_beta = 19.2;
+tauGABA_gamma = 4.8; % ms, decay time constant of inhibition for gamma (50Hz)
+tauGABA_beta = 38.4; % ms, decay time constant of inhibition for beta (25Hz)
+tauAMPA = 4.8; % ms, decay time constant of fast excitation (AMPA)
+tauAMPA_beta = 38.4;
 
 % Maximal synaptic strengths
 gAMPA_ei = .2; % E->I within layer
@@ -74,10 +74,10 @@ gAMPA_ffee = .2; % feedforward E->E, mid->sup, sup->deep
 gGABAa_ffie = .2; % feedforward I->E, mid->deep
 gAMPA_in = .2;
 
-gAMPA_ee = 0.12; % E->E within layer
-gGABAa_ie = 5; % I->E within layer
-gGABAa_ii = 0.12; % I->I within layer
-noise_rate = 10;
+gAMPA_ee = 0.1; % E->E within layer
+gGABAa_ie = 4; % I->E within layer
+gGABAa_ii = 0.1; % I->I within layer
+noise_rate = 18;
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
