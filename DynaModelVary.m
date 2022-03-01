@@ -28,8 +28,11 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 
                 if isstruct(varargin{1})
                     
+                    vary = [];tspan = [0 100];
+                    opt = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
                     model_ = varargin{1};           
                     set(obj, 'model', model_);
+                    set(obj, 'data', obj.init(vary, tspan, opt));
                     set(obj, 'connections', obj.get_connections_list());
                     
                 elseif isstring(varargin{1}) || ischar(varargin{1})
@@ -87,12 +90,6 @@ classdef DynaModelVary < matlab.mixin.SetGet
              
         end
         
-        function set.last_inputs(obj, val)
-             
-             obj.last_inputs = val;
-             
-        end
-        
         function set.last_outputs(obj, val)
              
              obj.last_outputs = val;
@@ -125,9 +122,9 @@ classdef DynaModelVary < matlab.mixin.SetGet
              
         end
         
-        function o = init(obj) % Initializer
+        function o = init(obj, vary, tspan, opt) % Initializer
             
-            o = dsSimulate(obj.model, 'vary', vary, 'tspan', tspan, opt{:};
+            o = dsSimulate(obj.model, 'vary', vary, 'tspan', tspan, opt{:});
         
         end
         
