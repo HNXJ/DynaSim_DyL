@@ -21,9 +21,9 @@ k4 = 0.9; % Min. for strengthen weights
 % Connectivity matrices
 
 % E->I
-Kei = k1*rand(Ne, Ni) + 0.4; % all-to-all, connectivity from E cells to I cells; mid, sup, deep
+Kei = k1*rand(Ne, Ni) + 0.3; % all-to-all, connectivity from E cells to I cells; mid, sup, deep
 % I->E
-Kie = k1*rand(Ni, Ne) + 0.4; % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+Kie = k1*rand(Ni, Ne) + 0.3; % all-to-all, connectivity from I cells to E cells; mid, sup, deep
 
 % E->E
 Kee = k1*rand(Ne, Ne) + k2; % recurrent E-to-E: mid, sup, deep
@@ -32,6 +32,7 @@ Kffee = k1*rand(Ne, Ne) + k2; % feedforward E-to-E: mid->sup, sup->deep
 Kffie = k1*rand(Ni, Ne) + k2; % feedforward I-to-E: mid->deep
 
 kzio = zeros(Nio, Nio);
+KdeepEI = Kie * 1.5;
 
 % Manual weight adjustment
 KmidEmidI = Kei * 0.3;
@@ -77,7 +78,7 @@ gAMPA_in = .2;
 gAMPA_ee = 0.1; % E->E within layer
 gGABAa_ie = 4; % I->E within layer
 gGABAa_ii = 0.1; % I->I within layer
-noise_rate = 18;
+noise_rate = 15;
 
 % neuronal dynamics
 eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
@@ -175,6 +176,7 @@ contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/
 
 % uppdate deep layer parameters to produce beta rhythm (25Hz)
 deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
+deep = dsApplyModifications(deep,{'deepI->deepE','netcon',KdeepEI});
 
 % create full cortical specification
 s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
@@ -259,8 +261,8 @@ tspan = [0 900]; % [beg, end] (ms)
 
 vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [3e7];'SA','AC_poisson', [0]; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
        'SB','g_poisson',[g_poisson]; 'SB','DC_poisson', [3e7];'SB','AC_poisson', [0]; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
-       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [3e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
-       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [3e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [300]; 'Cx2', 'offset_poisson', [600]};
+       'Cx1','g_poisson',[g_poisson]; 'Cx1','DC_poisson', [3e7];'Cx1','AC_poisson', [0]; 'Cx1', 'onset_poisson', [300]; 'Cx1', 'offset_poisson', [600];
+       'Cx2','g_poisson',[g_poisson]; 'Cx2','DC_poisson', [3e7];'Cx2','AC_poisson', [0]; 'Cx2', 'onset_poisson', [600]; 'Cx2', 'offset_poisson', [600]};
    
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");  
