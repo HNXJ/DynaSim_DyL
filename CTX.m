@@ -265,17 +265,17 @@ vary = {'SA','g_poisson',[g_poisson]; 'SA','DC_poisson', [3e7];'SA','AC_poisson'
 data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
 fprintf("Simulation done.\n");  
 
-%% Extract outputs & compare
-
-clc;
-ifr_compare_plot(data);
-
 %% Plots results
 
 clc;
-
 % dsPlot(data);
 dsPlot(data,'plot_type','raster'); % Raster
+
+%% Extract outputs & compare
+
+clc;
+% Instanteneous firing rate compare between input 1 and 2 (special case) 
+ifr_compare_plot(data);
 
 %%
 
