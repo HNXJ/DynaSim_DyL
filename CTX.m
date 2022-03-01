@@ -58,10 +58,10 @@ KsupEdeepE(11:15, 11:20) = k3*rand(5, 10) + k4; % Y1 -> O2
 KsupEdeepE(16:20, 1:10) = k3*rand(5, 10) + k4; % Y2 -> O1
 
 KmidIdeepE = Kie*0.3;
-% KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.9; % !(A & C1) -> O2 
-% KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.9; % !(A & C2) -> O1
-% KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.9; % !(B & C2) -> O2
-% KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.9; % !(B & C1) -> O1
+KmidIdeepE(1, 11:20) = 0.1*rand(1, 10) + 0.6; % !(A & C1) -> O2 
+KmidIdeepE(2, 1:10) = 0.1*rand(1, 10) + 0.6; % !(A & C2) -> O1
+KmidIdeepE(3, 11:20) = 0.1*rand(1, 10) + 0.6; % !(B & C2) -> O2
+KmidIdeepE(4, 1:10) = 0.1*rand(1, 10) + 0.6; % !(B & C1) -> O1
 
 % Time constants
 tauGABA_gamma = 4.8; % ms, decay time constant of inhibition for gamma (50Hz)
