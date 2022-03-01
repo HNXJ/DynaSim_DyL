@@ -1,11 +1,4 @@
-%% DynaModel example draft 
-
-% A sample of DynaSim/DynaNet trainable model step by step.
-
-%% Save/load model
-
-% If your model is complex you can save it at any time in order to save
-% time or memory and simply load it later.
+%% 6-Layer laminar example
 
 clc;
 m = DynaModel('Files/f6_init.mat'); % Loading
