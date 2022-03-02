@@ -142,11 +142,25 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function o = get_outputs(obj, inds)
+        function o = get_outputs(obj, target_label, target_cells, target_tspan)
             
+            fn = fieldnames(obj.data);
+            ind = strcmp(fn, target_label);
             st = struct2cell(obj.data);
-            inds = inds{1};
-            o = st(inds);
+            
+            t = obj.data.time;
+            x = st(ind);x = x{1};
+            raster = computeRaster(t, x);
+            y = [];
+            
+            for i = 1:size(target_cells, 1)
+                
+                y = [y, 5e2 * NWepanechnikovKernelRegrRaster(t, raster, target_cells(i, :), 51, 1, 1)];    
+                
+            end
+            
+            o = y;
+%             o = y(target_tspan(1):target_tspan(2), :)';
             
         end
         
@@ -160,7 +174,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
         
         function obj = update_error(obj, mode)
             
-            output = obj.get_outputs_spike();
+            output = obj.get_outputs_ifr();
             target = get(obj, 'last_targets');
             
 %             disp(output-target);
