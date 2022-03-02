@@ -214,6 +214,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
         
         function obj = run_trial(obj, input_label, target_label, target_cells, target_order, target_tspan, vary, opt, lambda, mode, error_mode, verbose)
             
+            fprintf('d');
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'data', obj.simulate(vary, opt));
             set(obj, 'last_targets', target_order);   
@@ -226,7 +227,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 fprintf("Trial no. %d, %s = %f, output = %f, target = %f\n", obj.last_trial, error_mode, obj.last_error, obj.get_outputs_spike(), target);
             end
             
-%             obj.train_step(lambda, mode);
+            obj.train_step(lambda, mode);
             
         end
         
