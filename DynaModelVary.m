@@ -115,7 +115,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
              
         end
         
-        function l = load_model(obj, filename)
+        function l = load_model(filename)
 
              l = load(filename);
              l = l.obj;
@@ -146,12 +146,11 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
             st = struct2cell(obj.data);
             inds = inds{1};
-%             disp(inds);
             o = st(inds);
             
         end
         
-        function o = get_outputs_spike(obj)
+        function o = get_outputs_ifr(obj)
             
             output = get(obj, 'last_outputs');
             k = size(output{1}, 2);
@@ -204,39 +203,23 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function obj = run_simulation(obj, target_layer, target_cells, target_order, vary, tspan, opt, verbose)
+        function obj = run_simulation(obj, target_layer, target_cells, target_order, target_tspan, vary, opt, verbose)
             
-            model_n = get(obj, 'model');
-            
-            set(obj, 'model', model_n);
-            set(obj, 'data', obj.simulate(vary, tspan, opt));
-            set(obj, 'last_outputs', obj.get_outputs(target_layer, target_cells, target_order));
-            set(obj, 'last_inputs', vary.a);
-           
+            set(obj, 'data', obj.simulate(vary, opt));
             if verbose
-                fprintf("Trial no. %d, output = %f \n", obj.last_trial, obj.get_outputs_spike());
+                fprintf("Simulation output = %f \n", obj.get_outputs_ifr(target_layer, target_cells, target_order, target_tspan));
             end
             
         end
-        
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode, verbose)
+      
+        function obj = run_trial(obj, input_label, target_layer, target_cells, target_order, target_tspan, input_label, vary, opt, lambda, mode, error_mode, verbose)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
-            set(obj, 'last_targets', target);
+            set(obj, 'last_targets', target_order);   
+            set(obj, 'data', obj.simulate(vary, opt));
             
-            cnt = 0;
-            model_n = get(obj, 'model');
-            
-            for i = inputs_index
-                cnt = cnt + 1;
-                eq = inputs(cnt);
-                model_n.populations(i).equations = eq{1};
-            end
-            
-            set(obj, 'model', model_n);
-            set(obj, 'data', obj.simulate(t, dt));
-            set(obj, 'last_outputs', obj.get_outputs(outputs_index));
-            set(obj, 'last_inputs', inputs);
+            set(obj, 'last_outputs', obj.get_outputs(target_layer, target_cells, target_order, target_tspan));
+            set(obj, 'last_inputs', input_label);
             
             obj.update_error(error_mode);
             

@@ -29,8 +29,9 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 if isstruct(varargin{1})
                     
                     vary = [];tspan = [0 100];
-                    opt = {'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
+                    opt = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
                     model_ = varargin{1};           
+                    
                     set(obj, 'model', model_);
                     set(obj, 'data', obj.init(vary, tspan, opt));
                     set(obj, 'connections', obj.get_connections_list());
@@ -114,7 +115,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
              
         end
         
-        function l = load_model(obj, filename)
+        function l = load_model(filename)
 
              l = load(filename);
              l = l.obj;
@@ -124,13 +125,13 @@ classdef DynaModelVary < matlab.mixin.SetGet
         
         function o = init(obj, vary, tspan, opt) % Initializer
             
-            o = dsSimulate(obj.model, 'vary', vary, 'tspan', tspan, opt{:});
+            o = dsSimulate(obj.model, 'vary', vary, opt{:});
         
         end
         
-        function o = simulate(obj, vary, tspan, opt) % DynaSimulator
+        function o = simulate(obj, vary, opt) % DynaSimulator
             
-            o = dsSimulate(obj.model, 'vary', vary, 'tspan', tspan, opt{:});
+            o = dsSimulate(obj.model, 'vary', vary, opt{:});
       
         end
         
@@ -145,12 +146,11 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
             st = struct2cell(obj.data);
             inds = inds{1};
-%             disp(inds);
             o = st(inds);
             
         end
         
-        function o = get_outputs_spike(obj)
+        function o = get_outputs_ifr(obj)
             
             output = get(obj, 'last_outputs');
             k = size(output{1}, 2);
@@ -203,14 +203,13 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function obj = run_simulation(obj, target_layer, target_cells, target_order, vary, tspan, opt, verbose)
+        function obj = run_simulation(obj, target_layer, target_cells, target_order, target_tspan, vary, opt, verbose)
             
-            cnt = 0;
-            model_n = get(obj, 'model');
-            set(obj, 'model', model_n);
-            
-            set(obj, 'data', obj.simulate(vary, tspan, opt));
-            set(obj, 'last_outputs', obj.get_outputs(target_layer, target_cells, target_order));
+%             model_n = get(obj, 'model');
+%             
+%             set(obj, 'model', model_n);
+            set(obj, 'data', obj.simulate(vary, opt));
+            set(obj, 'last_outputs', obj.get_outputs(target_layer, target_cells, target_order, target_tspan));
             set(obj, 'last_inputs', vary.a);
            
             if verbose
@@ -219,7 +218,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, inputs, inputs_index, outputs_index, t, dt, target, lambda, mode, error_mode, verbose)
+        function obj = run_trial(obj, target_layer, target_cells, target_order, target_tspan, vary, opt, lambda, mode, error_mode, verbose)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'last_targets', target);

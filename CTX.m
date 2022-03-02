@@ -36,7 +36,7 @@ fprintf("Simulation done.\n");
 %% Plots results (normal/raster)
 
 clc;
-% dsPlot(data);
+% dsPlot(data(3));
 dsPlot(data,'plot_type','raster'); % Raster
 
 %% Extract outputs & compare
