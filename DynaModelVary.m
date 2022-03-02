@@ -203,19 +203,15 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function obj = run_simulation(obj, inputs, inputs_index, outputs_index, t, dt, verbose)
+        function obj = run_simulation(obj, target_order, target_layer, vary, tspan, opt, verbose)
             
             cnt = 0;
             model_n = get(obj, 'model');
             
-            for i = inputs_index
-                cnt = cnt + 1;
-                eq = inputs(cnt);
-                model_n.populations(i).equations = eq{1};
-            end
+            
             
             set(obj, 'model', model_n);
-            set(obj, 'data', obj.simulate(t, dt));
+            set(obj, 'data', obj.simulate(vary, tspan, opt));
             set(obj, 'last_outputs', obj.get_outputs(outputs_index));
             set(obj, 'last_inputs', inputs);
            

@@ -11,9 +11,10 @@ s = neoCortexPFC();
 
 %% Create Dynamodel Class (variational)
 
+clc;
 m = DynaModelVary(s);
 
-%% Simulate
+%% Simulate (Test of all scenarios)
 
 fprintf("Running simulation ...\n");
 
@@ -26,7 +27,8 @@ vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0
        'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', [300]; 'Cx2', 'offset_poisson', [600]};
    
-data=dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
+% data = dsSimulate(s,'vary',vary,'tspan',tspan,simulator_options{:});
+m.simulate(vary, tspan, simulator_options)
 
 fprintf("Simulation done.\n");  
 
@@ -49,14 +51,8 @@ clc;
 % Define parameters
 
 lambda = 0.001;
-input_cues = {{eqns_input1, eqns_input2}, {eqns_input2, eqns_input1}};
-target_responses = [12, 6];
-batch_size = size(target_responses, 2);
-
-input_layers = [7, 8]; 
-output_indice = {53}; % L3I Spikes
-T = 300;
-dT = 0.01;
+target_order = [1, 0; 0, 1];
+target_layer = 3;
 
 update_mode = 'uniform';
 error_mode = 'MSE';
@@ -69,8 +65,7 @@ for i = 1:iterations
     
     for j = 1:batch_size
         
-        c_input = input_cues(j);
-        c_input = c_input{1};
+        vary = vary(j);
         c_target = target_responses(j);
         m.run_trial(c_input, input_layers, output_indice, T, dT, c_target, lambda, update_mode, error_mode, verbose);
     
