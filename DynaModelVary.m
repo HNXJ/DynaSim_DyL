@@ -212,22 +212,22 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, input_label, target_label, target_cells, target_order, target_tspan, vary, opt, lambda, mode, error_mode, verbose)
+        function obj = run_trial(obj, params)
             
-            fprintf('d');
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
-            set(obj, 'data', obj.simulate(vary, opt));
-            set(obj, 'last_targets', target_order);   
-            set(obj, 'last_inputs', input_label);
+            set(obj, 'data', obj.simulate(params.vary, params.simulation_options));
+            set(obj, 'last_targets', params.target_order);  
+            disp(params.input_label);
+%             set(obj, 'last_inputs', input_label);
          
-            set(obj, 'last_outputs', obj.get_outputs(target_label, target_cells, target_order, target_tspan));
-            obj.update_error(error_mode);
+            set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_order, params.target_tspan));
+            obj.update_error(params.error_mode);
             
-            if verbose
-                fprintf("Trial no. %d, %s = %f, output = %f, target = %f\n", obj.last_trial, error_mode, obj.last_error, obj.get_outputs_spike(), target);
+            if params.verbose
+                fprintf("Trial no. %d, %s = %f, output = %f, target = %f\n", obj.last_trial, params.error_mode, obj.last_error, obj.get_outputs_spike(), params.target_order);
             end
             
-            obj.train_step(lambda, mode);
+            obj.train_step(params.lambda, params.update_mode);
             
         end
         
