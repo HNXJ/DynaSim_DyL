@@ -29,7 +29,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 if isstruct(varargin{1})
                     
                     vary = [];tspan = [0 100];
-                    opt = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
+                    opt = {'tspan', tspan, 'solver','rk1','dt',.1,'downsample_factor',10,'verbose_flag',1};
                     model_ = varargin{1};           
                     
                     set(obj, 'model', model_);
@@ -167,8 +167,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
         function o = get_outputs_ifr(obj)
             
             output = get(obj, 'last_outputs');
-            k = size(output{1}, 2);
-            o = sum(sum(double(output{1})))/k;
+            o = mean(output, 1);
         
         end
         
@@ -221,7 +220,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
             set(obj, 'data', obj.simulate(vary, opt));
             if verbose
-                fprintf("Simulation output = %f \n", obj.get_outputs_ifr(target_layer, target_cells, target_order, target_tspan));
+                fprintf("Simulation output = %f \n", obj.get_outputs_ifr(target_layer, target_cells, target_tspan));
             end
             
         end
@@ -234,7 +233,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             disp(params.input_label);
 %             set(obj, 'last_inputs', input_label);
          
-            set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_order, params.target_tspan));
+            set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_tspan));
             obj.update_error(params.error_mode);
             
             if params.verbose

@@ -21,7 +21,7 @@ fprintf("Running simulation ...\n");
 
 g_poisson = 6.4e-4;
 tspan = [0 900]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
+simulator_options = {'tspan', tspan, 'solver','rk1','dt',.1,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
 
 vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', [300 600]; 'SA', 'offset_poisson', [600];
        'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', [300 600]; 'SB', 'offset_poisson', [600];
@@ -37,13 +37,13 @@ fprintf("Simulation done.\n");
 
 clc;
 % dsPlot(data(3));
-dsPlot(data,'plot_type','raster'); % Raster
+dsPlot(m.data,'plot_type','raster'); % Raster
 
 %% Extract outputs & compare
 
 clc;
 % Instanteneous firing rate compare between input 1 and 2 (special case) 
-ifr_compare_plot(data);
+ifr_compare_plot(m.data);
 
 %% Trial: training script
 
@@ -62,7 +62,7 @@ target_cells = [1:10; 11:20];
 target_tspan = [300, 600];
 
 tspan = [0 900]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
+simulator_options = {'tspan', tspan, 'solver','rk1','dt',.1,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
 g_poisson = 6.4e-4;
 
 vary1 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 300; 'SA', 'offset_poisson', 600;
@@ -101,7 +101,7 @@ batch_size = 6;
 verbose = 1;
 
 %%
-
+tic;
 clc;
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
 
@@ -117,10 +117,11 @@ for i = 1:iterations
         params.target_cells = target_cells;
         
         params.target_tspan = target_tspan;
+        params.target_order = target_order;
         params.simulation_options = simulator_options;
         params.lambda = lambda;
-        params.error_mode = error_mode;
         
+        params.error_mode = error_mode;
         params.update_mode = update_mode;
         params.verbose = verbose;
         m.run_trial(params);
@@ -132,5 +133,5 @@ for i = 1:iterations
 end
 
 disp('done');
-
+toc;
 %%
