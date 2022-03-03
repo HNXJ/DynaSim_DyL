@@ -217,8 +217,8 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-%         function obj = run_simulation(obj, target_layer, target_cells, target_order, target_tspan, vary, opt, verbose)
-%             
+%         function obj = run_simulation(obj, params)
+
 %             set(obj, 'data', obj.simulate(vary, opt));
 %             if verbose
 %                 fprintf("Simulation output = %f \n", obj.get_outputs_ifr(target_layer, target_cells, target_tspan));
