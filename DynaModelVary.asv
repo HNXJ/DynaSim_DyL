@@ -29,7 +29,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 if isstruct(varargin{1})
                     
                     vary = [];tspan = [0 100];
-                    opt = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1};
+                    opt = {'tspan', tspan, 'solver','rk1','dt',.1,'downsample_factor',10,'verbose_flag',1};
                     model_ = varargin{1};           
                     
                     set(obj, 'model', model_);
@@ -142,25 +142,38 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function o = get_outputs(obj, inds)
+        function o = get_outputs(obj, target_label, target_cells, target_tspan)
             
+            fn = fieldnames(obj.data);
+            ind = strcmp(fn, target_label);
             st = struct2cell(obj.data);
-            inds = inds{1};
-            o = st(inds);
+            
+            t = obj.data.time;
+            x = st(ind);x = x{1};
+            raster = computeRaster(t, x);
+            y = [];
+            
+            for i = 1:size(target_cells, 1)
+                
+                y = [y, 5e2 * NWepanechnikovKernelRegrRaster(t, raster, target_cells(i, :), 51, 1, 1)];    
+                
+            end
+            
+            o = y;
+%             o = y(target_tspan(1):target_tspan(2), :)';
             
         end
         
         function o = get_outputs_ifr(obj)
             
             output = get(obj, 'last_outputs');
-            k = size(output{1}, 2);
-            o = sum(sum(double(output{1})))/k;
+            o = mean(output, 1);
         
         end
         
         function obj = update_error(obj, mode)
             
-            output = obj.get_outputs_spike();
+            output = obj.get_outputs_ifr();
             target = get(obj, 'last_targets');
             
 %             disp(output-target);
@@ -175,7 +188,8 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 
             elseif strcmpi(mode, 'MSE')
                 
-                err = 0.5*(target-output)^2;
+%                 err = 0.5*(target-output)^2; # TODO ERR
+                  err
                 
             else
                 
@@ -205,45 +219,29 @@ classdef DynaModelVary < matlab.mixin.SetGet
         
         function obj = run_simulation(obj, target_layer, target_cells, target_order, target_tspan, vary, opt, verbose)
             
-%             model_n = get(obj, 'model');
-%             
-%             set(obj, 'model', model_n);
             set(obj, 'data', obj.simulate(vary, opt));
-            set(obj, 'last_outputs', obj.get_outputs(target_layer, target_cells, target_order, target_tspan));
-            set(obj, 'last_inputs', vary.a);
-           
             if verbose
-                fprintf("Trial no. %d, output = %f \n", obj.last_trial, obj.get_outputs_spike());
+                fprintf("Simulation output = %f \n", obj.get_outputs_ifr(target_layer, target_cells, target_tspan));
             end
             
         end
         
-        function obj = run_trial(obj, target_layer, target_cells, target_order, target_tspan, vary, opt, lambda, mode, error_mode, verbose)
+        function obj = run_trial(obj, params)
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
-            set(obj, 'last_targets', target);
+            set(obj, 'data', obj.simulate(params.vary, params.simulation_options));
+            set(obj, 'last_targets', params.target_order);  
+            disp(params.input_label);
+%             set(obj, 'last_inputs', input_label);
+         
+            set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_tspan));
+            obj.update_error(params.error_mode);
             
-            cnt = 0;
-            model_n = get(obj, 'model');
-            
-            for i = inputs_index
-                cnt = cnt + 1;
-                eq = inputs(cnt);
-                model_n.populations(i).equations = eq{1};
+            if params.verbose
+                fprintf("Trial no. %d, %s = %f, output = %f, target = %f\n", obj.last_trial, params.error_mode, obj.last_error, obj.get_outputs_spike(), params.target_order);
             end
             
-            set(obj, 'model', model_n);
-            set(obj, 'data', obj.simulate(t, dt));
-            set(obj, 'last_outputs', obj.get_outputs(outputs_index));
-            set(obj, 'last_inputs', inputs);
-            
-            obj.update_error(error_mode);
-            
-            if verbose
-                fprintf("Trial no. %d, %s = %f, output = %f, target = %f\n", obj.last_trial, error_mode, obj.last_error, obj.get_outputs_spike(), target);
-            end
-            
-            obj.train_step(lambda, mode);
+            obj.train_step(params.lambda, params.update_mode);
             
         end
         

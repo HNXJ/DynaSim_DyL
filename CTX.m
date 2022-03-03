@@ -62,7 +62,7 @@ target_cells = [1:10; 11:20];
 target_tspan = [300, 600];
 
 tspan = [0 900]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver','rk1','dt',.1,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
+simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
 g_poisson = 6.4e-4;
 
 vary1 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 300; 'SA', 'offset_poisson', 600;
@@ -101,6 +101,7 @@ batch_size = 6;
 verbose = 1;
 
 %%
+
 tic;
 clc;
 fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
