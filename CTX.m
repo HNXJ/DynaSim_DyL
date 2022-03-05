@@ -15,8 +15,6 @@ m = DynaModelVary(s);
 
 %% Simulate (Test of all scenarios)
 
-clc;
-
 g_poisson = 6.4e-4;
 tspan = [0 900]; % [beg, end] (ms)
 simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
@@ -26,9 +24,7 @@ vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0
        'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', [600]; 'Cx1', 'offset_poisson', [600];
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', [300]; 'Cx2', 'offset_poisson', [600]};
    
-m.run_simulation(vary, simulator_options);
-
-fprintf("Simulation done.\n");  
+m.run_simulation(vary, simulator_options); 
 
 %% Plots results (normal/raster)
 
@@ -41,8 +37,6 @@ clc;
 ifr_compare_plot(m.data);
 
 %% Trial: training script
-
-clc;
 
 % Define parameters
 

@@ -141,7 +141,14 @@ classdef DynaModelVary < matlab.mixin.SetGet
         function c = get_connections_list(obj)
             
             st = obj.data.model.fixed_variables;
-            c = fieldnames(st);
+            cl = fieldnames(st);
+            c = [];
+            
+            for i = 1:size(cl, 1)
+                if contains(cl(i), '_netcon')
+                    c = [c; cl(i)];
+                end
+            end
             
         end
         
@@ -224,6 +231,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
             fprintf("Running simulation ...\n");
             set(obj, 'data', obj.simulate(vary, opt));
+            fprintf("Simulation done.\n"); 
             
         end
         
@@ -234,7 +242,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             set(obj, 'last_targets', params.target_order);  
             disp(params.input_label);
          
-            set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_tspan));
+%             set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_tspan));
             obj.update_error(params.error_mode);
             
             if params.verbose

@@ -70,10 +70,10 @@ function y = neoCortexPFC()
     gGABAa_ffie = .2; % feedforward I->E, mid->deep
     gAMPA_in = .2;
 
-    gAMPA_ee = 0.1; % E->E within layer
+    gAMPA_ee = 0.11; % E->E within layer
     gGABAa_ie = 4; % I->E within layer
-    gGABAa_ii = 0.1; % I->I within layer
-    noise_rate = 15;
+    gGABAa_ii = 0.11; % I->I within layer
+    noise_rate = 12;
 
     % neuronal dynamics
     eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
