@@ -11,13 +11,11 @@ s = neoCortexPFC();
 
 %% Create Dynamodel Class (variational)
 
-clc;
 m = DynaModelVary(s);
 
 %% Simulate (Test of all scenarios)
 
 clc;
-fprintf("Running simulation ...\n");
 
 g_poisson = 6.4e-4;
 tspan = [0 900]; % [beg, end] (ms)

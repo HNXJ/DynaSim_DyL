@@ -24,6 +24,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
 
         function obj = DynaModelVary(varargin) % Constructors, will be expanded
             
+            disp("Creaging Dyna model object ... ");
             if nargin == 1
                 
                 if isstruct(varargin{1})
@@ -220,7 +221,8 @@ classdef DynaModelVary < matlab.mixin.SetGet
         end
         
         function obj = run_simulation(obj, vary, opt)
-
+            
+            fprintf("Running simulation ...\n");
             set(obj, 'data', obj.simulate(vary, opt));
             
         end
