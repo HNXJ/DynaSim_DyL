@@ -47,6 +47,8 @@ classdef DynaModelVary < matlab.mixin.SetGet
                 end
                 
             end  
+            disp("Dyna model created.");
+            
         end
 
         function set.model(obj, val) % Getter/setters
