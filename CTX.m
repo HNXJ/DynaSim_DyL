@@ -6,7 +6,6 @@
 
 clear;
 clc;
-
 s = neoCortexPFC();
 
 %% Create Dynamodel Class (variational)
