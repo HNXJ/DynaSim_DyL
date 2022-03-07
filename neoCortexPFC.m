@@ -1,12 +1,12 @@
-function y = neoCortexPFC()
+function y = neoCortexPFC(Ne, Ni, Nio)
 
     fprintf("Initialization...\n");
 
     % Population sizes
 
-    Ne = 20;     % # of E cells per layer
-    Ni = Ne/5;  % # of I cells per layer
-    Nio = 10; % # of Input cells
+%     Ne = 20;     % # of E cells per layer
+%     Ni = Ne/5;  % # of I cells per layer
+%     Nio = 10; % # of Input cells
 
     k1 = 0.1; % Diff. for normal weights (uniform random)
     k2 = 0.2; % Min connectivity weight
