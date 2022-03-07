@@ -12,6 +12,7 @@ function ifr_compare_plot(data, pool1, pool2)
         
         t = data(i).time;
         x = data(i).deepE_V;
+%         plot_rasters(data(i));
         raster = computeRaster(t, x);
         
         disp(size(raster));
