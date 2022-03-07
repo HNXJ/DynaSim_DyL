@@ -5,7 +5,7 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
     % Population sizes
 
 %     Ne = 20;     % # of E cells per layer
-%     Ni = Ne/5;  % # of I cells per layer
+%     Ni = 4;  % # of I cells per layer
 %     Nio = 10; % # of Input cells
 
     k1 = 0.1; % Diff. for normal weights (uniform random)
@@ -188,7 +188,7 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
     % Input SA -> midE [1-3]
     tempconn = zeros(Nio, Ne);
     Aconn = tempconn;
-    Aconn(:, 1:5) =  1;
+    Aconn(:, a1:a2) =  1;
 
     c = length(s.connections) + 1;
     s.connections(c).direction = 'SA->midE';
@@ -197,7 +197,7 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
 
     % Input SB -> midE [4-6]
     Bconn = tempconn;
-    Bconn(:, 6:10) =  1;
+    Bconn(:, b1:b2) =  1;
     c = length(s.connections)+1;
     s.connections(c).direction = 'SB->midE';
     s.connections(c).mechanism_list={'iAMPActx'};
@@ -205,7 +205,7 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
 
     % Contex Cx1 -> midE [7-9]
     Cx1conn = tempconn;
-    Cx1conn(:, 11:15) =  1;
+    Cx1conn(:, c1:c2) =  1;
 
     c = length(s.connections)+1;
     s.connections(c).direction = 'Cx1->midE';
@@ -214,7 +214,7 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
 
     % Contex Cx2 -> midE [10-12]
     Cx2conn = tempconn;
-    Cx2conn(:, 16:20) =  1;
+    Cx2conn(:, d1:d2) =  1;
 
     c = length(s.connections)+1;
     s.connections(c).direction = 'Cx2->midE';
@@ -226,7 +226,7 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
     s.connections(c).direction = 'midE->supE';
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KmidEsupE};
-
+    
     % midE -> deepE
     c = length(s.connections)+1;
     s.connections(c).direction = 'midE->deepE';
@@ -245,8 +245,8 @@ function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_ffee,'tauAMPA',tauAMPA,'netcon',KsupEdeepE};
 
-    % Outputs: deepE [1-8] as O1
-    % deepE [9-16] as O2
+    % Outputs: deepE [1-Ne/2] as O1
+    % deepE [Ne/2+1-Ne] as O2
     y = s;
     
     fprintf("Initialization done.\n");
