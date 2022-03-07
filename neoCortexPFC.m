@@ -1,4 +1,4 @@
-function y = neoCortexPFC(Ne, Ni, Nio)
+function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
 
     fprintf("Initialization...\n");
 
@@ -70,15 +70,15 @@ function y = neoCortexPFC(Ne, Ni, Nio)
 %     tauAMPA_beta = 38.4;
 
     % Maximal synaptic strengths
-    gAMPA_ei = .2; % E->I within layer
-    gAMPA_ffee = .2; % feedforward E->E, mid->sup, sup->deep
-    gGABAa_ffie = .2; % feedforward I->E, mid->deep
-    gAMPA_in = .2;
+    gAMPA_ei = .2*(20/Ne); % E->I within layer
+    gAMPA_ffee = .2*(20/Ne); % feedforward E->E, mid->sup, sup->deep
+    gGABAa_ffie = .2*(20/Ne); % feedforward I->E, mid->deep
+    gAMPA_in = .2*(20/Ne);
 
-    gAMPA_ee = 0.11; % E->E within layer
-    gGABAa_ie = 4; % I->E within layer
-    gGABAa_ii = 0.11; % I->I within layer
-    noise_rate = 12;
+    gAMPA_ee = 0.11*(20/Ne); % E->E within layer
+    gGABAa_ie = 4*(20/Ne); % I->E within layer
+    gGABAa_ii = 0.11*(20/Ne); % I->I within layer
+%     noise_rate = 12;
 
     % neuronal dynamics
     eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
