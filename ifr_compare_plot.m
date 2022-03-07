@@ -14,8 +14,9 @@ function ifr_compare_plot(data, pool1, pool2)
         x = data(i).deepE_V;
         raster = computeRaster(t, x);
         
-        O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 51, 10, 10);
-        O2 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 51, 10, 10);
+        disp(size(raster));
+        O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 25, 1, 1);
+        O2 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 25, 1, 1);
         plot(t, O1 - O2, 'o');hold("on");
 
     end
