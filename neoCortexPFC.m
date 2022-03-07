@@ -29,6 +29,11 @@ function y = neoCortexPFC()
     kzio = zeros(Nio, Nio);
     KdeepEI = Kie * 1.5;
 
+    a1 = 1;a2 = ceil(1*Ne/4);
+    b1 = ceil(1 + 1*Ne/4);b2 = ceil(2*Ne/4);
+    c1 = ceil(1 + 2*Ne/4);c2 = ceil(3*Ne/4);
+    d1 = ceil(1 + 3*Ne/4);d2 = ceil(4*Ne/4);
+    
     % Manual weight adjustment
 %     KmidEmidI = Kei * 0.3;
     % KmidEmidI(1:5, [1, 2]) = k3*rand(5, 2) + k4; % !A -> Z1, Z2
