@@ -1,12 +1,12 @@
-function ifr_compare_plot(data)
+function ifr_compare_plot(data, pool1, pool2)
 
     clc;
 
-    pool1 = 1:10;
-    pool2 = 11:20;
+%     pool1 = 1:10;
+%     pool2 = 11:20;
 
     figure();
-    patch([300 600 600 300], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
+    patch([80 180 180 80], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
 
     for i = 1:4
         
