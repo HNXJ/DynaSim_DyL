@@ -21,10 +21,10 @@ tspan = [0 350]; % [beg, end] (ms)
 simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag',0 };
 % simulator_options = {'dv/dt=0', 'mex_flag', 1};
 
-vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 2e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', [100 250]; 'SA', 'offset_poisson', 250;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 2e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', [100 250]; 'SB', 'offset_poisson', 250;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 2e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 100; 'Cx1', 'offset_poisson', 250;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 2e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 250; 'Cx2', 'offset_poisson', 250};
+vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 4e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', [100 250]; 'SA', 'offset_poisson', 250;
+       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 4e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', [100 250]; 'SB', 'offset_poisson', 250;
+       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 4e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 250; 'Cx1', 'offset_poisson', 250;
+       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 100; 'Cx2', 'offset_poisson', 250};
    
 % data1 = dsSimulate(s, 'vary', vary, simulator_options{:});
 m.run_simulation(vary, simulator_options); 
