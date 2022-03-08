@@ -37,7 +37,7 @@ dsPlot(m.data,'plot_type','raster'); % Raster
 %% Extract outputs & compare
 
 clc; 
-ifr_compare_plot(m.data, 1:6, 7:12);
+ifr_compare_plot(m.data, 1:6, 7:12, 100, 250);
 
 %% Trial: training script
 
