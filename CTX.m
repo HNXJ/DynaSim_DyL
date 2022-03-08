@@ -18,7 +18,8 @@ m = DynaModelVary(s);
 
 g_poisson = 6.4e-4;
 tspan = [0 300]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag', 0};
+simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag',0 };
+% simulator_options = {'dv/dt=0', 'mex_flag', 1};
 
 vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 2e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', [100 250]; 'SA', 'offset_poisson', 250;
        'SB','g_poisson', g_poisson; 'SB','DC_poisson', 2e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', [100 250]; 'SB', 'offset_poisson', 250;
