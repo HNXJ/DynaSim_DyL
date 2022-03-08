@@ -7,7 +7,7 @@
 clear;
 clc;
 
-Ne = 12;Ni = 4;Nio = 10;noise_rate = 13;
+Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 s = neoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 %% Create Dynamodel Class (variational)
@@ -17,7 +17,7 @@ m = DynaModelVary(s);
 %% Simulate (Test of all scenarios)
 
 g_poisson = 6.4e-4;
-tspan = [0 300]; % [beg, end] (ms)
+tspan = [0 350]; % [beg, end] (ms)
 simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag',0 };
 % simulator_options = {'dv/dt=0', 'mex_flag', 1};
 
