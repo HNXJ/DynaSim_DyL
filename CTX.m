@@ -9,6 +9,7 @@ clc;
 
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 s = NeoCortexPFC(Ne, Ni, Nio, noise_rate);
+% s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 %% Create Dynamodel Class (variational)
 
@@ -32,7 +33,7 @@ vary2 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 4e7;'SA','AC_poisson', 
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 150; 'Cx2', 'offset_poisson', 350};
 
 % data1 = dsSimulate(s, 'vary', vary, simulator_options{:});
-m.run_simulation(vary2, simulator_options); 
+m.run_simulation(vary1, simulator_options); 
 
 %% Plots results (normal/raster)
 
@@ -42,7 +43,7 @@ dsPlot(m.data,'plot_type','raster'); % Raster
 %% Extract outputs & compare
 
 clc;  
-ifr_compare_plot(m.data, 1:6, 7:12, 150, 350);
+ifr_compare_plot(m.data, 1:10, 11:20, 150, 350);
 
 %% Trial: training script
 

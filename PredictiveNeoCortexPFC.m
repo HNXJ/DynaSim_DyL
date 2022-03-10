@@ -171,7 +171,9 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     sup = dsApplyModifications(ping,{'E','name','supE'; 'I','name','supI'}); % superficial layer (~gamma)
     mid = dsApplyModifications(ping,{'E','name','midE'; 'I','name','midI'}); % middle layer (~gamma)
     deep = dsApplyModifications(ping,{'E','name','deepE'; 'I','name','deepI'}); % deep layer (~beta)
-    stimuli = dsApplyModifications(IOping,{'E','name','SA'; 'I','name','SB'}); % I/O layer (stimuli)
+    stimuli1 = dsApplyModifications(IOping,{'E','name','SA1'; 'I','name','SB1'}); % I/O layer (stimuli)
+    stimuli2 = dsApplyModifications(IOping,{'E','name','SC1'; 'I','name','SA2'}); % I/O layer (stimuli)
+    stimuli3 = dsApplyModifications(IOping,{'E','name','SB2'; 'I','name','SC2'}); % I/O layer (stimuli)
     contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/O layer (contex)
 
     % uppdate deep layer parameters to produce beta rhythm (25Hz)
@@ -179,25 +181,30 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     deep = dsApplyModifications(deep,{'deepI->deepE','netcon',KdeepEI});
 
     % create full cortical specification
-    s = dsCombineSpecifications(sup, mid, deep, stimuli, contex);
+    s = dsCombineSpecifications(sup, mid, deep, stimuli1, stimuli2, stimuli3, contex);
 
     % connect the layers and inputs
-
     fprintf("Connecting separate layers and inputs...\n");
-
-    % Input SA -> midE [1-3]
     tempconn = zeros(Nio, Ne);
+    
+    % Input SA -> midE [1-3]
     Aconn = tempconn;
     Aconn(:, a1:a2) =  1;
 
     c = length(s.connections) + 1;
-    s.connections(c).direction = 'SA->midE';
+    s.connections(c).direction = 'SA1->midE';
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
 
+    c = length(s.connections) + 1;
+    s.connections(c).direction = 'SA2->midE';
+    s.connections(c).mechanism_list={'iAMPActx'};
+    s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
+    
     % Input SB -> midE [4-6]
     Bconn = tempconn;
     Bconn(:, b1:b2) =  1;
+    
     c = length(s.connections)+1;
     s.connections(c).direction = 'SB->midE';
     s.connections(c).mechanism_list={'iAMPActx'};
