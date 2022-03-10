@@ -36,7 +36,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     cx2_1 = ceil(1 + 4*Ne/5);cx2_2 = ceil(5*Ne/5);
     
     % Manual weight adjustment
-%     KmidEmidI = Kei * 0.3;
+    % KmidEmidI = Kei * 0.3;
     % KmidEmidI(1:5, [1, 2]) = k3*rand(5, 2) + k4; % !A -> Z1, Z2
     % KmidEmidI(6:10, [3, 4]) = k3*rand(5, 2) + k4; % !B -> Z3, Z4
     % KmidEmidI(11:15, [1, 4]) = k3*rand(5, 2) + k4; % !C1 -> Z1, Z4
