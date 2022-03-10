@@ -29,10 +29,11 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     kzio = zeros(Nio, Nio);
     KdeepEI = Kie * 1.5;
 
-    a1 = 1;a2 = ceil(1*Ne/4);
-    b1 = ceil(1 + 1*Ne/4);b2 = ceil(2*Ne/4);
-    c1 = ceil(1 + 2*Ne/4);c2 = ceil(3*Ne/4);
-    d1 = ceil(1 + 3*Ne/4);d2 = ceil(4*Ne/4);
+    a1 = 1;a2 = ceil(1*Ne/5);
+    b1 = ceil(1 + 1*Ne/5);b2 = ceil(2*Ne/5);
+    c1 = ceil(1 + 2*Ne/5);c2 = ceil(3*Ne/5);
+    cx1_1 = ceil(1 + 3*Ne/5);cx1_2 = ceil(4*Ne/5);
+    cx2_1 = ceil(1 + 4*Ne/5);cx2_2 = ceil(5*Ne/5);
     
     % Manual weight adjustment
 %     KmidEmidI = Kei * 0.3;
@@ -42,10 +43,10 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     % KmidEmidI(16:20, [2, 3]) = k3*rand(5, 2) + k4; % !C2 -> Z2, Z3
     
     KmidEsupE = Kee * 0.3;
-    KmidEsupE(a1:a2, [a1:a2, c1:c2]) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % A -> X1, Y1
-    KmidEsupE(b1:b2, [b1:b2, d1:d2]) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % B -> X2, Y2
-    KmidEsupE(c1:c2, a1:b2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % C1 -> X1, X2
-    KmidEsupE(d1:d2, c1:d2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % C2 -> Y1, Y2
+    KmidEsupE(a1:a2, [a1:a2, cx1_1:cx1_2]) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % A -> X1, Y1
+    KmidEsupE(b1:b2, [b1:b2, cx2_1:cx2_2]) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % B -> X2, Y2
+    KmidEsupE(cx1_1:cx1_2, a1:b2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % C1 -> X1, X2
+    KmidEsupE(cx2_1:cx2_2, cx1_1:cx2_2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % C2 -> Y1, Y2
 
     KmidEdeepE = Kee * 0.3;
     % KmidEdeepE(1:5, 1:10) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % A -> O1
@@ -53,14 +54,14 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
 
     KsupEdeepE = Kee*0.3;
     KsupEdeepE(a1:a2, a1:b2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % X1 -> O1
-    KsupEdeepE(b1:b2, c1:d2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % X2 -> O2
-    KsupEdeepE(c1:c2, c1:d2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % Y1 -> O2
-    KsupEdeepE(d1:d2, a1:b2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % Y2 -> O1
+    KsupEdeepE(b1:b2, cx1_1:cx2_2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % X2 -> O2
+    KsupEdeepE(cx1_1:cx1_2, cx1_1:cx2_2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % Y1 -> O2
+    KsupEdeepE(cx2_1:cx2_2, a1:b2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % Y2 -> O1
 
     KmidIdeepE = Kie*0.3;
-    KmidIdeepE(1, c1:d2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & C1) -> O2 
+    KmidIdeepE(1, cx1_1:cx2_2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & C1) -> O2 
     KmidIdeepE(2, a1:b2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & C2) -> O1
-    KmidIdeepE(3, c1:d2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & C2) -> O2
+    KmidIdeepE(3, cx1_1:cx2_2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & C2) -> O2
     KmidIdeepE(4, a1:b2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & C1) -> O1
 
     % Time constants
@@ -211,13 +212,13 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
     
     c = length(s.connections)+1;
-    s.connections(c).direction = 'SB1->midE';
+    s.connections(c).direction = 'SB2->midE';
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
 
     % Contex Cx1 -> midE [7-9]
     Cx1conn = tempconn;
-    Cx1conn(:, c1:c2) =  1;
+    Cx1conn(:, cx1_1:cx1_2) =  1;
 
     c = length(s.connections)+1;
     s.connections(c).direction = 'Cx1->midE';
@@ -226,7 +227,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
 
     % Contex Cx2 -> midE [10-12]
     Cx2conn = tempconn;
-    Cx2conn(:, d1:d2) =  1;
+    Cx2conn(:, cx2_1:cx2_2) =  1;
 
     c = length(s.connections)+1;
     s.connections(c).direction = 'Cx2->midE';
