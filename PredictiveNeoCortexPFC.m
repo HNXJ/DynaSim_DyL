@@ -188,7 +188,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     fprintf("Connecting separate layers and inputs...\n");
     tempconn = zeros(Nio, Ne);
     
-    % Input SA -> midE [1-3]
+    % Input SA -> midE [1-4]
     Aconn = tempconn;
     Aconn(:, a1:a2) =  1;
 
@@ -202,7 +202,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
     
-    % Input SB -> midE [4-6]
+    % Input SB -> midE [5-8]
     Bconn = tempconn;
     Bconn(:, b1:b2) =  1;
     
@@ -216,7 +216,21 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
 
-    % Contex Cx1 -> midE [7-9]
+    % Input SC -> midE [9-12]
+    Cconn = tempconn;
+    Cconn(:, c1:c2) =  1;
+    
+    c = length(s.connections)+1;
+    s.connections(c).direction = 'SC1->midE';
+    s.connections(c).mechanism_list={'iAMPActx'};
+    s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Cconn};
+    
+    c = length(s.connections)+1;
+    s.connections(c).direction = 'SC2->midE';
+    s.connections(c).mechanism_list={'iAMPActx'};
+    s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Cconn};
+    
+    % Contex Cx1 -> midE [13-16]
     Cx1conn = tempconn;
     Cx1conn(:, cx1_1:cx1_2) =  1;
 
@@ -225,7 +239,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Cx1conn};
 
-    % Contex Cx2 -> midE [10-12]
+    % Contex Cx2 -> midE [17-20]
     Cx2conn = tempconn;
     Cx2conn(:, cx2_1:cx2_2) =  1;
 
