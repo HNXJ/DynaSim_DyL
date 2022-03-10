@@ -1,4 +1,4 @@
-function ifr_compare_plot_p(data, pool1, pool2, r1, r2, r3)
+function ifr_compare_plot_p(data, pool1, pool2, r1, r2, r3, r4, kernel_size)
 
     clc;
 
@@ -7,7 +7,7 @@ function ifr_compare_plot_p(data, pool1, pool2, r1, r2, r3)
 
     figure();
     patch([r1 r2 r2 r1], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
-    patch([r2 r3 r3 r2], [-30 -30 +30 +30], [0.9 0.5 0.9]);hold("on");
+    patch([r3 r4 r4 r3], [-30 -30 +30 +30], [0.9 0.5 0.9]);hold("on");
 
     for i = 1:size(data, 2)
         
@@ -17,8 +17,8 @@ function ifr_compare_plot_p(data, pool1, pool2, r1, r2, r3)
         raster = computeRaster(t, x);
         
 %         disp(size(raster));
-        O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool1, 25, 1, 1);
-        O2 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool2, 25, 1, 1);
+        O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool1, kernel_size, 1, 1);
+        O2 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool2, kernel_size, 1, 1);
         plot(t, O1 - O2, 'o');hold("on");
 
     end
