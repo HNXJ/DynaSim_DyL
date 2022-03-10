@@ -24,7 +24,7 @@ function ifr_compare_plot_p(data, pool1, pool2, r1, r2, r3)
     end
 
     grid("on");title("iFR(O1) - iFR (O2)");xlabel("time (ms)");ylabel("iFR difference");
-    legend("Target interval", "A", "B", "C", "No stimulus");
+    legend("First Cue interval", "Second cue", "A", "B", "C", "No stimulus");
     fprintf("Done.\n");
 
 end

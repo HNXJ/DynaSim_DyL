@@ -38,7 +38,8 @@ m.run_simulation(vary1, simulator_options);
 
 clc;
 cue_states = [4, 6, 7, 8];
-dsPlot(m.data(cue_states),'plot_type','raster'); % Raster
+a = m.data(cue_states);
+dsPlot(a,'plot_type','raster'); % Raster
 
 %% Extract outputs & compare
 
