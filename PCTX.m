@@ -37,12 +37,14 @@ m.run_simulation(vary1, simulator_options);
 %% Plots results (normal/raster)
 
 clc;
-dsPlot(m.data,'plot_type','raster'); % Raster
+cue_states = [4, 6, 7, 8];
+dsPlot(m.data(cue_states),'plot_type','raster'); % Raster
 
 %% Extract outputs & compare
 
 clc;  
-ifr_compare_plot_8(m.data, 1:10, 11:20, 150, 250, 350);
+cue_states = [4, 6, 7, 8];
+ifr_compare_plot_p(m.data(cue_states), 1:10, 11:20, 150, 250, 350);
 
 %% Trial: training script
 

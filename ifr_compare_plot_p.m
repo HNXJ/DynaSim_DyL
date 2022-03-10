@@ -1,4 +1,4 @@
-function ifr_compare_plot_8(data, pool1, pool2, r1, r2, r3)
+function ifr_compare_plot_p(data, pool1, pool2, r1, r2, r3)
 
     clc;
 
@@ -9,7 +9,7 @@ function ifr_compare_plot_8(data, pool1, pool2, r1, r2, r3)
     patch([r1 r2 r2 r1], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
     patch([r2 r3 r3 r2], [-30 -30 +30 +30], [0.9 0.5 0.9]);hold("on");
 
-    for i = 1:8
+    for i = 1:size(data, 2)
         
         t = data(i).time;
         x = data(i).deepE_V;
@@ -24,7 +24,7 @@ function ifr_compare_plot_8(data, pool1, pool2, r1, r2, r3)
     end
 
     grid("on");title("iFR(O1) - iFR (O2)");xlabel("time (ms)");ylabel("iFR difference");
-    legend("Target interval", "ABC", "AB", "AC", "BC", "A", "B", "C", "No stimulus");
+    legend("Target interval", "A", "B", "C", "No stimulus");
     fprintf("Done.\n");
 
 end
