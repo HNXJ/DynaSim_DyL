@@ -16,15 +16,15 @@ m = DynaModelVary(s);
 
 %% Simulate (Test of all scenarios)
 
-g_poisson = 6.4e-4;
-tspan = [0 350]; % [beg, end] (ms)
+g_poisson = 6.3e-4;
+tspan = [0 500]; % [beg, end] (ms)
 simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag',1, 'mex_flag',0 };
 % simulator_options = {'dv/dt=0', 'mex_flag', 1};
 
-vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 4e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', [100 250]; 'SA', 'offset_poisson', 250;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 4e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', [100 250]; 'SB', 'offset_poisson', 250;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 4e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 250; 'Cx1', 'offset_poisson', 250;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 100; 'Cx2', 'offset_poisson', 250};
+vary = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 4e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', [150 350]; 'SA', 'offset_poisson', 350;
+       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 4e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', [150 350]; 'SB', 'offset_poisson', 350;
+       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 4e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 350; 'Cx1', 'offset_poisson', 350;
+       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 150; 'Cx2', 'offset_poisson', 350};
    
 % data1 = dsSimulate(s, 'vary', vary, simulator_options{:});
 m.run_simulation(vary, simulator_options); 
@@ -36,8 +36,8 @@ dsPlot(m.data,'plot_type','raster'); % Raster
 
 %% Extract outputs & compare
 
-clc; 
-ifr_compare_plot(m.data, 1:6, 7:12, 100, 250);
+clc;  
+ifr_compare_plot(m.data, 1:6, 7:12, 150, 350);
 
 %% Trial: training script
 
@@ -88,7 +88,7 @@ vary6 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 120; 'Cx2', 'offset_poisson', 280};
    
 varies = [{vary1}, {vary2}, {vary3}, {vary4}, {vary5}, {vary6}];
-input_labels = ['A_C1', 'B_C1', 'A_C2', 'B_C2', 'N_C1', 'N_C2'];
+input_labels = ["A_C1", "B_C1", "A_C2", 'B_C2', 'N_C1', 'N_C2'];
 batch_size = 6;
 verbose = 1;
 

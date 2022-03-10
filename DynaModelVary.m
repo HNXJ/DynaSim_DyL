@@ -15,7 +15,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
     
         last_trial = 0; % Last trial; how many times this model have been trianed with stimuli.
         last_outputs = []; % Last output (eg. spike vector) of this model.
-        last_error = []; % Last error of this model for target, equivalent to the last value of errors_log property
+        last_error = 0; % Last error of this model for target, equivalent to the last value of errors_log property
         last_targets = []; % Last expected output that this model should've generated.
         
     end
@@ -245,9 +245,9 @@ classdef DynaModelVary < matlab.mixin.SetGet
 % %             set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_tspan));
 %             obj.update_error(params.error_mode);
 %             
-%             if params.verbose
-%                 fprintf("Trial no. %d, %s = %f", obj.last_trial, params.error_mode, obj.last_error);
-%             end
+            if params.verbose
+                fprintf("Trial no. %d, %s = %f\n", obj.last_trial, params.error_mode, obj.last_error);
+            end
 % %               fprintf("Trial no. %d", obj.last_trial);
 %             obj.train_step(params.lambda, params.update_mode);
             
