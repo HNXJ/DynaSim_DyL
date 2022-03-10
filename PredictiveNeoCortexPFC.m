@@ -206,7 +206,12 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     Bconn(:, b1:b2) =  1;
     
     c = length(s.connections)+1;
-    s.connections(c).direction = 'SB->midE';
+    s.connections(c).direction = 'SB1->midE';
+    s.connections(c).mechanism_list={'iAMPActx'};
+    s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
+    
+    c = length(s.connections)+1;
+    s.connections(c).direction = 'SB1->midE';
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
 
