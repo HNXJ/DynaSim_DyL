@@ -152,7 +152,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function [c, e] = get_potentials(obj)
+        function [c, e, t] = get_potentials(obj)
             
             d = obj.data;
             cl = fieldnames(d);
@@ -160,7 +160,7 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
             c = [];
             e = [];
-            t = m.data.time;
+            t = d.time;
             
             for i = 1:size(cl, 1)
                 if contains(cl(i), '_V')
