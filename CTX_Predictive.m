@@ -24,9 +24,9 @@ simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor'
 
 vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson', 0; 'SA1', 'onset_poisson', [150 250]; 'SA1', 'offset_poisson', 250;
        'SA2','g_poisson', g_poisson; 'SA2','DC_poisson', 4e7;'SA2','AC_poisson', 0; 'SA2', 'onset_poisson', 250; 'SA2', 'offset_poisson', 350;
-       'SB1','g_poisson', g_poisson; 'SB1','DC_poisson', 4e7;'SB1','AC_poisson', 0; 'SB1', 'onset_poisson', [150 250]; 'SB1', 'offset_poisson', 250;
+       'SB1','g_poisson', g_poisson; 'SB1','DC_poisson', 4e7;'SB1','AC_poisson', 0; 'SB1', 'onset_poisson', [250]; 'SB1', 'offset_poisson', 250;
        'SB2','g_poisson', g_poisson; 'SB2','DC_poisson', 4e7;'SB2','AC_poisson', 0; 'SB2', 'onset_poisson', 250; 'SB2', 'offset_poisson', 350;
-       'SC1','g_poisson', g_poisson; 'SC1','DC_poisson', 4e7;'SC1','AC_poisson', 0; 'SC1', 'onset_poisson', [150 250]; 'SC1', 'offset_poisson', 250;
+       'SC1','g_poisson', g_poisson; 'SC1','DC_poisson', 4e7;'SC1','AC_poisson', 0; 'SC1', 'onset_poisson', [250]; 'SC1', 'offset_poisson', 250;
        'SC2','g_poisson', g_poisson; 'SC2','DC_poisson', 4e7;'SC2','AC_poisson', 0; 'SC2', 'onset_poisson', 250; 'SC2', 'offset_poisson', 350;
        'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 4e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 150; 'Cx1', 'offset_poisson', 350;
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 350; 'Cx2', 'offset_poisson', 350};
@@ -44,7 +44,7 @@ dsPlot(a,'plot_type','raster'); % Raster
 %% Extract outputs & compare
 
 clc;  
-cue_states = [4, 6, 7, 8];
+cue_states = [1:2];
 ifr_compare_plot_p(m.data(cue_states), 1:10, 11:20, 150, 240, 260, 350, 51);
 
 %% Trial: training script
