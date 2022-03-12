@@ -152,7 +152,21 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function o = get_outputs(obj, target_label, target_cells, target_tspan)
+        function c = get_connections_list(obj)
+            
+            st = obj.data.model.fixed_variables;
+            cl = fieldnames(st);
+            c = [];
+            
+            for i = 1:size(cl, 1)
+                if contains(cl(i), '_netcon')
+                    c = [c; cl(i)];
+                end
+            end
+            
+        end
+        
+        function o = get_potentials(obj, target_label, target_cells, target_tspan)
             
             fn = fieldnames(obj.data);
             ind = strcmp(fn, target_label);
