@@ -152,25 +152,21 @@ classdef DynaModelVary < matlab.mixin.SetGet
             
         end
         
-        function [c, e] = get_potentials(obj)
+        function c = get_potentials(obj)
             
             d = obj.data;
             cl = fieldnames(d);
-            dl = struct2cell(d);
-            
             c = [];
             e = [];
-            t = m.data.time;
             
             for i = 1:size(cl, 1)
                 if contains(cl(i), '_V')
                     c = [c; cl(i)];
-                    e = [e; dl(i, 1, 1)];
+                    e = [e; 
                 end
             end
             
         end
-        
         function o = get_outputs(obj, target_label, target_cells, target_tspan)
             
             fn = fieldnames(obj.data);

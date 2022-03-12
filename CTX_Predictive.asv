@@ -138,7 +138,7 @@ toc;
 
 %% Electrophysiological simulations
 
-[c, e, t] = m.get_potentials();
+[c, e] = m.get_potentials();
 
 figure();
-plot(e
+plot(
