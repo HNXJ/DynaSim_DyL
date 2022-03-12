@@ -140,11 +140,15 @@ toc;
 
 clc;
 [c, e, t] = m.get_potentials();
-
-k = 6;
 figure();
-plot(t, mean(e{k, 1}, 2));
-title("LFP of " + c{k, 1});
-grid("on");
+
+for k = 1:6
+    
+    subplot(3, 2, k);
+    plot(t, mean(e{k, 1}, 2));
+    title("LFP of " + c{k, 1});
+    grid("on");
+    
+end
 
 %%

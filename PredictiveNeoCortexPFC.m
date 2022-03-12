@@ -82,7 +82,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
 %     noise_rate = 12;
 
     % neuronal dynamics
-    eqns = 'dV/dt = (Iapp + @current + noise*randn(1,Npop))/C; Iapp=0; noise=0; C=1';
+    eqns = 'dV/dt = (Iapp + @current + noise*randn(1, Npop))/C; Iapp=0; noise=0; C=1; V(0) = -rand(1, Npop)*20;';
 
     % SPN
 %     g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs 
