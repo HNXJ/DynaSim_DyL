@@ -1,6 +1,7 @@
 %% 3-layer neocortical model of PFC / Predictive task
 
 % Manually determined weights version. 
+% memoize.m -> suspended due to an error
 
 %% Model parameters
 
