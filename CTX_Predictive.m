@@ -14,7 +14,7 @@ s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 %% Create Dynamodel Class (variational)
 
-m = DynaModelVary(s);
+m = DynaLearn(s);
 
 %% Simulate (Test of all scenarios)
 
