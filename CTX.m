@@ -2,6 +2,10 @@
 
 % Manually determined weights version. 
 
+clc;
+d = dsSimulate('dv/dt=0', 'mex_flag', 1);
+disp("Done");
+
 %% Model parameters
 
 clear;
