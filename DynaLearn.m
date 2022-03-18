@@ -13,7 +13,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         errors_log = []; % Log of errors since first trial.
         connections = []; % List of connection names.
     
-        last_trial = 0; % Last trial; how many times this model have been trianed with stimuli.
+        trial_number = 0; % Last trial; how many times this model have been trianed with stimuli.
         last_outputs = []; % Last output (eg. spike vector) of this model.
         last_error = 0; % Last error of this model for target, equivalent to the last value of errors_log property
         last_targets = []; % Last expected output that this model should've generated.
@@ -88,9 +88,9 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function set.last_trial(obj, val)
+        function set.trial_number(obj, val)
              
-             obj.last_trial = floor(double(val));
+             obj.trial_number = floor(double(val));
              
         end
         
@@ -140,7 +140,9 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function c = get_connections_list(obj)
             
-            st = obj.data.model.fixed_variables;
+            p = load("params.mat");
+            st = p.p;
+            disp(st);
             cl = fieldnames(st);
             c = [];
             
@@ -249,7 +251,9 @@ classdef DynaLearn < matlab.mixin.SetGet
         function obj = run_simulation(obj, vary, opt)
             
             fprintf("Running simulation ...\n");
-            set(obj, 'data', obj.simulate(vary, opt));
+            p = load("solve/params.mat");
+            disp(p);
+%             set(obj, 'data', obj.simulate(vary, opt));
             fprintf("Simulation done.\n"); 
             
         end

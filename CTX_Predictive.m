@@ -43,7 +43,7 @@ toc;
 
 %% Parameters
 
-ap = load("solve/params.mat");
+p = load("solve/params.mat");
 
 %% Plots results (normal/raster)
 
