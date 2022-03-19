@@ -259,7 +259,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function obj = run_trial(obj, params)
+        function obj = run_trial(obj, params)% TODO
             
             set(obj, 'last_trial', get(obj, 'last_trial') + 1);
             set(obj, 'data', obj.simulate(params.vary, params.simulation_options));
@@ -277,7 +277,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function train_step(obj, lambda, mode) 
+        function train_step(obj, lambda, mode) % TODO
                             
             error = get(obj, 'last_error');
             
@@ -297,7 +297,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function update_weights_normal(obj, lambda, error)
+        function update_weights_normal(obj, lambda, error)% TODO
             
             for i = 1:size(obj.connections, 1)
                 
@@ -317,7 +317,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function update_weights_uniform(obj, lambda, error)
+        function update_weights_uniform(obj, lambda, error)% TODO
             
             for i = 1:size(obj.connections, 1)
                 
@@ -337,7 +337,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function update_weights_constant(obj, lambda, error)
+        function update_weights_constant(obj, lambda, error)% TODO
             
             for i = 1:size(obj.connections, 1)
                 
@@ -354,7 +354,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function update_weight(obj, connection, Wn)
+        function update_weight(obj, connection, Wn)% TODO
             
             model_n = get(obj, 'model');
             model_n.connections(connection).parameters = {'netcon', Wn};
