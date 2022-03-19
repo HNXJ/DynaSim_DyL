@@ -24,13 +24,13 @@ classdef DynaLearn < matlab.mixin.SetGet
 
         function obj = DynaLearn(varargin) % Constructors, will be expanded
             
-            disp("Creaging Dyna model object ... ");
+            disp("Creating Dyna model object ... ");
             if nargin == 1
                 
                 if isstruct(varargin{1})
                     
                     vary = [];tspan = [0 1];
-                    opt = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 0};
+                    opt = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'mex_flag', 1};
                     model_ = varargin{1};           
                     
                     set(obj, 'model', model_);
@@ -140,10 +140,11 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function c = get_connections_list(obj)
             
-            p = load("params.mat");
+            p = load("solve/params.mat");
             st = p.p;
-            disp(st);
             cl = fieldnames(st);
+            
+            disp(cl);
             c = [];
             
             for i = 1:size(cl, 1)

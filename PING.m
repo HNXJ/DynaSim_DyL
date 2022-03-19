@@ -12,25 +12,20 @@ function y = PING(Ne, Ni, Nio, noise_rate)
     % E->I
     Kei = k1*rand(Ne, Ni) + 0.3; % all-to-all, connectivity from E cells to I cells; mid, sup, deep
     % I->E
-    Kie = k1*rand(Ni, Ne) + 0.3; % all-to-all, connectivity from I cells to E cells; mid, sup, deep
+    Kie = k1*rand(Ni, Ne) + 0.3; % all-to-all
 
     % E->E
     Kee = k1*rand(Ne, Ne) + k2; % recurrent E-to-E: mid, sup, deep
     Kii = k1*rand(Ni, Ni) + k2; % recurrent I-to-I: mid, sup, deep
-%     Kffee = k1*rand(Ne, Ne) + k2; % feedforward E-to-E: mid->sup, sup->deep
-%     Kffie = k1*rand(Ni, Ne) + k2; % feedforward I-to-E: mid->deep
 
     kzio = zeros(Nio, Nio);
-    KdeepEI = Kie * 1.5;
 
     a1 = 1;a2 = ceil(1*Ne/2);
     b1 = ceil(1 + 1*Ne/2);b2 = ceil(2*Ne/2);
 
     % Time constants
     tauGABA_gamma = 4.8; % ms, decay time constant of inhibition for gamma (50Hz)
-    tauGABA_beta = 38.4; % ms, decay time constant of inhibition for beta (25Hz)
     tauAMPA = 4.8; % ms, decay time constant of fast excitation (AMPA)
-%     tauAMPA_beta = 38.4;
 
     % Maximal synaptic strengths
     gAMPA_ei = .2*(20/Ne); % E->I within layer
@@ -43,17 +38,7 @@ function y = PING(Ne, Ni, Nio, noise_rate)
 
     % neuronal dynamics
     eqns = 'dV/dt = (Iapp + @current + noise*randn(1, Npop))/C; Iapp=0; noise=0; C=1; V(0) = -rand(1, Npop)*20;';
-
-    % SPN
-%     g_l_D1 = 0.096;      % mS/cm^2, Leak conductance for D1 SPNs 
-%     g_l_D2 = 0.1;        % mS/cm^2, Leak conductance for D2 SPNs
-%     g_cat_D1 = 0.018;    % mS/cm^2, Conductance of the T-type Ca2+ current for D1 SPNs
-%     g_cat_D2 = 0.025;    % mS/cm^2, Conductance of the T-type Ca2+ current for D2 SPNs
-
     g_poisson = 6.4e-4;
-
-    % cell type
-%     spn_cells = {'spn_iNa','spn_iK','spn_iLeak','spn_iM','spn_iCa','spn_CaBuffer','spn_iKca', 'ctx_iPoisson'};
     ctx_cells = {'iNa','iK', 'ctx_iPoisson'};
 
     cell_type = ctx_cells; % choose spn_cells and ctx_cells
@@ -129,7 +114,7 @@ function y = PING(Ne, Ni, Nio, noise_rate)
     IOping.connections(4).parameters = {'gAMPA',gAMPA_ei,'tauAMPA',tauAMPA,'netcon',kzio};
 
     % create independent layers
-    p = dsApplyModifications(ping,{'E','name','E'; 'I','name','I'}); % PING
+    p = dsApplyModifications(ping,{'E','name','E1'; 'I','name','I1'}); % PING
     stim = dsApplyModifications(IOping,{'E','name','S1'; 'I','name','S2'}); % I/O layer (stimuli)
 
     % create full cortical specification
@@ -139,21 +124,21 @@ function y = PING(Ne, Ni, Nio, noise_rate)
     fprintf("Connecting separate layers and inputs...\n");
     tempconn = zeros(Nio, Ne);
     
-    % Input SA -> midE [1-4]
+    % Input S1 -> E1 [1]
     Aconn = tempconn;
     Aconn(:, a1:a2) =  1;
 
     c = length(s.connections) + 1;
-    s.connections(c).direction = 'S1->E';
+    s.connections(c).direction = 'S1->E1';
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Aconn};
     
-    % Input SB -> midE [5-8]
+    % Input S2 -> E2 [2]
     Bconn = tempconn;
     Bconn(:, b1:b2) =  1;
     
     c = length(s.connections)+1;
-    s.connections(c).direction = 'S2->midE';
+    s.connections(c).direction = 'S2->E1';
     s.connections(c).mechanism_list={'iAMPActx'};
     s.connections(c).parameters={'gAMPA',gAMPA_in,'tauAMPA',tauAMPA,'netcon',Bconn};
    
