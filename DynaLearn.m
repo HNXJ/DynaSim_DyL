@@ -174,7 +174,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function o = get_outputs(obj, target_label, target_cells, target_tspan)
+        function o = get_outputs(obj, target_label, target_cells, target_tspan)% TODO
             
             fn = fieldnames(obj.data);
             ind = strcmp(fn, target_label);
@@ -203,7 +203,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         end
         
-        function obj = update_error(obj, mode)
+        function obj = update_error(obj, mode)% TODO
             
             output = obj.get_outputs_ifr();
             target = get(obj, 'last_targets');
@@ -249,7 +249,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function obj = run_simulation(obj, vary, opt)
+        function obj = run_simulation(obj, vary, opt) % TODO
             
             fprintf("Running simulation ...\n");
             p = load("solve/params.mat");
