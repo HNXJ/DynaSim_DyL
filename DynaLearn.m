@@ -362,7 +362,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function w = get_weight(obj, connection)
+        function w = get_weight(obj, connection) % TODO
             
             w_s = obj.data.model.fixed_variables;
             w_c = struct2cell(w_s);
@@ -371,7 +371,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function error_plot(obj, error_title)
+        function error_plot(obj, error_title) % TODO
            
             errors = get(obj, 'errors_log');
             figure("Position", [50 75 1450 575]);
