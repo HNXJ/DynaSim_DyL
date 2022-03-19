@@ -10,7 +10,8 @@ clc;
 
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 % s = NeoCortexPFC(Ne, Ni, Nio, noise_rate);
-s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
+s = PING(Ne, Ni, Nio, noise_rate);
+% s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 %% Create Dynamodel Class (variational)
 
