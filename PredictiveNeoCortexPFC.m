@@ -177,7 +177,7 @@ function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
     stimuli3 = dsApplyModifications(IOping,{'E','name','SB2'; 'I','name','SC2'}); % I/O layer (stimuli)
     contex = dsApplyModifications(IOping,{'E','name','Cx1'; 'I','name','Cx2'}); % I/O layer (contex)
 
-    % uppdate deep layer parameters to produce beta rhythm (25Hz)
+    % update deep layer parameters to produce beta rhythm (25Hz)
     deep = dsApplyModifications(deep,{'deepI->deepE','tauGABA',tauGABA_beta});
     deep = dsApplyModifications(deep,{'deepI->deepE','netcon',KdeepEI});
 
