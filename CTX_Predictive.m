@@ -32,7 +32,8 @@ vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson
        'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 4e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 150; 'Cx1', 'offset_poisson', 350;
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 350; 'Cx2', 'offset_poisson', 350};
 
-data1 = dsSimulate(s, 'vary', vary1, simulator_options{:});
+% data1 = dsSimulate(s, 'vary', vary1, simulator_options{:});
+data2 = dsSimulate(s, simulator_options{:});
 % m.run_simulation(vary1, simulator_options); 
 
 %% MEX run
