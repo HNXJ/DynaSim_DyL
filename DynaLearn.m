@@ -155,7 +155,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function [c, e, t] = get_potentials(obj)
+        function [c, e, t] = get_potentials(obj)% TODO
             
             d = obj.data;
             cl = fieldnames(d);
