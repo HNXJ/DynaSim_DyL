@@ -9,7 +9,7 @@ classdef DynaLearn < matlab.mixin.SetGet
     properties
         
         model = []; % Dynasim's model struct, containing model's populations (layers) and connections, mechanisms ... .
-        data = []; % Output data of last simulation.
+        data = "solve/params.mat"; % Output data of last simulation.
         errors_log = []; % Log of errors since first trial.
         connections = []; % List of connection names.
     
@@ -29,22 +29,21 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
                 if isstruct(varargin{1})
                     
-                    vary = [];tspan = [0 1];
-                    opt = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'mex_flag', 1};
-                    model_ = varargin{1};           
-                    
+                    model_ = varargin{1};
                     set(obj, 'model', model_);
-                    set(obj, 'data', obj.init(vary, opt));
                     set(obj, 'connections', obj.get_connections_list());
                     
-                elseif isstring(varargin{1}) || ischar(varargin{1})
+                elseif nargin == 2
                     
-                    filename_ = varargin{1};                
-                    l = obj.load_model(filename_);    
-                    obj = l;
+                    model_ = varargin{1};  
+                    data_ = varargin{2};
+                    
+                    set(obj, 'model', model_);
+                    set(obj, 'data', data_);
+                    set(obj, 'connections', obj.get_connections_list());
                     
                 else
-                    disp('invalid use of DynaNet; pass a filename or a struct of DynaSim.');
+                    disp('Invalid use of DynaNet; pass a DynaSim struct and then address of parameters dataset file.');
                 end
                 
             end  
@@ -112,27 +111,13 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function save_model(obj, filename)
-             
-             save(filename, 'obj');
-             
-        end
-        
-        function l = load_model(filename)
-
-             l = load(filename);
-             l = l.obj;
-             fprintf("Model loaded from : %s \n", filename);
-             
-        end
-        
-        function o = init(obj, vary, opt) % Initializer
+        function o = init(obj, vary, opt) % Initializer TODO
             
             o = dsSimulate(obj.model, 'vary', vary, opt{:});
         
         end
         
-        function o = simulate(obj, vary, opt) % DynaSimulator
+        function o = simulate(obj, vary, opt) % DynaSimulator TODO
             
             o = dsSimulate(obj.model, 'vary', vary, opt{:});
       
@@ -140,11 +125,10 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function c = get_connections_list(obj)
             
-            p = load("solve/params.mat");
+            p = load(obj.data);
             st = p.p;
             cl = fieldnames(st);
-            
-            disp(cl);
+            disp(obj.data);
             c = [];
             
             for i = 1:size(cl, 1)
