@@ -25,28 +25,26 @@ classdef DynaLearn < matlab.mixin.SetGet
         function obj = DynaLearn(varargin) % Constructors, will be expanded
             
             disp("Creating Dyna model object ... ");
+            
             if nargin == 1
-                
-                if isstruct(varargin{1})
+
+                model_ = varargin{1};
+                set(obj, 'model', model_);
+                set(obj, 'connections', obj.get_connections_list());
                     
-                    model_ = varargin{1};
-                    set(obj, 'model', model_);
-                    set(obj, 'connections', obj.get_connections_list());
+            elseif nargin == 2
                     
-                elseif nargin == 2
+                model_ = varargin{1};  
+                data_ = varargin{2};
+
+                set(obj, 'model', model_);
+                set(obj, 'data', data_);
+                set(obj, 'connections', obj.get_connections_list());
                     
-                    model_ = varargin{1};  
-                    data_ = varargin{2};
-                    
-                    set(obj, 'model', model_);
-                    set(obj, 'data', data_);
-                    set(obj, 'connections', obj.get_connections_list());
-                    
-                else
-                    disp('Invalid use of DynaNet; pass a DynaSim struct and then address of parameters dataset file.');
-                end
-                
-            end  
+            else
+                disp('Invalid use of DynaNet; pass a DynaSim struct and then address of parameters dataset file.');
+            end
+          
             disp("Dyna model created.");
             
         end
@@ -62,8 +60,8 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function set.data(obj, val)
             
-             if ~isstruct(val) 
-                error('Data must be a struct');
+             if ~strcmpi(class(val), 'string') 
+                error('Data must be an address, a string');
              end
              obj.data = val;
              
@@ -128,7 +126,6 @@ classdef DynaLearn < matlab.mixin.SetGet
             p = load(obj.data);
             st = p.p;
             cl = fieldnames(st);
-            disp(obj.data);
             c = [];
             
             for i = 1:size(cl, 1)
