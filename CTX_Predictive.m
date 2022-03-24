@@ -21,7 +21,7 @@ m = DynaLearn(s, "solve/params2.mat");
 
 g_poisson = 6.3e-4;
 tspan = [0 500]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'mex_flag', 1};
+simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'mex_flag', 0};
 
 vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson', 0; 'SA1', 'onset_poisson', [150 250]; 'SA1', 'offset_poisson', 250;
        'SA2','g_poisson', g_poisson; 'SA2','DC_poisson', 4e7;'SA2','AC_poisson', 0; 'SA2', 'onset_poisson', 250; 'SA2', 'offset_poisson', 350;
@@ -33,7 +33,6 @@ vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson
        'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 4e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 350; 'Cx2', 'offset_poisson', 350};
 
 data1 = dsSimulate(s, 'vary', vary1, simulator_options{:});
-% data2 = dsSimulate(s, simulator_options{:});
 % m.run_simulation(vary1, simulator_options); 
 
 %% MEX run
