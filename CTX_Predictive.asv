@@ -14,15 +14,27 @@ Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 % s = PING(5, 1, 2, noise_rate);
 s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
-%% Create Dynamodel Class (variational)
+model = dsGenerateModel(s);
+output_variables=cat(2,'time',model.state_variables);
+if ~isempty(model.monitors)
+  output_variables=cat(2,output_variables,fieldnames(model.monitors)');
+end
+if ~isempty(model.fixed_variables)
+  fields=fieldnames(model.fixed_variables)';
+  output_variables=cat(2,output_variables,fields);
+end
+outputs=cell(1,length(output_variables));
+% [outputs{1:length(output_variables)}] = feval(mexfile);
 
-m = DynaLearn(s, "solve/params2.mat");
+%% Create DynaLearn Class (variational)
+
+m = DynaLearn(s, "solve/params.mat");
 
 %% Simulate (Test of all scenarios)
 
 g_poisson = 6.3e-4;
 tspan = [0 500]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'mex_flag', 0};
+simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, '', '', 'mex_flag', 0};
 
 vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson', 0; 'SA1', 'onset_poisson', [150 250]; 'SA1', 'offset_poisson', 250;
        'SA2','g_poisson', g_poisson; 'SA2','DC_poisson', 4e7;'SA2','AC_poisson', 0; 'SA2', 'onset_poisson', 250; 'SA2', 'offset_poisson', 350;

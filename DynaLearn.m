@@ -9,7 +9,7 @@ classdef DynaLearn < matlab.mixin.SetGet
     properties
         
         model = []; % Dynasim's model struct, containing model's populations (layers) and connections, mechanisms ... .
-        data = "solve/params.mat"; % Output data of last simulation.
+        data = "solve"; % Output data of last simulation.
         errors_log = []; % Log of errors since first trial.
         connections = []; % List of connection names.
     
@@ -123,7 +123,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function c = get_connections_list(obj)
             
-            p = load(obj.data);
+            p = load(obj.data + "/solve/params.mat");
             st = p.p;
             cl = fieldnames(st);
             c = [];
