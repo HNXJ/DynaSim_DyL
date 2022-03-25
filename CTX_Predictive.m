@@ -18,8 +18,10 @@ s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 clc;
 mexfile = "solve_ode_20220324215352_101_mex";
-[out, vars] = dsGetOutputList(s); 
-out{:} = feval(mexfile);
+[out, vars] = dsGetOutputList(s);
+
+mh = mexhost;
+out{:} = feval(mh, mexfile);
 
 %% Create DynaLearn Class (variational)
 
