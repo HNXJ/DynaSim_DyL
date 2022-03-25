@@ -21,7 +21,8 @@ mexfile = "solve_ode_20220324215352_101_mex";
 [out, vars] = dsGetOutputList(s);
 
 mh = mexhost;
-out{:} = feval(mh, mexfile);
+% out{:} = feval(mh, mexfile);
+out{:} = solve_ode_20220324215352_101_mex();
 
 %% Create DynaLearn Class (variational)
 
