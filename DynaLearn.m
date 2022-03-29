@@ -19,7 +19,8 @@ classdef DynaLearn < matlab.mixin.SetGet
         last_targets = []; % Last expected output that this model should've generated.
         
         dsData = []; % Last simulation outputs
-        
+        outputs = []; % Mex outputs
+        variables = []; % Mex variable labels
     end
     
     methods
@@ -119,7 +120,8 @@ classdef DynaLearn < matlab.mixin.SetGet
         function init(obj, studydir) % Initializer TODO
             
             tspan = [0 10];
-            simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', studydir, 'mex_flag', 1};
+            simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, ...
+                        'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', studydir, 'mex_flag', 0};
             obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
             
         end
