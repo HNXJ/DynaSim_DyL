@@ -21,6 +21,8 @@ classdef DynaLearn < matlab.mixin.SetGet
         dsData = []; % Last simulation outputs
         outputs = []; % Mex outputs
         variables = []; % Mex variable labels
+        mex_func_name = []; % Name of Mex function (e.g **********_mex.mex64
+        
     end
     
     methods
@@ -126,9 +128,11 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function o = simulate(obj, vary, opt) % DynaSimulator TODO
+        function o = simulate(obj) % DynaSimulator TODO
             
-            o = dsSimulate(obj.model, 'vary', vary, opt{:});
+            mexfile = obj.mex_func_name;
+            mh = mexhost;
+            [obj.outputs] = feval(mh, mexfile);
       
         end
         
