@@ -9,7 +9,7 @@ classdef DynaLearn < matlab.mixin.SetGet
     properties
         
         model = []; % Dynasim's model struct, containing model's populations (layers) and connections, mechanisms ... .
-        data = "solve"; % Output data of last simulation.
+        data = 'solve'; % Output data of last simulation.
         errors_log = []; % Log of errors since first trial.
         connections = []; % List of connection names.
     
@@ -32,7 +32,7 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                 model_ = varargin{1};
                 set(obj, 'model', model_);
-                obj.init();
+                obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
             elseif nargin == 2
@@ -42,13 +42,16 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                 set(obj, 'model', model_);
                 set(obj, 'data', data_);
-                obj.init();
+                obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
             else
                 disp('Invalid use of DynaNet; pass a DynaSim struct and then address of parameters dataset file.');
             end
           
+            [out, vars] = dsGetOutputList(obj.model);
+            set(obj, 'outputs', out);
+            set(obj, 'variables', vars);
             disp("Dyna model created.");
             
         end
@@ -64,7 +67,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function set.data(obj, val)
             
-             if ~strcmpi(class(val), 'string') 
+             if ~strcmpi(class(val), 'string') && ~strcmpi(class(val), 'char')
                 error('Data must be an address, a string');
              end
              obj.data = val;
@@ -113,10 +116,10 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function init(obj) % Initializer TODO
+        function init(obj, studydir) % Initializer TODO
             
-            tspan = [0 500];
-            simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', obj.data, 'mex_flag', 1};
+            tspan = [0 10];
+            simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', studydir, 'mex_flag', 1};
             obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
             
         end

@@ -18,6 +18,8 @@ classdef DynaLearn < matlab.mixin.SetGet
         last_error = 0; % Last error of this model for target, equivalent to the last value of errors_log property
         last_targets = []; % Last expected output that this model should've generated.
         
+        dsData = []; % Last simulation outputs
+        
     end
     
     methods
@@ -30,6 +32,7 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                 model_ = varargin{1};
                 set(obj, 'model', model_);
+                obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
             elseif nargin == 2
@@ -39,6 +42,7 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                 set(obj, 'model', model_);
                 set(obj, 'data', data_);
+                obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
             else
@@ -109,11 +113,12 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function o = init(obj, vary, opt) % Initializer TODO
+        function init(obj, studydir) % Initializer TODO
             
-            simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', 'model1', 'mex_flag', 1};
-
-            o = dsSimulate(s, simulator_options{:});
+            tspan = [0 500];
+            disp(
+            simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', studydir, 'mex_flag', 1};
+            obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
             
         end
         

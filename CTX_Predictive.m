@@ -26,7 +26,7 @@ mh = mexhost;
 
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, "model2/");
+m = DynaLearn(s, 'model2');
 
 %% Simulate (Test of all scenarios)
 
