@@ -11,8 +11,8 @@ clc;
 
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 % s = NeoCortexPFC(Ne, Ni, Nio, noise_rate);
-% s = PING(5, 1, 2, noise_rate);
-s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
+s = PING(5, 1, 2, noise_rate);
+% s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 %%
 
@@ -26,13 +26,13 @@ mh = mexhost;
 
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, "model1");
+m = DynaLearn(s, "model2");
 
 %% Simulate (Test of all scenarios)
 
 g_poisson = 6.3e-4;
 tspan = [0 500]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', 'model1', 'mex_flag', 1};
+simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, 'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', 'model2', 'mex_flag', 1};
 
 vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson', 0; 'SA1', 'onset_poisson', [150 250]; 'SA1', 'offset_poisson', 250;
        'SA2','g_poisson', g_poisson; 'SA2','DC_poisson', 4e7;'SA2','AC_poisson', 0; 'SA2', 'onset_poisson', 250; 'SA2', 'offset_poisson', 350;
