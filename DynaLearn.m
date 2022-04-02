@@ -35,7 +35,7 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                 model_ = varargin{1};
                 set(obj, 'dlModel', model_);
-                obj.init(obj.dlStudyDir);
+                obj.dlInit(obj.dlStudyDir);
                 set(obj, 'dlConnections', obj.dlGetConnectionsList());
                     
             elseif nargin == 2
@@ -48,7 +48,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 set(obj, 'dlStudyDir', data_);
 %                 set(obj, 'mex_func_name', mexn_);
                 
-                obj.init(obj.dlStudyDir);
+                obj.dlInit(obj.dlStudyDir);
                 set(obj, 'dlConnections', obj.dlGetConnectionsList());
                     
             else
@@ -122,9 +122,9 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function set.outputs(obj, val)
+        function set.dlOutputs(obj, val)
              
-            obj.outputs = val;
+            obj.dlOutputs = val;
              
         end
         
@@ -147,15 +147,20 @@ classdef DynaLearn < matlab.mixin.SetGet
             simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, ...
                         'downsample_factor', 10, 'verbose_flag', 1, ...
                         'study_dir', studydir, 'mex_flag', 1};
-            obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
-            set(obj, 'mex_func_name', obj.get_mex_name());
-            dsMexBridge(obj.mex_func_name);
+            obj.dsData = dsSimulate(obj.dlModel, 'vary', [], simulator_options{:});
+            
+        end
+        
+        function dlMexBridgeInit(obj)
+           
+            set(obj, 'dlMexFuncName', obj.dlGetMexName());
+            dlMexBridge('dlTempFunc.m', obj.dlMexFuncName);
             
         end
         
         function dlSimulate(obj) % DynaSimulator TODO
             
-            set(obj, 'outputs', dsTempFunc(obj.outputs));
+            set(obj, 'dlOutputs', dlTempFunc(obj.outputs));
       
         end
         

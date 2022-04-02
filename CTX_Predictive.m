@@ -26,7 +26,7 @@ mh = mexhost;
 
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, 'model1_ping');
+m = DynaLearn(s, 'model2_ping');
 
 %% Simulate (Test of all scenarios)
 
