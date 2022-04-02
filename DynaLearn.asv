@@ -80,45 +80,45 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function set.dlErrorsLog(obj, val)
+        function set.errorsLog(obj, val)
             
              if ~strcmpi(class(val), 'double') 
                 error('Errors log must be a double array');
              end
-             obj.dlErrorsLog = val;
+             obj.errors_log = val;
              
         end
         
-        function set.dlConnections(obj, val)
+        function set.connections(obj, val)
             
              if ~iscell(val) 
                 error('Connections must be a cell');
              end
-             obj.dlConnections = val;
+             obj.connections = val;
              
         end
         
-        function set.dlTrialNumber(obj, val)
+        function set.trial_number(obj, val)
              
-             obj.dlTrialNumber = floor(double(val));
-             
-        end
-        
-        function set.dlLastOutputs(obj, val)
-             
-             obj.dlLastOutputs = val;
+             obj.trial_number = floor(double(val));
              
         end
         
-        function set.dlLastError(obj, val)
+        function set.last_outputs(obj, val)
              
-             obj.dlLastError = val;
+             obj.last_outputs = val;
              
         end
         
-        function set.dlLastTargets(obj, val)
+        function set.last_error(obj, val)
              
-            obj.dlLastTargets = val;
+             obj.last_error = val;
+             
+        end
+        
+        function set.last_targets(obj, val)
+             
+            obj.last_targets = val;
              
         end
         
