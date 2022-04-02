@@ -38,14 +38,17 @@ classdef DynaLearn < matlab.mixin.SetGet
                 obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
-            elseif nargin == 2
+            elseif nargin == 3
                     
                 model_ = varargin{1};  
                 data_ = varargin{2};
-
+                mexn_ = varargin{3};
+                
                 set(obj, 'model', model_);
                 set(obj, 'data', data_);
-                obj.init(obj.data);
+                set(obj, 'mex_func_name', mexn_);
+                
+                obj.init(obj.data, obj.mex_func_name);
                 set(obj, 'connections', obj.get_connections_list());
                     
             else
@@ -119,20 +122,20 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function init(obj, studydir) % Initializer TODO
+        function init(obj, studydir, mexname) % Initializer TODO
             
             tspan = [0 10];
             simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, ...
-                        'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', studydir, 'mex_flag', 1};
+                        'downsample_factor', 10, 'verbose_flag', 1, ...
+                        'solve_file', mexname,'study_dir', studydir, 'mex_flag', 1};
             obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
-            ds
+            dsMexBridge(obj.mex_func_name);
             
         end
         
-        function o = simulate(obj) % DynaSimulator TODO
+        function simulate(obj) % DynaSimulator TODO
             
-            mexfile = obj.mex_func_name;
-            [obj.outputs] = dsRunMex(mexfile);
+            set(obj, 'outputs', dsTempFunc(obj.outputs));
       
         end
         
