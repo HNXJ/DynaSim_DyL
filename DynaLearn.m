@@ -23,6 +23,8 @@ classdef DynaLearn < matlab.mixin.SetGet
         dlVariables = []; % Mex variable labels
         dlMexFuncName = []; % Name of Mex function (e.g **********_mex.mex64
         
+        dlPath = []; % Path which contains params.mat, mexfuncs, solver ...
+        
     end
     
     methods
@@ -132,9 +134,9 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function [s] = dlGetMexName(obj)
             
-            path = [obj.dlStudyDir, '/solve'];
-            addpath(path);
-            d = dir(path);
+            obj.dlPath = [obj.dlStudyDir, '/solve'];
+            addpath(obj.dlPath);
+            d = dir(obj.dlPath);
             
             for i = 1:size(d, 1)
                 if contains(d(i).name, 'mexw64')
@@ -162,7 +164,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlSimulate(obj) % DynaSimulator TODO
+        function dlSimulate(obj)
             
             set(obj, 'dlOutputs', dlTempFunc(obj.dlOutputs));
       
@@ -180,6 +182,19 @@ classdef DynaLearn < matlab.mixin.SetGet
                     c = [c; cl(i)];
                 end
             end
+            
+        end
+        
+        function dlUpdateParamsTspan(obj, tspan) % TODO
+            
+            fprintf("Updating parameters ...\n");
+            p = load([obj.dlPath, '/params.mat']);
+            p = p.p;
+            disp(p);
+            p.p.tspan = tspan;
+            disp(p);
+            save([obj.dlPath, '/params.mat'], 'p');
+            fprintf("Simulation done.\n"); 
             
         end
         
