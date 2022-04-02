@@ -17,12 +17,12 @@ s = PING(5, 1, 2, noise_rate); % 17 Mins on mex generator
 %%
 
 clc;
-mexfile = "solve_ode_20220402053722_012_mex";
+mexfile = "solve_ode_20220402053722_012_mex.mexw64";
 [out, vars] = dsGetOutputList(s);
 
-% mh = mexhost;
+mh = mexhost;
 % out{:} = feval(mh, mexfile);
-% [out] = solve_ode_20220324215352_101_mex();
+[out{:}] = solve_ode_20220402053722_012_mex();
 
 %% Create DynaLearn Class (variational)
 

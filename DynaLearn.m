@@ -125,14 +125,14 @@ classdef DynaLearn < matlab.mixin.SetGet
             simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, ...
                         'downsample_factor', 10, 'verbose_flag', 1, 'study_dir', studydir, 'mex_flag', 1};
             obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
+            ds
             
         end
         
         function o = simulate(obj) % DynaSimulator TODO
             
             mexfile = obj.mex_func_name;
-            mh = mexhost;
-            [obj.outputs] = feval(mh, mexfile);
+            [obj.outputs] = dsRunMex(mexfile);
       
         end
         

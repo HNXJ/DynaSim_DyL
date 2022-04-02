@@ -1,0 +1,7 @@
+function dsRunMex(mexfilename)
+
+    fileID = fopen('tempFunc.m', 'w');
+    fprintf(fileID,'function tempFunc\no = %s();\n', mexfilename);
+    fclose(fileID);
+
+end
