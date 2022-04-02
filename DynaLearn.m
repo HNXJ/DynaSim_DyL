@@ -70,7 +70,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function set.data(obj, val)
             
-             if ~strcmpi(class(val), 'string') && ~strcmpi(class(val), 'char')
+             if ~strcmpi(class(val), 'string') && ~ischar(val)
                 error('Data must be an address, a string');
              end
              obj.data = val;
