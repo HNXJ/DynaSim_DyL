@@ -11,17 +11,17 @@ clc;
 
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 % s = NeoCortexPFC(Ne, Ni, Nio, noise_rate);
-s = PING(5, 1, 2, noise_rate);
+s = PING(5, 1, 2, noise_rate); % 17 Mins on mex generator
 % s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
 
 %%
 
 clc;
-mexfile = "solve_ode_20220324215352_101_mex";
+mexfile = "solve_ode_20220402053722_012_mex";
 [out, vars] = dsGetOutputList(s);
 
-mh = mexhost;
-out{:} = feval(mh, mexfile);
+% mh = mexhost;
+% out{:} = feval(mh, mexfile);
 % [out] = solve_ode_20220324215352_101_mex();
 
 %% Create DynaLearn Class (variational)
