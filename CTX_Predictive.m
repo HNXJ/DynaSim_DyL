@@ -26,7 +26,7 @@ out{:} = feval(mh, mexfile);
 
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, 'model2');
+m = DynaLearn(s, 'model1_ping');
 
 %% Simulate (Test of all scenarios)
 
