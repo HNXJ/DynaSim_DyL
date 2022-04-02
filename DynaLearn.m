@@ -38,17 +38,17 @@ classdef DynaLearn < matlab.mixin.SetGet
                 obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
-            elseif nargin == 3
+            elseif nargin == 2
                     
                 model_ = varargin{1};  
                 data_ = varargin{2};
-                mexn_ = varargin{3};
+%                 mexn_ = varargin{3};
                 
                 set(obj, 'model', model_);
                 set(obj, 'data', data_);
-                set(obj, 'mex_func_name', mexn_);
+%                 set(obj, 'mex_func_name', mexn_);
                 
-                obj.init(obj.data, obj.mex_func_name);
+                obj.init(obj.data);
                 set(obj, 'connections', obj.get_connections_list());
                     
             else
@@ -118,17 +118,33 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function set.last_targets(obj, val)
              
-             obj.last_targets = val;
+            obj.last_targets = val;
              
         end
         
-        function init(obj, studydir, mexname) % Initializer TODO
+        function set.outputs(obj, val)
+             
+            obj.outputs = val;
+             
+        end
+        
+        function s = get_mex_name(obj)
+            
+            d = dir(obj.data + '/solve');
+            d = d.name;
+            f = contains(d, '.mexw64)');
+            s = d(f);
+            
+        end
+        
+        function init(obj, studydir) % Initializer TODO
             
             tspan = [0 10];
             simulator_options = {'tspan', tspan, 'solver', 'rk1', 'dt', .01, ...
                         'downsample_factor', 10, 'verbose_flag', 1, ...
-                        'solve_file', mexname,'study_dir', studydir, 'mex_flag', 1};
+                        'study_dir', studydir, 'mex_flag', 1};
             obj.dsData = dsSimulate(obj.model, 'vary', [], simulator_options{:});
+            set(obj, 'mex_func_name', obj.get_mex_name());
             dsMexBridge(obj.mex_func_name);
             
         end
