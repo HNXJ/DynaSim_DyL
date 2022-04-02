@@ -60,7 +60,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             [out, vars] = dsGetOutputList(obj.dlModel);
             set(obj, 'dlOutputs', out);
             set(obj, 'dlVariables', vars);
-            obj.dlMexBridgeInit(obj)
+            obj.dlMexBridgeInit()
             
             disp("DynaLearn model created.");
             
@@ -189,12 +189,9 @@ classdef DynaLearn < matlab.mixin.SetGet
             
             fprintf("Updating parameters ...\n");
             p = load([obj.dlPath, '/params.mat']);
-            p = p.p;
-            disp(p);
             p.p.tspan = tspan;
-            disp(p);
-            save([obj.dlPath, '/params.mat'], 'p');
-            fprintf("Simulation done.\n"); 
+            save([obj.dlPath, '/params.mat'], '-struct', 'p');
+            fprintf("params.mat updated.\n"); 
             
         end
         

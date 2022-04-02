@@ -17,16 +17,16 @@ s = PING(5, 1, 2, noise_rate); % 17 Mins on mex generator
 %%
 
 clc;
-mexfile = "solve_ode_20220402053722_012_mex.mexw64";
-[out, vars] = dsGetOutputList(s);
-
-mh = mexhost;
-% out{:} = feval(mh, mexfile);
-[out{:}] = solve_ode_20220402053722_012_mex();
-
+fprintf("Updating parameters ...\n");
+p = load('params1.mat');
+% p = p.p;
+p.p.tspan = [120 2100];
+save('params1.mat', '-struct', 'p');
+fprintf("Simulation done.\n");
+            
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, 'model2_ping');
+m = DynaLearn(s, 'model2_ping_test');
 
 %% Simulate (Test of all scenarios)
 
