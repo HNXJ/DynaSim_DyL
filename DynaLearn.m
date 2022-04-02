@@ -58,6 +58,8 @@ classdef DynaLearn < matlab.mixin.SetGet
             [out, vars] = dsGetOutputList(obj.dlModel);
             set(obj, 'dlOutputs', out);
             set(obj, 'dlVariables', vars);
+            obj.dlMexBridgeInit(obj)
+            
             disp("DynaLearn model created.");
             
         end
@@ -130,12 +132,14 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function [s] = dlGetMexName(obj)
             
-            path = [obj.data, '/solve'];
+            path = [obj.dlStudyDir, '/solve'];
+            addpath(path);
             d = dir(path);
             
             for i = 1:size(d, 1)
                 if contains(d(i).name, 'mexw64')
                     s = d(i).name;
+                    s = s(1:end-7);
                 end
             end
             
@@ -154,19 +158,19 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlMexBridgeInit(obj)
            
             set(obj, 'dlMexFuncName', obj.dlGetMexName());
-            dlMexBridge('dlTempFunc.m', obj.dlMexFuncName);
+            dsMexBridge('dlTempFunc.m', obj.dlMexFuncName);
             
         end
         
         function dlSimulate(obj) % DynaSimulator TODO
             
-            set(obj, 'dlOutputs', dlTempFunc(obj.outputs));
+            set(obj, 'dlOutputs', dlTempFunc(obj.dlOutputs));
       
         end
         
-        function c = get_connections_list(obj)
+        function c = dlGetConnectionsList(obj)
             
-            p = load(obj.data + "/solve/params.mat");
+            p = load(obj.dlStudyDir + "/solve/params.mat");
             st = p.p;
             cl = fieldnames(st);
             c = [];
