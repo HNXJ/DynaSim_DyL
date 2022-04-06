@@ -26,7 +26,7 @@ fprintf("Simulation done.\n");
             
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, 'model2_ping_test');
+m = DynaLearn(s, 'ping_test');
 
 %% Simulate (Test of all scenarios)
 
