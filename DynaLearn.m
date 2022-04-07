@@ -186,7 +186,7 @@ classdef DynaLearn < matlab.mixin.SetGet
       
         end
         
-        function dlTrain(obj, dlEpochs) % TODO !!!
+        function dlTrain(obj, dlEpochs) % TODO !!! -> Steps, Update, parameters and variables
            
             for i = 1:dlEpochs
                

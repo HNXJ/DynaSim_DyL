@@ -186,12 +186,12 @@ classdef DynaLearn < matlab.mixin.SetGet
       
         end
         
-        function dlTrain(obj, dlEpochs)
+        function dlTrain(obj, dlEpochs) % TODO !!! -> Steps, Update
            
             for i = 1:dlEpochs
                
                 set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
-                
+                obj.dlSimulate();
                 
             end
             
