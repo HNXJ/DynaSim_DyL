@@ -31,7 +31,7 @@ m.dlSimulate();
 
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, 'ping_test');
+m = DynaLearn(s, 'ping1_test');
 
 %% Simulate (Test of all scenarios)
 

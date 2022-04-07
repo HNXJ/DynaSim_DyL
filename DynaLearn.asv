@@ -139,10 +139,9 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlLoad(obj, dlPathToFile)
+        function dlLoad(obj, dlPathTo)
            
-            o = load(dlPathToFile);
-            obj = o.obj;
+            obj = load(
             
         end
         
