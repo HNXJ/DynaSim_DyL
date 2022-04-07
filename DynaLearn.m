@@ -191,6 +191,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             for i = 1:dlEpochs
                
                 set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
+                obj.dlSimulate();
                 
             end
             
