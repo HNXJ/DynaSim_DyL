@@ -10,9 +10,9 @@ clear;
 clc;
 
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
-% s = NeoCortexPFC(Ne, Ni, Nio, noise_rate);
-s = PING(5, 1, 2, noise_rate); % 17 Mins on mex generator
-% s = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate);
+% s = NeoCortex(Ne, Ni, Nio, noise_rate);
+s = dlDemoPING(5, 1, 2, noise_rate); % 17 Mins on mex generator
+% s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 
 %%
 
