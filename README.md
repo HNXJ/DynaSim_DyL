@@ -1,4 +1,4 @@
-# DynaSim Trainable (RL) Dynamical Models Extention
+# DynaSim Trainable Model's Extention
 
 An integrated class for trainable interactive biophysical models of DynaSim
 
