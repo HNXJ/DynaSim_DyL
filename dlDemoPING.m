@@ -1,4 +1,4 @@
-function y = PING(Ne, Ni, Nio, noise_rate)
+function y = dlDemoPING(Ne, Ni, Nio, noise_rate)
 
     fprintf("Initialization...\n");
 

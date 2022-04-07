@@ -1,4 +1,4 @@
-function y = neoCortexPFC(Ne, Ni, Nio, noise_rate)
+function y = dlDemoNeoCortex(Ne, Ni, Nio, noise_rate)
 
     fprintf("Initialization...\n");
 

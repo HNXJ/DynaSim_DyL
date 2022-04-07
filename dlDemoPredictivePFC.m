@@ -1,4 +1,4 @@
-function y = PredictiveNeoCortexPFC(Ne, Ni, Nio, noise_rate)
+function y = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate)
 
     fprintf("Initialization...\n");
 
