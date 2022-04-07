@@ -186,6 +186,16 @@ classdef DynaLearn < matlab.mixin.SetGet
       
         end
         
+        function dlTrain(obj, dlEpochs) % TODO !!!
+           
+            for i = 1:dlEpochs
+               
+                set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
+                
+            end
+            
+        end
+        
         function c = dlGetConnectionsList(obj)
             
             p = load(obj.dlStudyDir + "/solve/params.mat");
