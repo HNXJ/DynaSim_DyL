@@ -23,7 +23,12 @@ p = load('params1.mat');
 p.p.tspan = [120 2100];
 save('params1.mat', '-struct', 'p');
 fprintf("Simulation done.\n");
-            
+
+%%
+
+clc;
+m.dlSimulate();
+
 %% Create DynaLearn Class (variational)
 
 m = DynaLearn(s, 'ping_test');

@@ -166,7 +166,9 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlSimulate(obj)
             
+            disp("Simulation ...");
             set(obj, 'dlOutputs', dlTempFunc(obj.dlOutputs));
+            disp("Done."); 
       
         end
         
