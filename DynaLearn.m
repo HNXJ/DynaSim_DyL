@@ -185,6 +185,38 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
+        function dlPlot(obj)
+           
+            dlPotentialIndices = contains(obj.dlVariables, '_V');
+            dlPotentialIndices(1) = 1;
+            dlPotentials = obj.dlOutputs(dlPotentialIndices);
+            dlLabels = obj.dlVariables(dlPotentialIndices);
+            
+            figure();
+            patch([l r r l], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
+            t = dlPotentials{1, 1};
+            n = size(dlPotentials, 2);
+            
+            for i = 2:n
+
+                x = dlPotentials{1, i};
+                raster = computeRaster(t, x);
+                disp(size(x));
+                O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool, w, 1, 1);
+                
+                subplot(n, 1, i-1);
+                plot(t, O1, 'o');
+                ylabel(dlLabels(i));
+
+            end
+
+            grid("on");title("iFR(s)");xlabel("time (ms)");
+%             legend("Target interval", "A&B", "only A", "only B", "No stimulus");
+            fprintf("Done.\n");
+
+        end
+
+        
         function dlSimulate(obj)
             
             disp("Simulation ...");

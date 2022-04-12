@@ -14,21 +14,6 @@ Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 s = dlDemoPING(5, 1, 2, noise_rate); % 17 Mins on mex generator
 % s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 
-%%
-
-clc;
-fprintf("Updating parameters ...\n");
-p = load('params1.mat');
-% p = p.p;
-p.p.tspan = [120 2100];
-save('params1.mat', '-struct', 'p');
-fprintf("Simulation done.\n");
-
-%%
-
-clc;
-m.dlSimulate();
-
 %% Create DynaLearn Class (variational)
 
 m = DynaLearn(s, 'ping1_test');
