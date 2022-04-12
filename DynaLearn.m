@@ -185,7 +185,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlPlot(obj)
+        function dlPlot(obj, mode)
            
             dlPotentialIndices = contains(obj.dlVariables, '_V');
             dlPotentialIndices(1) = 1;
@@ -197,27 +197,44 @@ classdef DynaLearn < matlab.mixin.SetGet
             t = dlPotentials{1, 1};
             n = size(dlPotentials, 2);
             
-            for i = 2:n
+            if strcmpi(mode, 'ifr')
+                
+                for i = 2:n
 
-                x = dlPotentials{1, i};
-                raster = computeRaster(t, x);
-                subplot(n, 1, i-1);
-                    
-                if size(raster, 1) > 0
-                
-                    pool = 1:size(x, 2);
-                    O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool, 25, 1, 1);
-                    plot(t, O1, 'o');
-                
+                    x = dlPotentials{1, i};
+                    raster = computeRaster(t, x);
+                    subplot(n, 1, i-1);
+
+                    if size(raster, 1) > 0
+
+                        pool = 1:size(x, 2);
+                        O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool, 25, 1, 1);
+                        plot(t, O1, 'o');
+
+                    end
+
+                    ylabel(dlLabels(i));
+
                 end
                 
-                ylabel(dlLabels(i));
+                grid("on");title("iFR(s)");xlabel("time (ms)");
+                fprintf("Done.\n");
+                
+            else
+                
+                for i = 2:n
 
+                    x = dlPotentials{1, i};
+                    subplot(n, 1, i-1);
+                    plot(t, x, 'o');
+                    ylabel(dlLabels(i));
+
+                end
+                
+                grid("on");title("iFR(s)");xlabel("time (ms)");
+                fprintf("Done.\n");
+                
             end
-
-            grid("on");title("iFR(s)");xlabel("time (ms)");
-%             legend("Target interval", "A&B", "only A", "only B", "No stimulus");
-            fprintf("Done.\n");
 
         end
 
