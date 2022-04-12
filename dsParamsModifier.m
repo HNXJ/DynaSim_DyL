@@ -2,7 +2,7 @@ function dsParamsModifier(tempfuncname, map)
 
     fileID = fopen(tempfuncname, 'w');
     fprintf(fileID, 'function dlTempFuncParamsChanger(dlPath)\n\n');
-    fprintf(fileID, '\tp = load([dlPath, ''params.mat'']);\n\n');
+    fprintf(fileID, '\tp = load([dlPath, ''/params.mat'']);\n\n');
     n = size(map);
     
     labels = map.keys();
@@ -20,11 +20,22 @@ function dsParamsModifier(tempfuncname, map)
             else
                 
                 x = values{1, i};
-                fprintf(fileID, '\tp.p.%s = [%d', labels{1, i}, x(1));
-                for i = 2:m-1
-                    fprintf(fileID, ' %d', x(i));
+                m = size(x, 1);
+                l = size(x, 2);
+                
+                fprintf(fileID, '\tp.p.%s = [', labels{1, i});
+                for i = 1:m
+                    
+                    if i > 1                    
+                        fprintf(fileID, ';');
+                    end
+                    
+                    for j = 1:l
+                        fprintf(fileID, ' %d', x(i, j));
+                    end
+                    
                 end
-                fprintf(fileID, ' %d];\n', x(m));
+                fprintf(fileID, '];\n');
                 
             end
             
@@ -40,7 +51,7 @@ function dsParamsModifier(tempfuncname, map)
         
     end
     
-    fprintf(fileID, '\n\tsave([obj.dlPath, ''/params.mat''], ''-struct'', ''p'');\n\nend');
+    fprintf(fileID, '\n\tsave([dlPath, ''/params.mat''], ''-struct'', ''p'');\n\nend');
     fclose(fileID);
 
 end
