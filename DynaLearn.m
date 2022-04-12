@@ -282,22 +282,11 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlUpdateParamsTspan(obj, tspan) % TODO
+        function dlUpdateParams(obj, map) 
             
-            fprintf("Updating parameters ...\n");
-            p = load([obj.dlPath, '/params.mat']);
-            p.p.tspan = tspan;
-            save([obj.dlPath, '/params.mat'], '-struct', 'p');
-            fprintf("params.mat updated.\n"); 
-            
-        end
-        
-        function x = dlUpdateParamsVary(obj, vary) % TODO
-            
-            fprintf("Updating parameters ...\n");
-            p = load([obj.dlPath, '/params.mat']);
-            x = p.p';
-%             save([obj.dlPath, '/params.mat'], '-struct', 'p');
+            fprintf("Updating parameters of %s\n", obj.dlPath);
+            dsParamsModifier('dlTempFuncParamsChanger.m', map);
+            dlTempFuncParamsChanger(obj.dlPath);
             fprintf("params.mat updated.\n"); 
             
         end
