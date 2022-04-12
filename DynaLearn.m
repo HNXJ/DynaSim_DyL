@@ -153,6 +153,15 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
+        function dlReInit(obj)
+           
+            [out, vars] = dsGetOutputList(obj.dlModel);
+            set(obj, 'dlOutputs', out);
+            set(obj, 'dlVariables', vars);
+            obj.dlMexBridgeInit()
+            
+        end
+        
         function [s] = dlGetMexName(obj)
             
             obj.dlPath = [obj.dlStudyDir, '/solve'];
@@ -279,6 +288,16 @@ classdef DynaLearn < matlab.mixin.SetGet
             p = load([obj.dlPath, '/params.mat']);
             p.p.tspan = tspan;
             save([obj.dlPath, '/params.mat'], '-struct', 'p');
+            fprintf("params.mat updated.\n"); 
+            
+        end
+        
+        function x = dlUpdateParamsVary(obj, vary) % TODO
+            
+            fprintf("Updating parameters ...\n");
+            p = load([obj.dlPath, '/params.mat']);
+            x = p.p';
+%             save([obj.dlPath, '/params.mat'], '-struct', 'p');
             fprintf("params.mat updated.\n"); 
             
         end

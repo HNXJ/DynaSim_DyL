@@ -21,7 +21,9 @@ m = DynaLearn(s, 'PredPFC_test');
 %% Load DynaLearn Class (previously saved file is required, default is dlFileBase.mat)
 
 m = DynaLearn();
-m.dlLoad('ping1_test/dlFile.mat');
+m = m.dlLoad('PredPFC_test/dlFile.mat');
+m.dlReInit();
+m.dlSimulate();
 
 %% Simulate (Test of all scenarios)
 
