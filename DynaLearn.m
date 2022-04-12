@@ -193,7 +193,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             dlLabels = obj.dlVariables(dlPotentialIndices);
             
             figure();
-            patch([l r r l], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
+            patch([3 7 7 3], [-30 -30 +30 +30], [0.5 0.9 0.9]);hold("on");
             t = dlPotentials{1, 1};
             n = size(dlPotentials, 2);
             
