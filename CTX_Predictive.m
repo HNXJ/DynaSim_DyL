@@ -18,7 +18,7 @@ s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 
 m = DynaLearn(s, 'PredPFC_test');
 
-%% Load DynaLearn Class
+%% Load DynaLearn Class (previously saved file is required, default is dlFileBase.mat)
 
 m = DynaLearn();
 m.dlLoad('ping1_test/dlFile.mat');
