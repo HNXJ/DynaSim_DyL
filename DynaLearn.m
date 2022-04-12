@@ -203,7 +203,7 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                     x = dlPotentials{1, i};
                     raster = computeRaster(t, x);
-                    subplot(n, 1, i-1);
+                    subplot(ceil(n/2), 2, i-1);
 
                     if size(raster, 1) > 0
 
@@ -225,13 +225,13 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for i = 2:n
 
                     x = dlPotentials{1, i};
-                    subplot(n, 1, i-1);
-                    plot(t, x, 'o');
+                    subplot(ceil(n/2), 2, i-1);
+                    plot(t, x);
                     ylabel(dlLabels(i));
 
                 end
                 
-                grid("on");title("iFR(s)");xlabel("time (ms)");
+                grid("on");title("Voltage(s)");xlabel("time (ms)");
                 fprintf("Done.\n");
                 
             end
