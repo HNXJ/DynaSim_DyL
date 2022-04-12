@@ -14,8 +14,11 @@ function dsParamsModifier(tempfuncname, map)
             
             m = max(size(values{1, i}));
             if m == 1
+                
                 fprintf(fileID, '\tp.p.%s = %d;\n', labels{1, i}, values{1, i});
+            
             else
+                
                 x = values{1, i};
                 fprintf(fileID, '\tp.p.%s = [%d', labels{1, i}, x(1));
                 for i = 2:m-1
@@ -26,9 +29,13 @@ function dsParamsModifier(tempfuncname, map)
             end
             
         elseif ischar(values{1, i})
+            
             fprintf(fileID, '\tp.p.%s = ''%s'';\n', labels{1, i}, values{1, i});
+        
         else
+            
             fprintf(fileID, '\tp.p.%s = %g;\n', labels{1, i}, values{1, i});
+        
         end
         
     end
