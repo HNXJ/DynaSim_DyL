@@ -36,7 +36,7 @@ m = DynaLearn(s, 'ping1_test');
 %% Load DynaLearn Class
 
 m = DynaLearn();
-m.dlLoad('ping1_test/dlFile.mat');
+m.dlLoad('ping1_test/dlFile.m');
 
 %% Simulate (Test of all scenarios)
 
