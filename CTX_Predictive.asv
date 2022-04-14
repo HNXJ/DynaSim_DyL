@@ -4,6 +4,9 @@
 % memoize.m -> suspended due to an error
 % dsModel: 
 
+a = container.Map();
+a('E_netcon'
+
 %% Model parameters
 
 clear;
@@ -17,11 +20,15 @@ s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 %% Create DynaLearn Class (variational)
 
 m = DynaLearn(s, 'PredPFC_test');
+m.dlSimulate();
+m.dlSave();
 
-%% Load DynaLearn Class
+%% Load DynaLearn Class (previously saved file is required, default is dlFileBase.mat)
 
 m = DynaLearn();
-m.dlLoad('ping1_test/dlFile.mat');
+m = m.dlLoad('PredPFC_test/dlFile.mat');
+m.dlReInit();
+m.dlSimulate();
 
 %% Simulate (Test of all scenarios)
 

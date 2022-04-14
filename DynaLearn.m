@@ -65,7 +65,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             [out, vars] = dsGetOutputList(obj.dlModel);
             set(obj, 'dlOutputs', out);
             set(obj, 'dlVariables', vars);
-            obj.dlMexBridgeInit()
+            obj.dlMexBridgeInit();
             
             disp("DynaLearn model created.");
             

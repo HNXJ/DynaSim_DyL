@@ -17,6 +17,8 @@ s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 %% Create DynaLearn Class (variational)
 
 m = DynaLearn(s, 'PredPFC_test');
+m.dlSimulate();
+m.dlSave();
 
 %% Load DynaLearn Class (previously saved file is required, default is dlFileBase.mat)
 
