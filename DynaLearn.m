@@ -25,6 +25,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         dlPath = []; % Path which contains params.mat, mexfuncs, solver ...
         dlPathToFile = 'dlFileBase.mat';
+        dlBaseAddress = 'models/';
     end
     
     methods
