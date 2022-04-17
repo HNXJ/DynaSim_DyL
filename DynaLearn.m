@@ -9,7 +9,7 @@ classdef DynaLearn < matlab.mixin.SetGet
     properties
         
         dlModel = []; % Dynasim's model struct, containing model's populations (layers) and connections, mechanisms ... .
-        dlStudyDir = 'solve'; % Output data of last simulation.
+        dlStudyDir = 'models/'; % Output data of last simulation.
         dlErrorsLog = []; % Log of errors since first trial.
         dlConnections = []; % List of connection names.
     
@@ -24,8 +24,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         dlMexFuncName = []; % Name of Mex function (e.g **********_mex.mex64
         
         dlPath = []; % Path which contains params.mat, mexfuncs, solver ...
-        dlPathToFile = 'dlFileBase.mat';
-        dlBaseAddress = 'models/';
+        dlPathToFile = 'models/dlBaseModel/dlFile.mat';
     end
     
     methods
@@ -33,7 +32,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         function obj = DynaLearn(varargin) % Constructors, will be expanded
             
             disp("Creating Dyna model object ... ");
-            set(obj, 'dlPathToFile', 'dlFileBase.mat');
+            set(obj, 'dlPathToFile', 'models/dlBaseModel/dlFile.mat');
             
             if nargin == 0
                 
