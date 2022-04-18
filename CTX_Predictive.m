@@ -31,14 +31,43 @@ m.dlSimulate();
 
 clc;
 g_poisson = 6.3e-4;
+dc_poisson = 4e7;
 
 vary = containers.Map();
 vary('tspan') = [0 500];
+
 vary('SA1_ctx_iPoisson_g_poisson') = g_poisson;
 vary('SA2_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SB1_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SB2_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SC1_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SC2_ctx_iPoisson_g_poisson') = g_poisson;
+
+vary('SA1_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SA2_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SB1_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SB2_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SC1_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SC2_ctx_iPoisson_DC_poisson') = dc_poisson;
+
+vary('SA1_ctx_iPoisson_onset_poisson') = 150;
+vary('SA1_ctx_iPoisson_offset_poisson') = 250;
+vary('SA2_ctx_iPoisson_onset_poisson') = 250;
+vary('SA2_ctx_iPoisson_offset_poisson') = 350;
+
+vary('SB1_ctx_iPoisson_onset_poisson') = 250;
+vary('SB1_ctx_iPoisson_offset_poisson') = 250;
+vary('SB2_ctx_iPoisson_onset_poisson') = 350;
+vary('SB2_ctx_iPoisson_offset_poisson') = 350;
+
+vary('SC1_ctx_iPoisson_onset_poisson') = 250;
+vary('SC1_ctx_iPoisson_offset_poisson') = 250;
+vary('SC2_ctx_iPoisson_onset_poisson') = 350;
+vary('SC2_ctx_iPoisson_offset_poisson') = 350;
+
 vary('test_err') = 17;
 m.dlUpdateParams(vary);
-% m.dlSimulate();
+m.dlSimulate();
 
 %% Simulate (Test of all scenarios)
 
@@ -57,13 +86,6 @@ vary1 = {'SA1','g_poisson', g_poisson; 'SA1','DC_poisson', 4e7;'SA1','AC_poisson
 
 data1 = dsSimulate(s, 'vary', vary1, simulator_options{:});
 % m.run_simulation(vary1, simulator_options); 
-
-%% MEX run
-
-clc;
-tic;
-[T,supE_V,supE_iNa_m,supE_iNa_h,supE_iK_n,supI_V,supI_iNa_m,supI_iNa_h,supI_iK_n,midE_V,midE_iNa_m,midE_iNa_h,midE_iK_n,midI_V,midI_iNa_m,midI_iNa_h,midI_iK_n,deepE_V,deepE_iNa_m,deepE_iNa_h,deepE_iK_n,deepI_V,deepI_iNa_m,deepI_iNa_h,deepI_iK_n,SA1_V,SA1_iNa_m,SA1_iNa_h,SA1_iK_n,SB1_V,SB1_iNa_m,SB1_iNa_h,SB1_iK_n,SC1_V,SC1_iNa_m,SC1_iNa_h,SC1_iK_n,SA2_V,SA2_iNa_m,SA2_iNa_h,SA2_iK_n,SB2_V,SB2_iNa_m,SB2_iNa_h,SB2_iK_n,SC2_V,SC2_iNa_m,SC2_iNa_h,SC2_iK_n,Cx1_V,Cx1_iNa_m,Cx1_iNa_h,Cx1_iK_n,Cx2_V,Cx2_iNa_m,Cx2_iNa_h,Cx2_iK_n,supI_supE_iAMPActx_s,supE_supE_iAMPActx_s,supE_supI_iGABActx_s,supI_supI_iGABActx_s,midI_midE_iAMPActx_s,midE_midE_iAMPActx_s,midE_midI_iGABActx_s,midI_midI_iGABActx_s,deepI_deepE_iAMPActx_s,deepE_deepE_iAMPActx_s,deepE_deepI_iGABActx_s,deepI_deepI_iGABActx_s,SB1_SA1_iAMPActx_s,SA1_SA1_iAMPActx_s,SA1_SB1_iGABActx_s,SB1_SB1_iGABActx_s,SA2_SC1_iAMPActx_s,SC1_SC1_iAMPActx_s,SC1_SA2_iGABActx_s,SA2_SA2_iGABActx_s,SC2_SB2_iAMPActx_s,SB2_SB2_iAMPActx_s,SB2_SC2_iGABActx_s,SC2_SC2_iGABActx_s,Cx2_Cx1_iAMPActx_s,Cx1_Cx1_iAMPActx_s,Cx1_Cx2_iGABActx_s,Cx2_Cx2_iGABActx_s,midE_SA1_iAMPActx_s,midE_SA2_iAMPActx_s,midE_SB1_iAMPActx_s,midE_SB2_iAMPActx_s,midE_SC1_iAMPActx_s,midE_SC2_iAMPActx_s,midE_Cx1_iAMPActx_s,midE_Cx2_iAMPActx_s,supE_midE_iAMPActx_s,deepE_midE_iAMPActx_s,deepE_midI_iGABActx_s,deepE_supE_iAMPActx_s,supE_ctx_iPoisson_g_poisson,supE_ctx_iPoisson_I_poisson,supI_ctx_iPoisson_g_poisson,supI_ctx_iPoisson_I_poisson,midE_ctx_iPoisson_g_poisson,midE_ctx_iPoisson_I_poisson,midI_ctx_iPoisson_g_poisson,midI_ctx_iPoisson_I_poisson,deepE_ctx_iPoisson_g_poisson,deepE_ctx_iPoisson_I_poisson,deepI_ctx_iPoisson_g_poisson,deepI_ctx_iPoisson_I_poisson,SA1_ctx_iPoisson_g_poisson,SA1_ctx_iPoisson_I_poisson,SB1_ctx_iPoisson_g_poisson,SB1_ctx_iPoisson_I_poisson,SC1_ctx_iPoisson_g_poisson,SC1_ctx_iPoisson_I_poisson,SA2_ctx_iPoisson_g_poisson,SA2_ctx_iPoisson_I_poisson,SB2_ctx_iPoisson_g_poisson,SB2_ctx_iPoisson_I_poisson,SC2_ctx_iPoisson_g_poisson,SC2_ctx_iPoisson_I_poisson,Cx1_ctx_iPoisson_g_poisson,Cx1_ctx_iPoisson_I_poisson,Cx2_ctx_iPoisson_g_poisson,Cx2_ctx_iPoisson_I_poisson,supE_ctx_iPoisson_s_poisson,supI_ctx_iPoisson_s_poisson,midE_ctx_iPoisson_s_poisson,midI_ctx_iPoisson_s_poisson,deepE_ctx_iPoisson_s_poisson,deepI_ctx_iPoisson_s_poisson,SA1_ctx_iPoisson_s_poisson,SB1_ctx_iPoisson_s_poisson,SC1_ctx_iPoisson_s_poisson,SA2_ctx_iPoisson_s_poisson,SB2_ctx_iPoisson_s_poisson,SC2_ctx_iPoisson_s_poisson,Cx1_ctx_iPoisson_s_poisson,Cx2_ctx_iPoisson_s_poisson] = solve_ode_20220321175632_948_mex();
-toc;
 
 %% Parameters
 

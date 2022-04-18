@@ -4,9 +4,6 @@
 % memoize.m -> suspended due to an error
 % dsModel: 
 
-a = container.Map();
-a('E_netcon'
-
 %% Model parameters
 
 clear;
@@ -15,20 +12,49 @@ clc;
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 % s = NeoCortex(Ne, Ni, Nio, noise_rate);
 % s = dlDemoPING(5, 1, 2, noise_rate); % 17 Mins on mex generator
-s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
+% s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 
 %% Create DynaLearn Class (variational)
 
-m = DynaLearn(s, 'PredPFC_test');
+m = DynaLearn(s, 'models/dlPredictivePFC');
 m.dlSimulate();
 m.dlSave();
 
 %% Load DynaLearn Class (previously saved file is required, default is dlFileBase.mat)
 
 m = DynaLearn();
-m = m.dlLoad('PredPFC_test/dlFile.mat');
+m = m.dlLoad('models/dlPredictivePFC/dlFile.mat');
 m.dlReInit();
 m.dlSimulate();
+
+%% Continue simulation
+
+clc;
+g_poisson = 6.3e-4;
+dc_poisson = 4e7;
+
+vary = containers.Map();
+vary('tspan') = [0 500];
+
+vary('SA1_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SA2_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SB1_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SB2_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SC1_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SC2_ctx_iPoisson_g_poisson') = g_poisson;
+
+vary('SA1_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SA2_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SB1_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SB2_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SC1_ctx_iPoisson_DC_poisson') = dc_poisson;
+vary('SC2_ctx_iPoisson_DC_poisson') = dc_poisson;
+
+vary('SA1_ctx_iPoisson_onset_poisson') = 250;
+vary('SA1_ctx_iPoisson_offset_poisson') = ;
+vary('test_err') = 17;
+m.dlUpdateParams(vary);
+% m.dlSimulate();
 
 %% Simulate (Test of all scenarios)
 
