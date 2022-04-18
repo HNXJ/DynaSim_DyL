@@ -146,10 +146,16 @@ function dlTempFuncParamsChanger(dlPath)
 		fprintf("Parameter or variable 'SC2_ctx_iPoisson_onset_poisson' not found in params.mat file. Check if you are refering to a correct variable.\n");
 	end
 
-	if sum(strcmpi(fieldnames(p.p), 'test_err'))
-		p.p.test_err = 17;
+	if sum(strcmpi(fieldnames(p.p), 'test_error1'))
+		p.p.test_error1 = 17;
 	else
-		fprintf("Parameter or variable 'test_err' not found in params.mat file. Check if you are refering to a correct variable.\n");
+		fprintf("Parameter or variable 'test_error1' not found in params.mat file. Check if you are refering to a correct variable.\n");
+	end
+
+	if sum(strcmpi(fieldnames(p.p), 'test_error2'))
+		p.p.test_error2 = '14';
+	else
+		fprintf("Parameter or variable 'test_error2' not found in params.mat file. Check if you are refering to a correct variable.\n");
 	end
 
 	if sum(strcmpi(fieldnames(p.p), 'tspan'))
