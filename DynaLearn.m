@@ -259,7 +259,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlUpdateError(obj, dlTargets)
            
-            
+            disp('todo');
             
         end
         
