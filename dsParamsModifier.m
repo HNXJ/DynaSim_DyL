@@ -10,12 +10,13 @@ function dsParamsModifier(tempfuncname, map)
     
     for i = 1:n
     
+        fprintf(fileID, '\tif sum(strcmpi(fieldnames(p.p), ''%s''))\n', labels{1, i});
         if strcmpi(class(values{1, i}), 'double')
-            
+             
             m = max(size(values{1, i}));
             if m == 1
                 
-                fprintf(fileID, '\tp.p.%s = %d;\n', labels{1, i}, values{1, i});
+                fprintf(fileID, '\t\tp.p.%s = %d;\n', labels{1, i}, values{1, i});
             
             else
                 
@@ -23,15 +24,15 @@ function dsParamsModifier(tempfuncname, map)
                 m = size(x, 1);
                 l = size(x, 2);
                 
-                fprintf(fileID, '\tp.p.%s = [', labels{1, i});
-                for i = 1:m
+                fprintf(fileID, '\t\tp.p.%s = [', labels{1, i});
+                for j = 1:m
                     
-                    if i > 1                    
+                    if j > 1                    
                         fprintf(fileID, ';');
                     end
                     
-                    for j = 1:l
-                        fprintf(fileID, ' %d', x(i, j));
+                    for k = 1:l
+                        fprintf(fileID, ' %d', x(j, k));
                     end
                     
                 end
@@ -41,17 +42,21 @@ function dsParamsModifier(tempfuncname, map)
             
         elseif ischar(values{1, i})
             
-            fprintf(fileID, '\tp.p.%s = ''%s'';\n', labels{1, i}, values{1, i});
+            fprintf(fileID, '\t\tp.p.%s = ''%s'';\n', labels{1, i}, values{1, i});
         
         else
             
-            fprintf(fileID, '\tp.p.%s = %g;\n', labels{1, i}, values{1, i});
+            fprintf(fileID, '\t\tp.p.%s = %g;\n', labels{1, i}, values{1, i});
         
         end
         
+        fprintf(fileID, '\telse\n');
+        fprintf(fileID, '\t\tfprintf("Parameter or variable ''%s'' not found in params.mat file. Check if you are refering to a correct variable.\\n");\n', labels{1, i});
+        fprintf(fileID, '\tend\n\n');
+        
     end
     
-    fprintf(fileID, '\n\tsave([dlPath, ''/params.mat''], ''-struct'', ''p'');\n\nend');
+    fprintf(fileID, '\tsave([dlPath, ''/params.mat''], ''-struct'', ''p'');\n\nend');
     fclose(fileID);
 
 end

@@ -27,6 +27,19 @@ m = m.dlLoad('models/dlPredictivePFC/dlFile.mat');
 m.dlReInit();
 m.dlSimulate();
 
+%% Continue simulation
+
+clc;
+g_poisson = 6.3e-4;
+
+vary = containers.Map();
+vary('tspan') = [0 500];
+vary('SA1_ctx_iPoisson_g_poisson') = g_poisson;
+vary('SA2_ctx_iPoisson_g_poisson') = g_poisson;
+vary('test_err') = 17;
+m.dlUpdateParams(vary);
+% m.dlSimulate();
+
 %% Simulate (Test of all scenarios)
 
 g_poisson = 6.3e-4;
