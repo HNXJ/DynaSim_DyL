@@ -25,6 +25,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         dlPath = []; % Path which contains params.mat, mexfuncs, solver ...
         dlPathToFile = 'models/dlBaseModel/dlFile.mat';
+        dlBaseVoltage = -77.4;
     end
     
     methods
@@ -266,7 +267,7 @@ classdef DynaLearn < matlab.mixin.SetGet
        
         end
         
-        function dlApplyKernel(obj, dlKernel)
+        function dlApplyKernel(obj, dlKernel, dlBaseVoltage)
            
             x = obj.dlLastOutputs;
             for i = 1:size(x, 2)
@@ -275,6 +276,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for j = 1:size(xp, 2)
                    
                     xp(:, j) = xp(:, j).*dlKernel;
+                    xp(xp == 0) = dlBaseVoltage;
                     
                 end
                 x{1, i} = xp;
@@ -297,7 +299,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             end
             
             set(obj, 'dlLastOutputs' , obj.dlOutputs(dlIndices));
-            obj.dlApplyKernel(dlTimeKernel);
+            obj.dlApplyKernel(dlTimeKernel, obj.dlBaseVoltage);
             
             if strcmpi(dlOutputType, 'ifr')
                 
@@ -356,25 +358,6 @@ classdef DynaLearn < matlab.mixin.SetGet
             dsParamsModifier('dlTempFuncParamsChanger.m', map);
             dlTempFuncParamsChanger(obj.dlPath);
             fprintf("params.mat updated.\n"); 
-            
-        end
-        
-        function [c, e, t] = get_potentials(obj)% TODO
-            
-            d = obj.data;
-            cl = fieldnames(d);
-            dl = struct2cell(d);
-            
-            c = [];
-            e = [];
-            t = d.time;
-            
-            for i = 1:size(cl, 1)
-                if contains(cl(i), '_V')
-                    c = [c; cl(i)];
-                    e = [e; dl(i, 1, 1)];
-                end
-            end
             
         end
         
@@ -450,16 +433,6 @@ classdef DynaLearn < matlab.mixin.SetGet
             
             set(obj, 'errors_log', [get(obj, 'errors_log'), err]);
             set(obj, 'last_error', err);
-            
-        end
-        
-        function obj = run_simulation(obj, vary, opt) % TODO
-            
-            fprintf("Running simulation ...\n");
-            p = load("solve/params.mat");
-            disp(p);
-%             set(obj, 'data', obj.simulate(vary, opt));
-            fprintf("Simulation done.\n"); 
             
         end
         
