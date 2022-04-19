@@ -261,6 +261,7 @@ classdef DynaLearn < matlab.mixin.SetGet
            
             n = size(dlOutputLabels, 2);
             dlIndices = zeros(1, n);
+            dlTimeIntervalKernel = obj.dlOutputs{1, 1};
             
             for i = 1:n
                 
