@@ -257,11 +257,38 @@ classdef DynaLearn < matlab.mixin.SetGet
       
         end
         
+        function kernel = dlTimeIntervalKernel(obj, dlTimeInterval)
+            
+            kernel = obj.dlOutputs{1, 1};
+            kernel(kernel > dlTimeInterval(2)) = 0;
+            kernel(kernel < dlTimeInterval(1)) = 0;
+            kernel(kernel > 0) = 1; 
+       
+        end
+        
+        function dlApplyKernel(obj, dlKernel)
+           
+            x = obj.dlLastOutputs;
+            for i = 1:size(x, 2)
+               
+                xp = x{1, i};
+                for j = 1:size(xp, 2)
+                   
+                    xp(:, j) = xp(:, j).*dlKernel;
+                    
+                end
+                x{1, i} = xp;
+                
+            end
+            set(obj, 'dlLastOutputs', x);
+            
+        end
+        
         function dlCalculateOutputs(obj, dlOutputLabels, dlOutputType, dlTimeInterval)
            
             n = size(dlOutputLabels, 2);
             dlIndices = zeros(1, n);
-            dlTimeIntervalKernel = obj.dlOutputs{1, 1};
+            dlTimeKernel = obj.dlTimeIntervalKernel(dlTimeInterval);
             
             for i = 1:n
                 
@@ -269,7 +296,8 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             end
             
-            x = obj.dlOutputs(dlIndices);
+            set(obj, 'dlLastOutputs' , obj.dlOutputs(dlIndices));
+            obj.dlApplyKernel(dlTimeKernel);
             
             if strcmpi(dlOutputType, 'ifr')
                 
