@@ -195,7 +195,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlPlotAllPotentials(obj, mode)
+        function dlPlot(obj, mode)
            
             dlPotentialIndices = contains(obj.dlVariables, '_V');
             dlPotentialIndices(1) = 1;
@@ -259,16 +259,13 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlCalculateOutputs(obj, dlOutputLabels, dlOutputType, dlTimeInterval)
            
-            n = size(dlOutputLabels, 2);
-            dlIndices = zeros(1, n);
+            dlIndices = [];
             
-            for i = 1:n
+            for i = 1:size(dlOutputLabels, 2)
                 
-                dlIndices(i) = find(strcmpi(obj.dlVariables, dlOutputLabels(i)));
+                dlIndices = [dlIndices, find(obj.dlVariables, dlOutputLabels(i
                 
             end
-            
-            x = obj.dlOutputs(dlIndices);
             
             if strcmpi(dlOutputType, 'ifr')
                 
@@ -281,7 +278,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     obj.dlLastOutputs = dsBridgeFunctionRun(dlOutputType, dlTimeInterval);
                 catch
                     fprintf("Function %s.m not found! check if you entered correct output type.\n No output is calculated for this trial, error is going to be NaN", dlOutputType);
-                    set(obj, 'dlLastOutputs', "NaN");
+                    obj.dlLastOutputs = "NaN";
                 end
             end
             
