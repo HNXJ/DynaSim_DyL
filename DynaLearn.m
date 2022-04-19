@@ -299,19 +299,22 @@ classdef DynaLearn < matlab.mixin.SetGet
             end
             
             set(obj, 'dlLastOutputs' , obj.dlOutputs(dlIndices));
-            obj.dlApplyKernel(dlTimeKernel, obj.dlBaseVoltage);
             
             if strcmpi(dlOutputType, 'ifr')
                 
+                obj.dlApplyIFR();
+                
             elseif strcmpi(dlOutputType, 'lfp')
+                
+                obj.dlApplyKernel(dlTimeKernel, obj.dlBaseVoltage);
                 
             else
                 
-                fprintf("This output type is not recognized. Trying to run %s.m ...\n", dlOutputType);
+                fprintf("->This output type is not recognized. Trying to run ""%s.m"" ...\n", dlOutputType);
                 try
                     obj.dlLastOutputs = dsBridgeFunctionRun(dlOutputType, dlTimeInterval);
                 catch
-                    fprintf("Function %s.m not found! check if you entered correct output type.\n No output is calculated for this trial, error is going to be NaN", dlOutputType);
+                    fprintf("-->Function ""%s.m"" not found! check if you've created ""%s.m"" or entered correct output type.\n--->No valid output is calculated for this trial, response and error are going to be ""NaN""\n", dlOutputType, dlOutputType);
                     set(obj, 'dlLastOutputs', "NaN");
                 end
             end
