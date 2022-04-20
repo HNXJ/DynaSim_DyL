@@ -24,10 +24,9 @@ m.dlSave();
 
 m = DynaLearn();
 m = m.dlLoad('models/dlPredictivePFC/dlFile.mat');
-m.dlReInit();
-m.dlSimulate();
+% m.dlSimulate();
 
-%% Continue simulation
+%% Continue simulation: Vary example
 
 clc;
 g_poisson = 6.3e-4;

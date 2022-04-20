@@ -152,6 +152,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             o = load(obj.dlPathToFile);
             fprintf("Loaded from %s \n", PathToFile);
             obj = o.obj;
+            obj.dlReInit();
             
         end
         
@@ -161,6 +162,8 @@ classdef DynaLearn < matlab.mixin.SetGet
             set(obj, 'dlOutputs', out);
             set(obj, 'dlVariables', vars);
             obj.dlMexBridgeInit()
+            
+            fprintf("\nReinitialized.\n");
             
         end
         
@@ -312,10 +315,15 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
                 fprintf("->This output type is not recognized. Trying to run ""%s.m"" ...\n", dlOutputType);
                 try
+                    
                     dsBridgeFunctionRun(dlOutputType);
+                    set(obj, 'dlLastOutputs' , dlTempFuncBridge(obj.dlLastOutputs, dlTimeInterval));
+                    
                 catch
+                    
                     fprintf("-->Function ""%s.m"" not found! check if you've created ""%s.m"" or entered correct output type.\n--->No valid output is calculated for this trial, response and error are going to be ""NaN""\n", dlOutputType, dlOutputType);
                     set(obj, 'dlLastOutputs', "NaN");
+                    
                 end
             end
             
