@@ -158,6 +158,12 @@ function dlTempFuncParamsChanger(dlPath)
 		fprintf("Parameter or variable 'test_error2' not found in params.mat file. Check if you are refering to a correct variable.\n");
 	end
 
+	if sum(strcmpi(fieldnames(p.p), 'tspan'))
+		p.p.tspan = [ 0 500];
+	else
+		fprintf("Parameter or variable 'tspan' not found in params.mat file. Check if you are refering to a correct variable.\n");
+	end
+
 	save([dlPath, '/params.mat'], '-struct', 'p');
 
 end

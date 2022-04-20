@@ -289,14 +289,6 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlApplyIFR(obj)
-           
-            x = obj.dlLastOutputs;
-            disp("TODO IFR CALC");
-            set(obj, 'dlLastOutputs', x);
-            
-        end
-        
         function dlCalculateOutputs(obj, dlOutputLabels, dlOutputType, dlTimeInterval)
            
             n = size(dlOutputLabels, 2);
