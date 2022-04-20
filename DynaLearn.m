@@ -293,6 +293,17 @@ classdef DynaLearn < matlab.mixin.SetGet
            
             x = obj.dlLastOutputs;
             disp("TODO IFR CALC");
+%             x = dlPotentials{1, i};
+%             raster = computeRaster(t, x);
+%             subplot(ceil(n/2), 2, i-1);
+% 
+%             if size(raster, 1) > 0
+% 
+%                 pool = 1:size(x, 2);
+%                 O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool, 25, 1, 1);
+%                 plot(t, O1, 'o');
+% 
+%             end
             set(obj, 'dlLastOutputs', x);
             
         end

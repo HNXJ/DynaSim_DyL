@@ -1,6 +1,6 @@
 function out = dlTempFuncBridge(dlOutputs, dlTimeInterval)
 
-	[outvars{:}] = F20-25HzLFP(dlOutputs, dlTimeInterval);
+	[outvars{:}] = testCustomKernel(dlOutputs, dlTimeInterval);
 	out = outvars;
 
 end
