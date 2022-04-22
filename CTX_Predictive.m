@@ -64,10 +64,43 @@ vary('SC1_ctx_iPoisson_offset_poisson') = 250;
 vary('SC2_ctx_iPoisson_onset_poisson') = 350;
 vary('SC2_ctx_iPoisson_offset_poisson') = 350;
 
-vary('test_error1') = 17;
-vary('test_error2') = '14';
-m.dlUpdateParams(vary);
-m.dlSimulate();
+%%
+
+varys = {vary, vary, vary};
+
+varys{1}('SA1_ctx_iPoisson_onset_poisson') = 150;
+varys{1}('SA1_ctx_iPoisson_offset_poisson') = 250;
+varys{1}('SA2_ctx_iPoisson_onset_poisson') = 250;
+varys{1}('SA2_ctx_iPoisson_offset_poisson') = 350;
+
+varys{1}('SB1_ctx_iPoisson_onset_poisson') = 250;
+varys{1}('SB1_ctx_iPoisson_offset_poisson') = 250;
+varys{1}('SB2_ctx_iPoisson_onset_poisson') = 350;
+varys{1}('SB2_ctx_iPoisson_offset_poisson') = 350;
+
+varys{1}('SC1_ctx_iPoisson_onset_poisson') = 250;
+varys{1}('SC1_ctx_iPoisson_offset_poisson') = 250;
+varys{1}('SC2_ctx_iPoisson_onset_poisson') = 350;
+varys{1}('SC2_ctx_iPoisson_offset_poisson') = 350;
+
+varys{2}('SA1_ctx_iPoisson_onset_poisson') = 150;
+varys{2}('SA1_ctx_iPoisson_offset_poisson') = 250;
+varys{2}('SA2_ctx_iPoisson_onset_poisson') = 250;
+varys{2}('SA2_ctx_iPoisson_offset_poisson') = 350;
+
+varys{2}('SB1_ctx_iPoisson_onset_poisson') = 250;
+varys{2}('SB1_ctx_iPoisson_offset_poisson') = 250;
+varys{2}('SB2_ctx_iPoisson_onset_poisson') = 350;
+varys{2}('SB2_ctx_iPoisson_offset_poisson') = 350;
+
+varys{2}('SC1_ctx_iPoisson_onset_poisson') = 250;
+varys{2}('SC1_ctx_iPoisson_offset_poisson') = 250;
+varys{2}('SC2_ctx_iPoisson_onset_poisson') = 350;
+varys{2}('SC2_ctx_iPoisson_offset_poisson') = 350;
+
+
+% m.dlUpdateParams(vary);
+% m.dlSimulate();
 
 
 %% Trial: training script
