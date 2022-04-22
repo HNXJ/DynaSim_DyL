@@ -361,7 +361,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for j = 1:dlBatchs
                 
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
-                    obj.dlUpdateParams(vary(j));
+                    obj.dlUpdateParams(dlVaryList(j));
                     obj.dlSimulate();
                     
                     obj.dlCalculateOutputs(dlOutputLabel, dlOutputType);
