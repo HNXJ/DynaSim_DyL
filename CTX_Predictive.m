@@ -117,10 +117,18 @@ outputlabels = [{'DeepE_V', 1:4, [250 350]}; {'DeepE_V', 5:8, [250 350]}; {'Deep
 %% Trial: training script
 
 clc;
-m.dlTrain(1, 3, varys, [1, 2, 3], outputlabels, 'ifr');
+dlEpochs = 3;
+dlBatchs = 3;
+dlVaryList = varys;
 
-%%
-% Define parameters
+dlTargets = [1, 2, 3]; % TODO Change it
+dlOutputLabel = outputlabels;
+dlOutputType = 'ifr';
+dlLearningRule = 'DeltaRule';
+
+m.dlTrain(dlEpochs, dlBatchs, dlVaryList, dlTargets, dlOutputLabel, dlOutputType, dlLearningRule);
+
+%% (Deprecated)Define parameters
 
 iterations = 1;
 lambda = 0.001;

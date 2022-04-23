@@ -377,6 +377,10 @@ classdef DynaLearn < matlab.mixin.SetGet
             
                 disp("TODO Rascorla-Wagner delta rule");
                 
+            else
+                
+                disp("TODO train step and learning");
+                
             end
             
         end
