@@ -363,11 +363,25 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlCalculateError(obj, dlTargets)
            
-            disp('todo');
+            disp('TODO Calculate error');
             
         end
         
-        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlTargets, dlOutputLabel, dlOutputType) % TODO !!! -> Steps, Update, parameters and variables
+        function dlTrainStep(obj, dlLearningRule)
+           
+            if strcmpi(dlLearningRule, 'DeltaRule')
+            
+                disp("TODO simple delta rule");
+                
+            elseif strcmpi(dlLearningRule, 'RWDeltaRule')
+            
+                disp("TODO Rascorla-Wagner delta rule");
+                
+            end
+            
+        end
+        
+        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlTargets, dlOutputLabel, dlOutputType, dlLearningRule) % TODO !!! -> Steps, Update, parameters and variables
            
             for i = 1:dlEpochs
                
@@ -379,6 +393,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     
                     obj.dlCalculateOutputs(dlOutputLabel, dlOutputType);
                     obj.dlCalculateError(dlTargets);
+                    obj.dlTrainStep(dlLearningRule);
                 
                 end
                 
