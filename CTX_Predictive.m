@@ -113,13 +113,13 @@ varys{3}('SC1_ctx_iPoisson_offset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_onset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_offset_poisson') = 350;
 
-outputlabels = containers.Map();
+outputlabels = [{'DeepE_V', 1:4}; {'DeepE_V', 5:8}; {'DeepE_V', 9:12}];
 % outputlabels 
 
 %% Trial: training script
 
 clc;
-m.dlTrain(3, 3, varys, [1, 2, 3], ['DeepE_V', 'DeepI_V'], 'ifr');
+m.dlTrain(3, 3, varys, [1, 2, 3], outputlabels, 'ifr');
 
 %%
 % Define parameters
