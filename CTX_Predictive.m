@@ -114,6 +114,7 @@ varys{3}('SC2_ctx_iPoisson_onset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_offset_poisson') = 350;
 
 outputlabels = [{'DeepE_V', 1:4, [250 350]}; {'DeepE_V', 5:8, [250 350]}; {'DeepE_V', 9:12, [250 350]}];
+
 %% Trial: training script
 
 clc;
