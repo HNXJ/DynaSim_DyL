@@ -298,9 +298,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             for i = 1:n
                 
                 x = obj.dlLastOutputs{1, i};
-                t = linspace(0, size(x, 1), size(x, 1))*obj.dldT*obj.dlDownSampleFactor;
                 raster = computeRaster(t, x);
-                
                 if size(raster, 1) > 0
 
                     pool = 1:size(x, 2);

@@ -117,7 +117,7 @@ outputlabels = [{'DeepE_V', 1:4, [250 350]}; {'DeepE_V', 5:8, [250 350]}; {'Deep
 %% Trial: training script
 
 clc;
-m.dlTrain(3, 3, varys, [1, 2, 3], outputlabels, 'ifr');
+m.dlTrain(1, 3, varys, [1, 2, 3], outputlabels, 'ifr');
 
 %%
 % Define parameters
