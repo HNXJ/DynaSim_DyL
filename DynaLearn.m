@@ -310,17 +310,22 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlCalculateOutputs(obj, dlOutputLabels, dlOutputType, dlTimeInterval)
            
-            n = size(dlOutputLabels, 2);
+            n = size(dlOutputLabels, 1);
             dlIndices = zeros(1, n);
             dlTimeKernel = obj.dlTimeIntervalKernel(dlTimeInterval);
             
             for i = 1:n
                 
-                dlIndices(i) = find(strcmpi(obj.dlVariables, dlOutputLabels(i)));
+                dlIndices(i) = find(strcmpi(obj.dlVariables, dlOutputLabels{i, 1}));
                 
             end
             
             set(obj, 'dlLastOutputs' , obj.dlOutputs(dlIndices));
+%             for i = 1:n % TODO cells index
+%                 
+%                 obj.dlLastOutputs
+%                 
+%             end
             
             if strcmpi(dlOutputType, 'ifr')
                 
