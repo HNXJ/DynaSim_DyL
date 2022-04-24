@@ -417,7 +417,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule) % TODO !!! -> Steps, Update, parameters and variables
+        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule, dlLambda) % TODO !!! -> Steps, Update, parameters and variables
            
             for i = 1:dlEpochs
                 
@@ -426,24 +426,37 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
                     obj.dlUpdateParams(dlVaryList{j});
-%                     obj.dlSimulate();
+                    obj.dlSimulate();
                     
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters);
-                    obj.dlTrainStep(dlLearningRule);
+                    obj.dlTrainStep(dlLearningRule, dlLambda);
                 
                 end
+                fprintf("\t\tError = %f\n", obj.dlLastError);
                 
             end
             
         end
         
-        function dlTrainStep(obj, dlLearningRule)
+        function dlTrainStep(obj, dlLearningRule, dlLambda)
            
             error = obj.dlLastError;
+            p = load([obj.dlPath, '/params.mat']);
+            
+            val = struct2cell(p.p);
+            lab = fieldnames(p.p);
+            l = find(contains(lab, '_netcon'));
+            
             if strcmpi(dlLearningRule, 'DeltaRule')
             
-                disp("TODO simple delta rule");
+                for i = l'
+
+                    w = val{i, 1};
+                    wn = w + randn(size(w))*error*dlLambda;
+                    val{i, 1} = wn;
+                    
+                end
                 
             elseif strcmpi(dlLearningRule, 'RWDeltaRule')
             
@@ -456,6 +469,10 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             end
             
+            q = cell2struct(val, lab);
+            p.p = q;
+            save([obj.dlPath, '/params.mat'], '-struct', 'p');
+
         end
         
         function c = dlGetConnectionsList(obj)
