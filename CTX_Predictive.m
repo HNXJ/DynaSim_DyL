@@ -114,7 +114,6 @@ varys{3}('SC2_ctx_iPoisson_offset_poisson') = 350;
 
 outputParams = [{'DeepE_V', 1:4, [250 350], 'afr'}; {'DeepE_V', 5:8, [250 350], 'afr'}; {'DeepE_V', 9:12, [250 350], 'afr'}; {'DeepE_V', 13:16, [250 350], 'afr'}; {'DeepE_V', 17:20, [250 350], 'afr'}];
 targetParams = [{'MSE', 1, 4, 0.25}; {'Compare', [2, 1, 3], 0, 0.5}; {'Compare', [4, 2, 5], 0, 0.25}];
-
 %% Trial: training script
 
 clc;
@@ -125,95 +124,9 @@ dlVaryList = varys;
 dlTargetParameters = targetParams;
 dlOutputParameters = outputParams;
 dlLearningRule = 'DeltaRule';
-dlLambda = 0.1;
+dlLambda = 0.00;
 
 m.dlTrain(dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule, dlLambda);
-%% (Deprecated)Define parameters
-
-iterations = 1;
-lambda = 0.001;
-update_mode = 'uniform';
-error_mode = 'MSE';
-
-target_order = [1, 0; 0, 1; 0, 1; 1, 0; 0, 0; 0, 0];
-target_label = 'deepE_V';
-target_cells = [1:10; 11:20];
-target_tspan = [120, 280];
-
-tspan = [0 400]; % [beg, end] (ms)
-simulator_options = {'tspan', tspan, 'solver','rk1','dt',.01,'downsample_factor',10,'verbose_flag', 0, 'mex_flag', 0};
-g_poisson = 6.4e-4;
-
-vary1 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 120; 'SA', 'offset_poisson', 280;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', 280; 'SB', 'offset_poisson', 280;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 120; 'Cx1', 'offset_poisson', 280;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 280; 'Cx2', 'offset_poisson', 280};
-
-vary2 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 280; 'SA', 'offset_poisson', 280;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', 120; 'SB', 'offset_poisson', 280;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 120; 'Cx1', 'offset_poisson', 280;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 280; 'Cx2', 'offset_poisson', 280};
-   
-vary3 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 120; 'SA', 'offset_poisson', 280;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', 280; 'SB', 'offset_poisson', 280;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 280; 'Cx1', 'offset_poisson', 280;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 120; 'Cx2', 'offset_poisson', 280};
-
-vary4 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 280; 'SA', 'offset_poisson', 280;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', 120; 'SB', 'offset_poisson', 280;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 280; 'Cx1', 'offset_poisson', 280;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 120; 'Cx2', 'offset_poisson', 280};
-
-vary5 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 280; 'SA', 'offset_poisson', 280;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', 280; 'SB', 'offset_poisson', 280;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 120; 'Cx1', 'offset_poisson', 280;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 280; 'Cx2', 'offset_poisson', 280};
-
-vary6 = {'SA','g_poisson', g_poisson; 'SA','DC_poisson', 3e7;'SA','AC_poisson', 0; 'SA', 'onset_poisson', 280; 'SA', 'offset_poisson', 280;
-       'SB','g_poisson', g_poisson; 'SB','DC_poisson', 3e7;'SB','AC_poisson', 0; 'SB', 'onset_poisson', 280; 'SB', 'offset_poisson', 280;
-       'Cx1','g_poisson', g_poisson; 'Cx1','DC_poisson', 3e7;'Cx1','AC_poisson', 0; 'Cx1', 'onset_poisson', 280; 'Cx1', 'offset_poisson', 280;
-       'Cx2','g_poisson', g_poisson; 'Cx2','DC_poisson', 3e7;'Cx2','AC_poisson', 0; 'Cx2', 'onset_poisson', 120; 'Cx2', 'offset_poisson', 280};
-   
-varies = [{vary1}, {vary2}, {vary3}, {vary4}, {vary5}, {vary6}];
-input_labels = ["A_C1", "B_C1", "A_C2", 'B_C2', 'N_C1', 'N_C2'];
-batch_size = 6;
-verbose = 1;
-
-%%
-
-tic;
-clc;
-fprintf("Training started, connectivity update mode : %s, error calc method : %s\n", update_mode, error_mode);
-
-for i = 1:iterations
-    
-    for j = 1:batch_size
-        
-        params = [];
-        
-        params.input_label = input_labels(j);
-        params.vary = varies{j};
-        params.target_label = target_label;
-        params.target_cells = target_cells;
-        
-        params.target_tspan = target_tspan;
-        params.target_order = target_order;
-        params.simulation_options = simulator_options;
-        params.lambda = lambda;
-        
-        params.error_mode = error_mode;
-        params.update_mode = update_mode;
-        params.verbose = verbose;
-        m.run_trial(params);
-        
-    end
-    
-%     fprintf("Batch %d, Avg.MAE = %f \n", i, mean(m.errors_log(end-1:end)));
-    
-end
-
-disp('done');
-toc;
 
 %% Electrophysiological analysis
 
