@@ -115,7 +115,7 @@ varys{3}('SC2_ctx_iPoisson_onset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_offset_poisson') = 350;
 
 outputParams = [{'DeepE_V', 1:4, [250 350], 'afr'}; {'DeepE_V', 5:8, [250 350], 'afr'}; {'DeepE_V', 9:12, [250 350], 'afr'}; {'DeepE_V', 13:16, [250 350], 'afr'}; {'DeepE_V', 17:20, [250 350], 'afr'}];
-targetParams = [{'Target1', 'MSE', 'O1 - O2', 0.5}; {'Target2', 'Compare', 'O1 > O2', 0.5}];
+targetParams = [{'Target1', 'MSE', 1, 4, 0.5}; {'Target2', 'Compare', [2, 1, 3], 0, 0.5}];
 
 %% Trial: training script
 
