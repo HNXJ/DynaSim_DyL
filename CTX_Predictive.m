@@ -16,15 +16,16 @@ Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 
 %% Create DynaLearn Class (First time)
 
-m = DynaLearn(s, 'models/dlPredictivePFC');
-m.dlSimulate();
-m.dlSave();
+m = DynaLearn(s, 'models/dlPredictivePFC'); % ~ 120min
+m.dlSimulate(); % ~ 40sec
+m.dlSave(); % < 1sec
 
 %% Load DynaLearn Class (previously saved file is required, default is dlFileBase.mat)
 
-m = DynaLearn();
-m = m.dlLoad('models/dlPredictivePFC/dlFile.mat');
-% m.dlSimulate();
+clc;
+m = DynaLearn(); % ~ 1sec
+m = m.dlLoad('models/dlPredictivePFC/dlFile.mat'); % ~ 12sec
+m.dlSimulate(); % ~ 40sec
 
 %% Continue simulation: Vary example
 
@@ -113,7 +114,7 @@ varys{3}('SC1_ctx_iPoisson_offset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_onset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_offset_poisson') = 350;
 
-outputlabels = [{'DeepE_V', 1:4, [250 350]}; {'DeepE_V', 5:8, [250 350]}; {'DeepE_V', 9:12, [250 350]}];
+outputlabels = [{'DeepE_V', 1:4, [250 350], 'afr'}; {'DeepE_V', 5:8, [250 350], 'ifr'}; {'DeepE_V', 9:12, [250 350]}];
 
 %% Trial: training script
 
@@ -124,7 +125,7 @@ dlVaryList = varys;
 
 dlTargets = [1, 2, 3]; % TODO Change it
 dlOutputLabel = outputlabels;
-dlOutputType = 'ifr';
+dlOutputType = 'afr';
 dlLearningRule = 'DeltaRule';
 
 m.dlTrain(dlEpochs, dlBatchs, dlVaryList, dlTargets, dlOutputLabel, dlOutputType, dlLearningRule);

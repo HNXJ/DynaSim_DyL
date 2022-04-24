@@ -292,73 +292,79 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlApplyIFR(obj)
-           
-            n = size(obj.dlLastOutputs, 2);
-            for i = 1:n
-                
-                x = obj.dlLastOutputs{1, i};
-                t = linspace(0, size(x, 1), size(x, 1))*obj.dldT*obj.dlDownSampleFactor;
-                raster = computeRaster(t, x);
-                
-                if size(raster, 1) > 0
+        function out = dlApplyIFRKernel(obj, dlOutput)
+              
+            x = dlOutput;
+            t = linspace(0, size(x, 1), size(x, 1))*obj.dldT*obj.dlDownSampleFactor;
+            raster = computeRaster(t, x);
 
-                    pool = 1:size(x, 2);
-                    O1 = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool, 25, 1, 1);
-                    obj.dlLastOutputs{1, i} = O1;
+            if size(raster, 1) > 0
 
-                end
+                pool = 1:size(x, 2);
+                out = 5e2 * NWepanechnikovKernelRegrRaster(t, raster, pool, 25, 1, 1);
+                
+            else 
+
+                out = zeros(1, size(x, 1));
+                
             end
             
         end
         
-        function dlCalculateOutputs(obj, dlOutputLabels, dlOutputType)
+        function out = dlApplyAverageFRKernel(obj, dlOutput)
            
-            n = size(dlOutputLabels, 1);
+            o1 = obj.dlApplyIFRKernel(dlOutput);
+            out = mean(o1);
+            
+        end
+        
+        function dlCalculateOutputs(obj, dlOutputParameters)
+           
+            n = size(dlOutputParameters, 1);
             dlIndices = zeros(1, n);
             
             for i = 1:n
                 
-                dlIndices(i) = find(strcmpi(obj.dlVariables, dlOutputLabels{i, 1}));
+                dlIndices(i) = find(strcmpi(obj.dlVariables, dlOutputParameters{i, 1}));
                 
             end
             
             set(obj, 'dlLastOutputs' , obj.dlOutputs(dlIndices));
+            
             for i = 1:n
                 
-                dlTimeKernel = ceil(dlOutputLabels{i, 3}/(obj.dldT*obj.dlDownSampleFactor));
-                obj.dlLastOutputs{i} = obj.dlLastOutputs{i}(dlTimeKernel(1):dlTimeKernel(2), dlOutputLabels{i, 2});
-                
-            end
-            
-            if strcmpi(dlOutputType, 'ifr')
-                
-                obj.dlApplyIFR();
-                
-            elseif strcmpi(dlOutputType, 'lfp')
-                
-                obj.dlApplyKernel(dlTimeKernel, obj.dlBaseVoltage);
-                
-            elseif strcmpi(dlOutputType, 'afr')
-                
-                obj.dlApplyAverageFR();
-                
-            else
-                
-                fprintf("->This output type is not recognized. Trying to run ""%s.m"" ...\n", dlOutputType);
-                try
-                    
-                    dsBridgeFunctionRun(dlOutputType);
-                    set(obj, 'dlLastOutputs' , dlTempFuncBridge(obj.dlLastOutputs, dlTimeInterval));
-                    
-                catch
-                    
-                    fprintf("-->Function ""%s.m"" not found! check if you've created ""%s.m"" or entered correct output type.\n--->No valid output is calculated for this trial, response and error are going to be ""NaN""\n", dlOutputType, dlOutputType);
-                    set(obj, 'dlLastOutputs', "NaN");
-                    
+                dlTimeKernel = ceil(dlOutputParameters{i, 3}/(obj.dldT*obj.dlDownSampleFactor));
+                dlOutputType = dlOutputParameters{i, 4};
+                dlTempOutputs = obj.dlLastOutputs{i}(dlTimeKernel(1):dlTimeKernel(2), dlOutputParameters{i, 2});
+         
+                if strcmpi(dlOutputType, 'ifr')
+
+                    obj.dlLastOutputs{i} = obj.dlApplyIFRKernel(dlTempOutputs);
+
+                elseif strcmpi(dlOutputType, 'lfp')
+
+                    obj.dlApplyKernel(dlTimeKernel, obj.dlBaseVoltage);
+
+                elseif strcmpi(dlOutputType, 'afr')
+
+                    obj.dlApplyAverageFRKernel();
+
+                else
+
+                    fprintf("->This output type is not recognized. Trying to run ""%s.m"" ...\n", dlOutputType);
+                    try
+
+                        dsBridgeFunctionRun(dlOutputType);
+                        set(obj, 'dlLastOutputs' , dlTempFuncBridge(obj.dlLastOutputs, dlTimeInterval));
+
+                    catch
+
+                        fprintf("-->Function ""%s.m"" not found! check if you've created ""%s.m"" or entered correct output type.\n--->No valid output is calculated for this trial, response and error are going to be ""NaN""\n", dlOutputType, dlOutputType);
+                        set(obj, 'dlLastOutputs', "NaN");
+
+                    end
                 end
             end
-            
         end
         
         function dlCalculateError(obj, dlTargets)
