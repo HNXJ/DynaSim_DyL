@@ -65,8 +65,6 @@ vary('SC1_ctx_iPoisson_offset_poisson') = 250;
 vary('SC2_ctx_iPoisson_onset_poisson') = 350;
 vary('SC2_ctx_iPoisson_offset_poisson') = 350;
 
-%% Inputs preparation
-
 varys = {vary, vary, vary};
 
 varys{1}('SA1_ctx_iPoisson_onset_poisson') = 150;
@@ -115,12 +113,12 @@ varys{3}('SC2_ctx_iPoisson_onset_poisson') = 250;
 varys{3}('SC2_ctx_iPoisson_offset_poisson') = 350;
 
 outputParams = [{'DeepE_V', 1:4, [250 350], 'afr'}; {'DeepE_V', 5:8, [250 350], 'afr'}; {'DeepE_V', 9:12, [250 350], 'afr'}; {'DeepE_V', 13:16, [250 350], 'afr'}; {'DeepE_V', 17:20, [250 350], 'afr'}];
-targetParams = [{'MSE', 1, 4, 0.5}; {'Compare', [2, 1, 3], 0, 0.5}];
+targetParams = [{'MSE', 1, 4, 0.25}; {'Compare', [2, 1, 3], 0, 0.5}; {'CompareFG', [4, 2, 5], 0, 0.25}];
 
 %% Trial: training script
 
 clc;
-dlEpochs = 3;
+dlEpochs = 2;
 dlBatchs = 3;
 dlVaryList = varys;
 

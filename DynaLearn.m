@@ -166,6 +166,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             set(obj, 'dlVariables', vars);
             obj.dlMexBridgeInit()
             
+            obj.dlTrialNumber = 0;
             fprintf("\nReinitialized.\n");
             
         end
@@ -365,13 +366,54 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlCalculateError(obj, dlTargetParams)
            
             n = size(dlTargetParams, 1);
+            Error = 0;
+            
             for i = 1:n
                
+                TempError = 0;
                 
+                dlErrorType = dlTargetParams{i, 1};
+                dlOutputIndices = dlTargetParams{i, 2};
+                dlOutputTargets = dlTargetParams{i, 3};
+                dlErrorWeight = dlTargetParams{i, 4};
+                
+                if strcmpi(dlErrorType, 'MAE')
+                   
+                    TempError = abs(obj.dlLastOutputs{dlOutputIndices} - dlOutputTargets);
+                    
+                elseif strcmpi(dlErrorType, 'MSE')
+                    
+                    TempError = abs(obj.dlLastOutputs{dlOutputIndices} - dlOutputTargets);
+                
+                    
+                elseif strcmpi(dlErrorType, 'Compare')
+                    
+                    x = dlOutputIndices;
+                    c = 1;
+                    
+                    for j = dlOutputIndices
+                        
+                        x(c) = obj.dlLastOutputs{j};
+                        
+                        if c > 1
+                            TempError = TempError + obj.dlRampFunc(x(c) - x(c-1));
+                        end
+                        
+                        c = c + 1;
+                        
+                    end
+                    
+                else
+                    
+                    fprintf("Undefined error type ""%s""\n", dlErrorType);
+                    
+                end
+                
+                Error = Error + TempError*dlErrorWeight;
                 
             end
-            obj.dlLastError = 0;
-            disp('TODO Calculate error');
+            
+            obj.dlLastError = Error;
             
         end
         
@@ -440,201 +482,9 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function o = get_outputs(obj, target_label, target_cells, target_tspan)% TODO
-            
-            fn = fieldnames(obj.data);
-            ind = strcmp(fn, target_label);
-            st = struct2cell(obj.data);
-            
-            t = obj.data.time;
-            x = st(ind);x = x{1};
-            raster = computeRaster(t, x);
-            y = [];
-            
-            for i = 1:size(target_cells, 1)
-                
-                y = [y, 5e2 * NWepanechnikovKernelRegrRaster(t, raster, target_cells(i, :), 51, 1, 1)];    
-                
-            end
-            
-            o = y;
-%             o = y(target_tspan(1):target_tspan(2), :)';
-            
-        end
-        
-        function o = get_outputs_ifr(obj)
-            
-            output = get(obj, 'last_outputs');
-            o = mean(output, 1);
-        
-        end
-        
-        function obj = update_error(obj, mode)% TODO
-            
-            output = obj.get_outputs_ifr();
-            target = get(obj, 'last_targets');
-            
-%             disp(output-target);
-            
-            if strcmpi(mode, 'diff')
-                
-                err = (target-output); % Basic difference
-                
-            elseif strcmpi(mode, 'MAE')
-                
-                err = 0.5*abs(target-output);
-                
-            elseif strcmpi(mode, 'MSE')
-                
-%                 err = 0.5*(target-output)^2; # TODO ERR
-                  err = 0;
-                
-            else
-                
-                fprintf("Warning! error not defined, by default difference will be used.") 
-                err = (target-output); % Basic difference
-                
-            end
-            
-            if abs(err) > 1000
-               
-                err = err / abs(err);
-                err = err * 1000;
-                
-            end
-            
-            if isnan(err)
-               
-                err = obj.last_error;
-                
-            end
-            
-            
-            set(obj, 'errors_log', [get(obj, 'errors_log'), err]);
-            set(obj, 'last_error', err);
-            
-        end
-        
-        function obj = run_trial(obj, params)% TODO
-            
-            set(obj, 'last_trial', get(obj, 'last_trial') + 1);
-            set(obj, 'data', obj.simulate(params.vary, params.simulation_options));
-            set(obj, 'last_targets', params.target_order);  
-            disp(params.input_label);
-%          
-% %             set(obj, 'last_outputs', obj.get_outputs(params.target_label, params.target_cells, params.target_tspan));
-%             obj.update_error(params.error_mode);
-%             
-            if params.verbose
-                fprintf("Trial no. %d, %s = %f\n", obj.last_trial, params.error_mode, obj.last_error);
-            end
-% %               fprintf("Trial no. %d", obj.last_trial);
-%             obj.train_step(params.lambda, params.update_mode);
-            
-        end
-        
-        function train_step(obj, lambda, mode) % TODO
-                            
-            error = get(obj, 'last_error');
-            
-            if strcmpi(mode, 'normal')
-
-                obj.update_weights_normal(lambda, error);
-            
-            elseif strcmpi(mode, 'uniform')
-                
-                obj.update_weights_uniform(lambda, error);
-                
-            else
-                
-                obj.update_weights_constant(lambda, error)
-                
-            end
-            
-        end
-        
-        function update_weights_normal(obj, lambda, error)% TODO
-            
-            for i = 1:size(obj.connections, 1)
-                
-                wp = obj.get_weight(i);
-                delta = lambda*error*randn(size(wp));
-                wn = wp + delta;
-                
-                if max(max(abs(wn))) > 1
-
-                    wn = wn / max(max(abs(wn)));
-
-                end
-               
-                obj.update_weight(i, wn);
-               
-            end
-            
-        end
-        
-        function update_weights_uniform(obj, lambda, error)% TODO
-            
-            for i = 1:size(obj.connections, 1)
-                
-                wp = obj.get_weight(i);
-                delta = lambda*error*(rand(size(wp))-0.5);
-                wn = wp + delta;
-
-                if max(max(abs(wn))) > 1
-
-                  wn = wn / max(max(abs(wn)));
-
-                end
-
-                obj.update_weight(i, wn);
-               
-            end
-            
-        end
-        
-        function update_weights_constant(obj, lambda, error)% TODO
-            
-            for i = 1:size(obj.connections, 1)
-                
-                wp = obj.get_weight(i);
-                wn = wp + lambda*error*ones(size(wp));
-                if max(max(abs(wn))) > 1
-
-                    wn = wn / max(max(abs(wn)));
-
-                end
-
-                obj.update_weight(i, wn);
-            end
-            
-        end
-        
-        function update_weight(obj, connection, Wn)% TODO
-            
-            model_n = get(obj, 'model');
-            model_n.connections(connection).parameters = {'netcon', Wn};
-            set(obj, 'model', model_n);
-            
-        end
-        
-        function w = get_weight(obj, connection) % TODO
-            
-            w_s = obj.data.model.fixed_variables;
-            w_c = struct2cell(w_s);
-            w = w_c(connection);
-            w = w{1};
-            
-        end
-        
-        function error_plot(obj, error_title) % TODO
+        function out = dlRampFunc(obj, x)
            
-            errors = get(obj, 'errors_log');
-            figure("Position", [50 75 1450 575]);
-            plot(errors);
-            xlabel("Trials");
-            grid('on');
-            ylabel(error_title);
+            out = (x + abs(x))/2;
             
         end
         
