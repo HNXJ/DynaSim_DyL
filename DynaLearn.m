@@ -364,7 +364,9 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlCalculateError(obj, dlTargetParams)
            
-            disp(dlTargetParams);
+            n = size(dlTargetParams, 1);
+            disp(n);
+            obj.dlLastError = 0;
             disp('TODO Calculate error');
             
         end
