@@ -273,23 +273,17 @@ classdef DynaLearn < matlab.mixin.SetGet
        
         end
         
-        function dlApplyKernel(obj, dlKernel, dlBaseVoltage)
+        function out = dlApplyKernel(obj, dlOutput, dlKernel)
            
-            x = obj.dlLastOutputs;
-            for i = 1:size(x, 2)
-               
-                xp = x{1, i};
-                for j = 1:size(xp, 2)
-                   
-                    xp(:, j) = xp(:, j).*dlKernel;
-                    xp(xp == 0) = dlBaseVoltage;
-                    
-                end
-                x{1, i} = xp;
-                
+            xp = dlOutput;
+            for j = 1:size(xp, 2)
+
+                xp(:, j) = xp(:, j).*dlKernel;
+                xp(xp == 0) = obj.dlBaseVoltage;
+
             end
-            set(obj, 'dlLastOutputs', x);
-            
+            out = xp;
+           
         end
         
         function out = dlApplyIFRKernel(obj, dlOutput)
@@ -343,38 +337,62 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                 elseif strcmpi(dlOutputType, 'lfp')
 
-                    obj.dlApplyKernel(dlTimeKernel, obj.dlBaseVoltage);
+                    obj.dlLastOutputs{i} = obj.dlApplyKernel(dlTempOutputs, dlTimeKernel);
 
                 elseif strcmpi(dlOutputType, 'afr')
 
-                    obj.dlApplyAverageFRKernel();
+                    obj.dlLastOutputs{i} = obj.dlApplyAverageFRKernel(dlTempOutputs);
 
                 else
 
-                    fprintf("->This output type is not recognized. Trying to run ""%s.m"" ...\n", dlOutputType);
+                    fprintf("\tThis output type is not recognized. Trying to run ""%s.m"" ...\n", dlOutputType);
                     try
 
                         dsBridgeFunctionRun(dlOutputType);
-                        set(obj, 'dlLastOutputs' , dlTempFuncBridge(obj.dlLastOutputs, dlTimeInterval));
+                        obj.dlLastOutputs{i} = dlTempFuncBridge(dlTempOutputs);
+                        fprintf("\t""%s.m"" runned succesfully for output no. %d\n", dlOutputType, i);
 
                     catch
 
-                        fprintf("-->Function ""%s.m"" not found! check if you've created ""%s.m"" or entered correct output type.\n--->No valid output is calculated for this trial, response and error are going to be ""NaN""\n", dlOutputType, dlOutputType);
-                        set(obj, 'dlLastOutputs', "NaN");
+                        fprintf("\tError occured. Function ""%s.m"" is not found or it contains error. check if you've created ""%s.m"" or entered correct output type.\n--->No valid output is calculated for this trial, response and error are going to be ""NaN""\n", dlOutputType, dlOutputType);
+                        obj.dlLastOutputs{i} = "NaN";
 
                     end
                 end
             end
         end
         
-        function dlCalculateError(obj, dlTargets)
+        function dlCalculateError(obj, dlTargetParams)
            
+            disp(dlTargetParams);
             disp('TODO Calculate error');
+            
+        end
+        
+        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule) % TODO !!! -> Steps, Update, parameters and variables
+           
+            for i = 1:dlEpochs
+                
+                fprintf("\tTrial no. %d\n", i);
+                for j = 1:dlBatchs
+                
+                    set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
+                    obj.dlUpdateParams(dlVaryList{j});
+%                     obj.dlSimulate();
+                    
+                    obj.dlCalculateOutputs(dlOutputParameters);
+                    obj.dlCalculateError(dlTargetParameters);
+                    obj.dlTrainStep(dlLearningRule);
+                
+                end
+                
+            end
             
         end
         
         function dlTrainStep(obj, dlLearningRule)
            
+            error = obj.dlLastError;
             if strcmpi(dlLearningRule, 'DeltaRule')
             
                 disp("TODO simple delta rule");
@@ -385,27 +403,8 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             else
                 
-                disp("TODO train step and learning");
-                
-            end
-            
-        end
-        
-        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlTargets, dlOutputLabel, dlOutputType, dlLearningRule) % TODO !!! -> Steps, Update, parameters and variables
-           
-            for i = 1:dlEpochs
-               
-                for j = 1:dlBatchs
-                
-                    set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
-                    obj.dlUpdateParams(dlVaryList{j});
-%                     obj.dlSimulate();
-                    
-                    obj.dlCalculateOutputs(dlOutputLabel, dlOutputType);
-                    obj.dlCalculateError(dlTargets);
-                    obj.dlTrainStep(dlLearningRule);
-                
-                end
+                disp("TODO train step and learning 'else' part");
+                disp(error);
                 
             end
             

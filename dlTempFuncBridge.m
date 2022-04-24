@@ -1,6 +1,5 @@
-function out = dlTempFuncBridge(dlOutputs, dlTimeInterval)
+function out = dlTempFuncBridge(dlOutputs)
 
-	[outvars{:}] = testCustomKernel(dlOutputs, dlTimeInterval);
-	out = outvars;
+	out = dlRootAFRTestOutputMode(dlOutputs);
 
 end
