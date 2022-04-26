@@ -145,11 +145,13 @@ classdef DynaLearn < matlab.mixin.SetGet
         
             dlSaveFileNamePath = [obj.dlStudyDir, '/dlFile'];
             set(obj, 'dlPathToFile', 'dlFile.mat');
+            p = load([obj.dlPath, '/params.mat']);
+            save([obj.dlStudyDir, '/params.mat'], '-struct', 'p');
             save(dlSaveFileNamePath, 'obj');
             
         end
         
-        function obj = dlLoad(obj, PathToFile)
+        function obj = dlLoad(obj, PathToFile) % TODO load params.mat from /solve
            
             set(obj, 'dlPathToFile', PathToFile);
             o = load(obj.dlPathToFile);
