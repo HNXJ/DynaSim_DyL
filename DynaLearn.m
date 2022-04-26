@@ -143,7 +143,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlSave(obj)
         
-            dlSaveFileNamePath = [obj.dlStudyDir, '/dlFile'];
+            dlSaveFileNamePath = [obj.dlStudyDir, '/dlFile.mat'];
             set(obj, 'dlPathToFile', 'dlFile.mat');
             p = load([obj.dlPath, '/params.mat']);
             save([obj.dlStudyDir, '/params.mat'], '-struct', 'p');
