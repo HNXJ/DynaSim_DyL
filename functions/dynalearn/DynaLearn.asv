@@ -506,7 +506,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             fprintf("Updating parameters of %s", obj.dlPath);
             dsParamsModifier('dlTempFuncParamsChanger.m', map);
             dlTempFuncParamsChanger(obj.dlPath);
-            fprintf("   Updated.\n"); 
+            fprintf(" updated.\n"); 
             
         end
         
