@@ -468,6 +468,15 @@ classdef DynaLearn < matlab.mixin.SetGet
                     val{i, 1} = wn;
                     
                 end
+            elseif strcmpi(dlLearningRule, 'BioDeltaRule')
+            
+                for i = l'
+
+                    w = val{i, 1};
+                    wn = w + (1-w).*randn(size(w))*error*dlLambda;
+                    val{i, 1} = wn;
+                    
+                end
                 
             elseif strcmpi(dlLearningRule, 'RWDeltaRule')
             
