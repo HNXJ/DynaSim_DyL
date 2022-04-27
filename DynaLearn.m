@@ -385,7 +385,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     
                 elseif strcmpi(dlErrorType, 'MSE')
                     
-                    TempError = abs(obj.dlLastOutputs{dlOutputIndices} - dlOutputTargets);
+                    TempError = abs(obj.dlLastOutputs{dlOutputIndices} - dlOutputTargets)^2;
                 
                     
                 elseif strcmpi(dlErrorType, 'Compare')
@@ -415,6 +415,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             end
             
+            obj.dlErrorsLog = [obj.dlErrorsLog, Error];
             obj.dlLastError = Error;
             
         end
@@ -456,6 +457,8 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                     w = val{i, 1};
                     wn = w + randn(size(w))*error*dlLambda;
+%                     wn = w + (1-w).*randn(size(w))*error*dlLambda; %
+%                     Biochemical Delta rule.
                     val{i, 1} = wn;
                     
                 end

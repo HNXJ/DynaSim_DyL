@@ -11,8 +11,8 @@ clc;
 
 Ne = 20;Ni = 4;Nio = 10;noise_rate = 13;
 % s = NeoCortex(Ne, Ni, Nio, noise_rate);
-% s = dlDemoPING(5, 1, 2, noise_rate); % 17 Mins on mex generator
-s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
+s = dlDemoPING(5, 1, 2, noise_rate); % 17 Mins on mex generator
+% s = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate);
 
 %% Create DynaLearn Class (First time)
 
@@ -24,8 +24,8 @@ m.dlSave(); % < 1sec
 
 clc;
 m = DynaLearn(); % ~ 1sec
-m = m.dlLoad('models/dlPredictivePFC/dlFile.mat'); % ~ 12sec
-m.dlSimulate(); % ~ 40sec
+m = m.dlLoad('models/dlPredictivePFC2/dlFile.mat'); % ~ 12sec
+% m.dlSimulate(); % ~ 40sec
 
 %% Continue simulation: Vary example
 
@@ -117,14 +117,14 @@ targetParams = [{'MSE', 1, 4, 0.25}; {'Compare', [2, 1, 3], 0, 0.5}; {'Compare',
 %% Trial: training script
 
 clc;
-dlEpochs = 3;
+dlEpochs = 10;
 dlBatchs = 3;
 dlVaryList = varys;
 
 dlTargetParameters = targetParams;
 dlOutputParameters = outputParams;
 dlLearningRule = 'DeltaRule';
-dlLambda = 0.00;
+dlLambda = 0.0001;
 
 m.dlTrain(dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule, dlLambda);
 
