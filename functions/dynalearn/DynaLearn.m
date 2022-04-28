@@ -442,7 +442,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     obj.dlSimulate();
                     
                     obj.dlCalculateOutputs(dlOutputParameters);
-                    obj.dlCalculateError(dlTargetParameters);
+                    obj.dlCalculateError(dlTargetParameters{j});
                     obj.dlTrainStep(dlLearningRule, dlLambda);
                 
                 end
@@ -467,8 +467,6 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                     w = val{i, 1};
                     wn = w + randn(size(w))*error*dlLambda;
-%                     wn = w + (1-w).*randn(size(w))*error*dlLambda; %
-%                     Biochemical Delta rule.
                     val{i, 1} = wn;
                     
                 end
