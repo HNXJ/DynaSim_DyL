@@ -437,16 +437,17 @@ classdef DynaLearn < matlab.mixin.SetGet
                 fprintf("\tTrial no. %d\n", i);
                 for j = 1:dlBatchs
                 
+                    fprintf("\t\tBatch no. %d\t", j);
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
                     obj.dlUpdateParams(dlVaryList{j});
-                    obj.dlSimulate();
+%                     obj.dlSimulate();
                     
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     obj.dlTrainStep(dlLearningRule, dlLambda);
                 
                 end
-                fprintf("\t\tError = %f\n", obj.dlLastError);
+                fprintf("\tError = %f\n", obj.dlLastError);
                 
             end
             
@@ -494,7 +495,8 @@ classdef DynaLearn < matlab.mixin.SetGet
             q = cell2struct(val, lab);
             p.p = q;
             save([obj.dlPath, '/params.mat'], '-struct', 'p');
-
+%             fprintf("\tTrial completed.\n");
+            
         end
         
         function c = dlGetConnectionsList(obj)
@@ -517,7 +519,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             fprintf("Updating parameters of %s", obj.dlPath);
             dsParamsModifier('dlTempFuncParamsChanger.m', map);
             dlTempFuncParamsChanger(obj.dlPath);
-            fprintf("   Updated.\n"); 
+            fprintf("\tUpdated.\n"); 
             
         end
         

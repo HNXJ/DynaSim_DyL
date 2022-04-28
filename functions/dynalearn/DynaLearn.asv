@@ -412,14 +412,8 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
                 elseif strcmpi(dlErrorType, 'Diff')
                     
-                    j = dlOutputIndices
-                    x = obj.dlLastOutputs{j(1)};
-
-                    if c > 1
-                        TempError = TempError + obj.dlRampFunc(x(c) - x(c-1));
-                    end
-
-                    c = c + 1;
+                    j = dlOutputIndices;
+                    TempError = abs(obj.dlLastOutputs{j(1)} - obj.dlLastOutputs{j(2)});
                     
                 else
                     
@@ -448,7 +442,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     obj.dlSimulate();
                     
                     obj.dlCalculateOutputs(dlOutputParameters);
-                    obj.dlCalculateError(dlTargetParameters);
+                    obj.dlCalculateError(dlTargetParameters{j});
                     obj.dlTrainStep(dlLearningRule, dlLambda);
                 
                 end
@@ -473,8 +467,6 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                     w = val{i, 1};
                     wn = w + randn(size(w))*error*dlLambda;
-%                     wn = w + (1-w).*randn(size(w))*error*dlLambda; %
-%                     Biochemical Delta rule.
                     val{i, 1} = wn;
                     
                 end
@@ -502,7 +494,8 @@ classdef DynaLearn < matlab.mixin.SetGet
             q = cell2struct(val, lab);
             p.p = q;
             save([obj.dlPath, '/params.mat'], '-struct', 'p');
-
+            fprintf("Trial completed.");
+            
         end
         
         function c = dlGetConnectionsList(obj)
