@@ -24,7 +24,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         dlMexFuncName = []; % Name of Mex function (e.g **********_mex.mex64
         
         dlPath = []; % Path which contains params.mat, mexfuncs, solver ...
-        dlPathToFile = 'models/dlBaseModel/dlFile.mat';
+        dlPathToFile = 'models/dlBaseModel';
         dlBaseVoltage = -77.4;
         dldT = .01; % Time step in ODEs (dt)
         
@@ -36,7 +36,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         function obj = DynaLearn(varargin) % Constructors, will be expanded
             
             disp("Creating Dyna model object ... ");
-            set(obj, 'dlPathToFile', 'models/dlBaseModel/dlFile.mat');
+            set(obj, 'dlPathToFile', 'models/dlBaseModel');
             
             if nargin == 0
                 
@@ -150,7 +150,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlSave(obj)
         
             dlSaveFileNamePath = [obj.dlStudyDir, '/dlFile.mat'];
-            set(obj, 'dlPathToFile', 'dlFile.mat');
+%             set(obj, 'dlPathToFile', 'dlFile.mat');
             p = load([obj.dlPath, '/params.mat']);
             save([obj.dlStudyDir, '/params.mat'], '-struct', 'p');
             save(dlSaveFileNamePath, 'obj');
@@ -159,10 +159,14 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function obj = dlLoad(obj, PathToFile) % TODO load params.mat from /solve
            
-            set(obj, 'dlPathToFile', PathToFile);
+            set(obj, 'dlPathToFile', [PathToFile, '/dlFile.mat']);
             o = load(obj.dlPathToFile);
-            fprintf("Loaded from %s \n", PathToFile);
+            fprintf("DL object loaded from %s \n", PathToFile);
             obj = o.obj;
+            
+            fprintf("Params.mat file loaded from %s \n", [PathToFile, '/solve']);
+            p = load([PathToFile, '/solve/params.mat']);
+            save([obj.dlPath, '/params.mat'], '-struct', 'p');
             obj.dlReInit();
             
         end
@@ -440,14 +444,15 @@ classdef DynaLearn < matlab.mixin.SetGet
                     fprintf("\t\tBatch no. %d\t", j);
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
                     obj.dlUpdateParams(dlVaryList{j});
-%                     obj.dlSimulate();
+                    obj.dlSimulate();
                     
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
+                    fprintf("\tError = %f\n", obj.dlLastError);
                     obj.dlTrainStep(dlLearningRule, dlLambda);
                 
                 end
-                fprintf("\tError = %f\n", obj.dlLastError);
+%                 fprintf("\tError = %f\n", obj.dlLastError);
                 
             end
             
@@ -519,7 +524,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             fprintf("Updating parameters of %s", obj.dlPath);
             dsParamsModifier('dlTempFuncParamsChanger.m', map);
             dlTempFuncParamsChanger(obj.dlPath);
-            fprintf("\tUpdated.\n"); 
+            fprintf("\tUpdated.\t"); 
             
         end
         
