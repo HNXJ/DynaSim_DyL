@@ -392,7 +392,6 @@ classdef DynaLearn < matlab.mixin.SetGet
                 elseif strcmpi(dlErrorType, 'MSE')
                     
                     TempError = abs(obj.dlLastOutputs{dlOutputIndices} - dlOutputTargets)^2;
-                
                     
                 elseif strcmpi(dlErrorType, 'Compare')
                     
@@ -410,6 +409,17 @@ classdef DynaLearn < matlab.mixin.SetGet
                         c = c + 1;
                         
                     end
+                
+                elseif strcmpi(dlErrorType, 'Diff')
+                    
+                    j = dlOutputIndices
+                    x = obj.dlLastOutputs{j(1)};
+
+                    if c > 1
+                        TempError = TempError + obj.dlRampFunc(x(c) - x(c-1));
+                    end
+
+                    c = c + 1;
                     
                 else
                     
@@ -468,6 +478,15 @@ classdef DynaLearn < matlab.mixin.SetGet
                     val{i, 1} = wn;
                     
                 end
+            elseif strcmpi(dlLearningRule, 'BioDeltaRule')
+            
+                for i = l'
+
+                    w = val{i, 1};
+                    wn = w + (1-w).*randn(size(w))*error*dlLambda;
+                    val{i, 1} = wn;
+                    
+                end
                 
             elseif strcmpi(dlLearningRule, 'RWDeltaRule')
             
@@ -506,7 +525,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             fprintf("Updating parameters of %s", obj.dlPath);
             dsParamsModifier('dlTempFuncParamsChanger.m', map);
             dlTempFuncParamsChanger(obj.dlPath);
-            fprintf(" updated.\n"); 
+            fprintf("   Updated.\n"); 
             
         end
         

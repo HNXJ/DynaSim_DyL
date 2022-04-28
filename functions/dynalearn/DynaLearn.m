@@ -392,7 +392,6 @@ classdef DynaLearn < matlab.mixin.SetGet
                 elseif strcmpi(dlErrorType, 'MSE')
                     
                     TempError = abs(obj.dlLastOutputs{dlOutputIndices} - dlOutputTargets)^2;
-                
                     
                 elseif strcmpi(dlErrorType, 'Compare')
                     
@@ -410,6 +409,11 @@ classdef DynaLearn < matlab.mixin.SetGet
                         c = c + 1;
                         
                     end
+                
+                elseif strcmpi(dlErrorType, 'Diff')
+                    
+                    j = dlOutputIndices;
+                    TempError = abs(obj.dlLastOutputs{j(1)} - obj.dlLastOutputs{j(2)});
                     
                 else
                     
