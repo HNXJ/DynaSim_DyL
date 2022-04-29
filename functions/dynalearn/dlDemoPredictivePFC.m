@@ -49,21 +49,20 @@ function y = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate)
     KmidEsupE(cx1_1:cx1_2, cnx1_1:cnx3_2) = k3*rand((a2-a1+1), (cnx3_2 - cnx1_1 + 1)) + k4; % Cx1 -> X1, X2, X3
     KmidEsupE(cx2_1:cx2_2, cny1_1:cny3_2) = k3*rand((a2-a1+1), (cny3_2 - cny1_1 + 1)) + k4; % Cx2 -> Y1, Y2, Y3
 
-    KmidEdeepE = Kee * 0.3;
-    % KmidEdeepE(1:5, 1:10) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % A -> O1
-    % KmidEdeepE(6:10, 11:20) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % B -> O2
-
     KsupEdeepE = Kee*0.3;
     KsupEdeepE(cnx1_1:cnx1_2, a1:a2) = k3*rand((cnx1_2 - cnx1_1 + 1), (a2 - a1 + 1)) + k4; % X1 -> O1
-    KsupEdeepE(cnx1_1:cnx1_2, b1:b2) = k3*rand((a2-a1+1), (b2 - b1 + 1)) + k4; % X2 -> O2
-    KsupEdeepE(cx1_1:cx1_2, cx1_1:cx2_2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % Y1 -> O2
-    KsupEdeepE(cx2_1:cx2_2, a1:b2) = k3*rand((a2-a1+1), (b2-a1+1)) + k4; % Y2 -> O1
+    KsupEdeepE(cnx2_1:cnx2_2, b1:b2) = k3*rand((cnx2_2 - cnx2_1 + 1), (b2 - b1 + 1)) + k4; % X2 -> O2
+    KsupEdeepE(cnx3_1:cnx3_2, c1:c2) = k3*rand((cnx3_2 - cnx3_1 + 1), (c2 - c1 + 1)) + k4; % X3 -> O3
+    KsupEdeepE(cny1_1:cny1_2, c1:c2) = k3*rand((cny1_2 - cny1_1 + 1), (a2 - a1 + 1)) + k4; % Y1 -> O3
+    KsupEdeepE(cny2_1:cny2_2, b1:b2) = k3*rand((cny2_2 - cny2_1 + 1), (b2 - b1 + 1)) + k4; % Y2 -> O2
+    KsupEdeepE(cny3_1:cny3_2, a1:a2) = k3*rand((cny3_2 - cny3_1 + 1), (c2 - c1 + 1)) + k4; % Y3 -> O1
 
+    KmidEdeepE = Kee*0.3;
     KmidIdeepE = Kie*0.3;
-    KmidIdeepE(1, cx1_1:cx2_2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & C1) -> O2 
-    KmidIdeepE(2, a1:b2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & C2) -> O1
-    KmidIdeepE(3, cx1_1:cx2_2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & C2) -> O2
-    KmidIdeepE(4, a1:b2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & C1) -> O1
+%     KmidIdeepE(1, cx1_1:cx2_2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & Cx1) -> O2 
+%     KmidIdeepE(2, a1:b2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(A & Cx2) -> O1
+%     KmidIdeepE(3, cx1_1:cx2_2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & Cx2) -> O2
+%     KmidIdeepE(4, a1:b2) = 0.1*rand(1, (b2-a1+1)) + 0.6; % !(B & Cx1) -> O1
 
     % Time constants
     tauGABA_gamma = 4.8; % ms, decay time constant of inhibition for gamma (50Hz)
