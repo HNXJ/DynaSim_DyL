@@ -472,7 +472,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for i = l'
 
                     w = val{i, 1};
-                    wn = w + randn(size(w))*error*dlLambda;
+                    wn = w + (rand(size(w))-0.5)*error*dlLambda;
                     val{i, 1} = wn;
                     
                 end
@@ -481,7 +481,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for i = l'
 
                     w = val{i, 1};
-                    wn = w + (1-w).*randn(size(w))*error*dlLambda;
+                    wn = w + (1-w).*(rand(size(w))-0.5)*error*dlLambda;
                     val{i, 1} = wn;
                     
                 end
