@@ -164,8 +164,8 @@ classdef DynaLearn < matlab.mixin.SetGet
             fprintf("DL object loaded from %s \n", PathToFile);
             obj = o.obj;
             
-            fprintf("Params.mat file loaded from %s \n", [PathToFile, '/solve']);
-            p = load([PathToFile, '/solve/params.mat']);
+            fprintf("Params.mat file loaded from %s \n", PathToFile);
+            p = load([PathToFile, '/params.mat']);
             save([obj.dlPath, '/params.mat'], '-struct', 'p');
             obj.dlReInit();
             
@@ -438,7 +438,7 @@ classdef DynaLearn < matlab.mixin.SetGet
            
             for i = 1:dlEpochs
                 
-                fprintf("\tTrial no. %d\n", i);
+                fprintf("\tEpoch no. %d\n", i);
                 for j = 1:dlBatchs
                 
                     fprintf("\t\tBatch no. %d\t", j);
