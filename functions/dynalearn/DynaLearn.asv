@@ -29,7 +29,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         dldT = .01; % Time step in ODEs (dt)
         
         dlDownSampleFactor = 10; 
-        dlOptimalError = -1;
+        dlOptimalError = 1e9;
         
     end
     
@@ -471,12 +471,12 @@ classdef DynaLearn < matlab.mixin.SetGet
                 end
                 
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
-                if dlAvgError < obj.dlOptimalError || obj.dlOptimalError == -1
+                if dlAvgError < obj.dlOptimalError
                    
-                    set(obj, 'dlOptimalError', dlAvgError);
+                    obj.dlOptimalError = dlAvgError);
                     obj.dlSaveCheckPoint('/Optimal');
                     
-                elseif dlAvgError > 3*obj.dlOptimalError
+                elseif dlAvgError > 1.25*obj.dlOptimalError
                    
                     obj.dlLoadCheckPoint('/Optimal');
                     

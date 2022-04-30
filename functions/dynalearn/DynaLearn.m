@@ -162,6 +162,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
             p = load([obj.dlPath, '/params.mat']);
             save([obj.dlStudyDir, dlCheckPointPath, 'params.mat'], '-struct', 'p');
+            fprintf("Checkpoint file saved in %s \n", [obj.dlStudyDir, dlCheckPointPath]);
             
         end
         
@@ -170,7 +171,6 @@ classdef DynaLearn < matlab.mixin.SetGet
             fprintf("Checkpoint file loaded from %s \n", [obj.dlStudyDir, dlCheckPointPath]);
             p = load([obj.dlStudyDir, dlCheckPointPath, 'params.mat']);
             save([obj.dlPath, '/params.mat'], '-struct', 'p');
-            obj.dlReInit();
             
         end
         
@@ -473,7 +473,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
                 if dlAvgError < obj.dlOptimalError
                    
-                    set(obj, 'dlOptimalError', dlAvgError);
+                    obj.dlOptimalError = dlAvgError;
                     obj.dlSaveCheckPoint('/Optimal');
                     
                 elseif dlAvgError > 1.25*obj.dlOptimalError
