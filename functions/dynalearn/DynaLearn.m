@@ -30,6 +30,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         dlDownSampleFactor = 10; 
         dlOptimalError = 1e9;
+        dlUpdateError = 0;
         
     end
     
@@ -451,8 +452,8 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule, dlLambda) % TODO !!! -> Steps, Update, parameters and variables
-           
+        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule, dlLambda, dlUpdateMode) 
+            
             for i = 1:dlEpochs
                 
                 fprintf("\tEpoch no. %d\n", i);
@@ -466,11 +467,24 @@ classdef DynaLearn < matlab.mixin.SetGet
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     fprintf("\tError = %f\n", obj.dlLastError);
-                    obj.dlTrainStep(dlLearningRule, dlLambda);
-                
+                    
+                    if strcmpi(dlUpdateMode, 'trial')
+                        
+                        obj.dlUpdateError = obj.dlLastError;
+                        obj.dlTrainStep(dlLearningRule, dlLambda);
+                        
+                    end
+                    
                 end
                 
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
+                if strcmpi(dlUpdateMode, 'batch')
+
+                    obj.dlUpdateError = dlAvgError;
+                    obj.dlTrainStep(dlLearningRule, dlLambda);
+
+                end
+                
                 if dlAvgError < obj.dlOptimalError
                    
                     obj.dlOptimalError = dlAvgError;
@@ -490,7 +504,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlTrainStep(obj, dlLearningRule, dlLambda)
            
-            error = obj.dlLastError;
+            error = obj.dlUpdateError;
             p = load([obj.dlPath, '/params.mat']);
             
             val = struct2cell(p.p);
