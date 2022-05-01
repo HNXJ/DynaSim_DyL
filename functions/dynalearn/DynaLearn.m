@@ -478,6 +478,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 end
                 
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
+                fprintf("\t\tEpoch's Average Error = %f\n", dlAvgError);
                 
                 if dlAvgError < obj.dlOptimalError
                    
@@ -496,8 +497,6 @@ classdef DynaLearn < matlab.mixin.SetGet
                     obj.dlTrainStep(dlLearningRule, dlLambda);
 
                 end
-                
-                fprintf("\t\tEpoch's Average Error = %f\n", dlAvgError);
                 
             end
             
@@ -581,6 +580,13 @@ classdef DynaLearn < matlab.mixin.SetGet
         function out = dlRampFunc(obj, x)
            
             out = (x + abs(x))/2;
+            
+        end
+        
+        function dlResetTraining(obj)
+           
+            obj.dlTrialNumber = 0;
+            obj.dlOptimalError = 1e9;
             
         end
         
