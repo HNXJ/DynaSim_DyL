@@ -584,11 +584,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlSaveOptimal(obj)
-           
-            
-            
-        end
+        function
         
         function dlLoadOptimal(obj)
             
