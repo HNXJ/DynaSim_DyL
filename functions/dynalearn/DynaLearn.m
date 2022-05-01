@@ -478,22 +478,23 @@ classdef DynaLearn < matlab.mixin.SetGet
                 end
                 
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
-                if strcmpi(dlUpdateMode, 'batch')
-
-                    obj.dlUpdateError = dlAvgError;
-                    obj.dlTrainStep(dlLearningRule, dlLambda);
-
-                end
                 
                 if dlAvgError < obj.dlOptimalError
                    
                     obj.dlOptimalError = dlAvgError;
                     obj.dlSaveCheckPoint('/Optimal');
                     
-                elseif dlAvgError > 1.25*obj.dlOptimalError
+                elseif dlAvgError > 1.75*obj.dlOptimalError
                    
                     obj.dlLoadCheckPoint('/Optimal');
                     
+                end
+                
+                if strcmpi(dlUpdateMode, 'batch')
+
+                    obj.dlUpdateError = dlAvgError;
+                    obj.dlTrainStep(dlLearningRule, dlLambda);
+
                 end
                 
                 fprintf("\t\tEpoch's Average Error = %f\n", dlAvgError);
@@ -516,18 +517,19 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for i = l'
 
                     w = val{i, 1};
-                    wn = w + (rand(size(w))-0.5)*error*dlLambda;
+                    wn = w + (randn(size(w)))*error*dlLambda;
                     wn(wn < 0) = 0;
                     wn(wn > 1) = 1;
                     val{i, 1} = wn;
                     
                 end
+                
             elseif strcmpi(dlLearningRule, 'BioDeltaRule')
             
                 for i = l'
 
                     w = val{i, 1};
-                    wn = w + (1-w).*(rand(size(w))-0.5)*error*dlLambda;
+                    wn = w + (1-w).*(randn(size(w)))*error*dlLambda;
                     wn(wn < 0) = 0;
                     wn(wn > 1) = 1;
                     val{i, 1} = wn;
