@@ -484,18 +484,27 @@ classdef DynaLearn < matlab.mixin.SetGet
                    
                     obj.dlOptimalError = dlAvgError;
                     obj.dlSaveOptimal();
+                   
+                    if strcmpi(dlUpdateMode, 'batch')
+
+                        obj.dlUpdateError = dlAvgError;
+                        obj.dlTrainStep(dlLearningRule, dlLambda);
+
+                    end
                     
                 elseif dlAvgError > 1.75*obj.dlOptimalError
                    
                     obj.dlLoadOptimal();
                     
-                end
-                
-                if strcmpi(dlUpdateMode, 'batch')
+                else
+                    
+                    if strcmpi(dlUpdateMode, 'batch')
 
-                    obj.dlUpdateError = dlAvgError;
-                    obj.dlTrainStep(dlLearningRule, dlLambda);
+                        obj.dlUpdateError = dlAvgError;
+                        obj.dlTrainStep(dlLearningRule, dlLambda);
 
+                    end
+                    
                 end
                 
             end
