@@ -483,11 +483,11 @@ classdef DynaLearn < matlab.mixin.SetGet
                 if dlAvgError < obj.dlOptimalError
                    
                     obj.dlOptimalError = dlAvgError;
-                    obj.dlSaveCheckPoint('/Optimal');
+                    obj.dlSaveOptimal();
                     
                 elseif dlAvgError > 1.75*obj.dlOptimalError
                    
-                    obj.dlLoadCheckPoint('/Optimal');
+                    obj.dlLoadOptimal();
                     
                 end
                 
@@ -586,7 +586,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlSaveOptimal(obj)
            
-            
+            obj.dlSaveCheckPoint('/Optimal');
             
         end
         
