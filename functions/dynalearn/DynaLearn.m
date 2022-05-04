@@ -574,7 +574,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     fprintf("\tError = %f\n", obj.dlLastError);
-                    obj.dlOutputLog = [obj.dlOutputLog; obj.dlLastOutputs];
+%                     obj.dlOutputLog = [obj.dlOutputLog; obj.dlLastOutputs];
                     
                     if strcmpi(dlUpdateMode, 'trial')
                         
