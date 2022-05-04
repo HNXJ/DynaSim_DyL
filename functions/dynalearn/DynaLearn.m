@@ -425,7 +425,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                         x(c) = obj.dlLastOutputs{j};
                         
                         if c > 1
-                            TempError = TempError + obj.dlRampFunc(x(c) - x(c-1));
+                            TempError = TempError + dlRampFunc(x(c) - x(c-1));
                         end
                         
                         c = c + 1;
@@ -452,7 +452,110 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
-        function dlTrain(obj, dlEpochs, dlBatchs, dlVaryList, dlOutputParameters, dlTargetParameters, dlLearningRule, dlLambda, dlUpdateMode) 
+        function dlRunSimulation(obj, dlVaryList, dlOutputParameters)
+           
+            obj.dlUpdateParams(dlVaryList);
+            obj.dlSimulate();
+            obj.dlCalculateOutputs(dlOutputParameters);
+            fprintf("\n\tSimulation outputs: ");
+            disp(obj.dlLastOutputs);
+            
+        end
+        
+        function dlTrain(obj, dlInputParameters, dlOutputParameters, dlTargetParameters, dlTrainOptions) 
+            
+            try
+               
+                dlSimulation = dlTrainOptions('dlSimulation');
+                
+            catch
+                
+                dlSimulation = 1;
+                
+            end
+            
+            try
+               
+                dlEpochs = dlTrainOptions('dlEpochs');
+                
+            catch
+                
+                dlEpochs = 10;
+                fprintf("->Epochs was not determined in options map, default dlEpochs = 10\n");
+                
+            end
+            
+            try
+               
+                dlBatchs = dlTrainOptions('dlBatchs');
+                
+            catch
+                
+                dlBatchs = size(dlInputParameters, 2);
+                fprintf("->Batchs was not determined in options map, default dlBatchs = size(dlVaryList, 2)\n");
+                
+            end
+            
+            try
+               
+                dlLambda = dlTrainOptions('dlLambda');
+                
+            catch
+                
+                dlLambda = 0.001;
+                fprintf("->Lambda was not determined in options map, default dlLambda = 1e-3\n");
+                
+            end
+            
+            try
+               
+                dlLearningRule = dlTrainOptions('dlLearningRule');
+                
+            catch
+                
+                dlLearningRule = 'DeltaRule';
+                fprintf("->Learning rule was not determined in options map, default dlLearningRule = 10\n");
+                
+            end
+            
+            try
+               
+                dlUpdateMode = dlTrainOptions('dlUpdateMode');
+                
+            catch
+                
+                dlUpdateMode = 'batch';
+                fprintf("->Update mode was not determined in options map, default dlUpdateMode = 'batch'\n");
+                
+            end
+            
+            try
+               
+                dlCheckpoint = dlTrainOptions('dlCheckpoint');
+                
+            catch
+                
+                dlCheckpoint = 'true';
+                fprintf("->Checkpoint mode was not determined in options map, default dlCheckpoint = 'true'\n");
+                
+            end
+            
+            try
+               
+                dlCheckpointCoefficient = dlTrainOptions('dlCheckpointCoefficient');
+                
+            catch
+                
+                dlCheckpointCoefficient = 2.0;
+                fprintf("->Checkpoint Coefficient for optimal state saving and loading was not determined in options map, default dlCheckpointCoefficient = 2\n");
+                
+            end
+            
+            if dlSimulation ~= 1
+               
+                fprintf("->Simulation has been manually disactivated for this run.\n");
+                
+            end
             
             for i = 1:dlEpochs
                 
@@ -461,9 +564,11 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
                     fprintf("\t\tBatch no. %d\t", j);
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
-                    obj.dlUpdateParams(dlVaryList{j});
-                    obj.dlSimulate();
+                    obj.dlUpdateParams(dlInputParameters{j});
                     
+                    if dlSimulation == 1
+                        obj.dlSimulate();
+                    end
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     fprintf("\tError = %f\n", obj.dlLastError);
@@ -480,24 +585,37 @@ classdef DynaLearn < matlab.mixin.SetGet
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
                 fprintf("\t\tEpoch's Average Error = %f\n", dlAvgError);
                 
-                if dlAvgError < obj.dlOptimalError
-                   
-                    obj.dlOptimalError = dlAvgError;
-                    obj.dlSaveOptimal();
-                   
-                    if strcmpi(dlUpdateMode, 'batch')
+                if strcmpi(dlCheckpoint, 'true')
+                    
+                    if dlAvgError < obj.dlOptimalError
 
-                        obj.dlUpdateError = dlAvgError;
-                        obj.dlTrainStep(dlLearningRule, dlLambda);
+                        obj.dlOptimalError = dlAvgError;
+                        obj.dlSaveOptimal();
+
+                        if strcmpi(dlUpdateMode, 'batch')
+
+                            obj.dlUpdateError = dlAvgError;
+                            obj.dlTrainStep(dlLearningRule, dlLambda);
+
+                        end
+
+                    elseif dlAvgError > dlCheckpointCoefficient*obj.dlOptimalError
+
+                        obj.dlLoadOptimal();
+
+                    else
+
+                        if strcmpi(dlUpdateMode, 'batch')
+
+                            obj.dlUpdateError = dlAvgError;
+                            obj.dlTrainStep(dlLearningRule, dlLambda);
+
+                        end
 
                     end
                     
-                elseif dlAvgError > 1.75*obj.dlOptimalError
-                   
-                    obj.dlLoadOptimal();
-                    
                 else
-                    
+                   
                     if strcmpi(dlUpdateMode, 'batch')
 
                         obj.dlUpdateError = dlAvgError;
@@ -506,7 +624,6 @@ classdef DynaLearn < matlab.mixin.SetGet
                     end
                     
                 end
-                
             end
             
         end
@@ -514,6 +631,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlTrainStep(obj, dlLearningRule, dlLambda)
            
             error = obj.dlUpdateError;
+%             fprintf("UPD err = %f", error);
             p = load([obj.dlPath, '/params.mat']);
             
             val = struct2cell(p.p);
@@ -525,7 +643,9 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for i = l'
 
                     w = val{i, 1};
-                    wn = w + (randn(size(w)))*error*dlLambda;
+                    delta = (randn(size(w)))*error*dlLambda;
+                    wn = w + delta;
+                    
                     wn(wn < 0) = 0;
                     wn(wn > 1) = 1;
                     val{i, 1} = wn;
@@ -537,7 +657,9 @@ classdef DynaLearn < matlab.mixin.SetGet
                 for i = l'
 
                     w = val{i, 1};
-                    wn = w + (1-w).*(randn(size(w)))*error*dlLambda;
+                    delta = (1-w).*(randn(size(w)))*error*dlLambda;
+                    wn = w + delta;
+                    
                     wn(wn < 0) = 0;
                     wn(wn > 1) = 1;
                     val{i, 1} = wn;
@@ -602,12 +724,6 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlLoadOptimal(obj)
             
             obj.dlLoadCheckPoint('/Optimal');
-            
-        end
-        
-        function out = dlRampFunc(obj, x)
-           
-            out = (x + abs(x))/2;
             
         end
         
