@@ -16,7 +16,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         dlTrialNumber = 0; % Last trial; how many times this model have been trianed with stimuli.
         dlLastOutputs = []; % Last output (eg. spike vector) of this model.
         dlLastError = 0; % Last error of this model for target, equivalent to the last value of errors_log property
-        dlLastTargets = []; % Last expected output that this model should've generated.
+        dlOutputLog = []; % Last expected output that this model should've generated.
         
         dsData = []; % Last simulation outputs
         dlOutputs = []; % Mex outputs
@@ -132,9 +132,9 @@ classdef DynaLearn < matlab.mixin.SetGet
              
         end
         
-        function set.dlLastTargets(obj, val)
+        function set.dlOutputLog(obj, val)
              
-            obj.dlLastTargets = val;
+            obj.dlOutputLog = val;
              
         end
         
@@ -447,8 +447,9 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             end
             
-            obj.dlErrorsLog = [obj.dlErrorsLog, Error];
-            obj.dlLastError = Error;
+            obj.dlLastError = Error
+            obj.dlErrorsLog = [obj.dlErrorsLog, obj.dlLastError];
+            disp(obj.dlLastError);
             
         end
         
@@ -570,9 +571,11 @@ classdef DynaLearn < matlab.mixin.SetGet
                     if dlSimulation == 1
                         obj.dlSimulate();
                     end
+                    
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     fprintf("\tError = %f\n", obj.dlLastError);
+                    obj.dlOutputLog = [obj.dlOutputLog; obj.dlLastOutputs];
                     
                     if strcmpi(dlUpdateMode, 'trial')
                         
@@ -643,6 +646,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
                 for i = l'
 
+                    rng('shuffle');
                     w = val{i, 1};
                     delta = (randn(size(w)))*error*dlLambda;
                     wn = w + delta;
@@ -657,6 +661,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             
                 for i = l'
 
+                    rng('shuffle');
                     w = val{i, 1};
                     delta = (1-w).*(randn(size(w)))*error*dlLambda;
                     wn = w + delta;
@@ -713,6 +718,8 @@ classdef DynaLearn < matlab.mixin.SetGet
            
             obj.dlTrialNumber = 0;
             obj.dlOptimalError = 1e9;
+            obj.dlOutputLog = [];
+            obj.dlErrorsLog = [];
             
         end
         

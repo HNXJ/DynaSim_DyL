@@ -425,7 +425,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                         x(c) = obj.dlLastOutputs{j};
                         
                         if c > 1
-                            TempError = TempError + obj.dlRampFunc(x(c) - x(c-1));
+                            TempError = TempError + dlRampFunc(x(c) - x(c-1));
                         end
                         
                         c = c + 1;
@@ -448,12 +448,13 @@ classdef DynaLearn < matlab.mixin.SetGet
             end
             
             obj.dlErrorsLog = [obj.dlErrorsLog, Error];
-            obj.dlLastError = Error;
+            obj.dlLastError = Error * (1 + randn(1);
             
         end
         
         function dlRunSimulation(obj, dlVaryList, dlOutputParameters)
            
+            fprintf("\n\tSingle trial running: \n");
             obj.dlUpdateParams(dlVaryList);
             obj.dlSimulate();
             obj.dlCalculateOutputs(dlOutputParameters);
@@ -463,6 +464,16 @@ classdef DynaLearn < matlab.mixin.SetGet
         end
         
         function dlTrain(obj, dlInputParameters, dlOutputParameters, dlTargetParameters, dlTrainOptions) 
+            
+            try
+               
+                dlSimulation = dlTrainOptions('dlSimulation');
+                
+            catch
+                
+                dlSimulation = 1;
+                
+            end
             
             try
                
@@ -521,12 +532,12 @@ classdef DynaLearn < matlab.mixin.SetGet
             
             try
                
-                dlCheckpoint = dlTrainOptions('dlcheckpoint');
+                dlCheckpoint = dlTrainOptions('dlCheckpoint');
                 
             catch
                 
                 dlCheckpoint = 'true';
-                fprintf("->Checkpoint mode and its coefficient for optimal state saving and loading were not \ndetermined in options map, default dlCheckpoint = 'true', dlCheckpointCoef = 2\n");
+                fprintf("->Checkpoint mode was not determined in options map, default dlCheckpoint = 'true'\n");
                 
             end
             
@@ -537,7 +548,13 @@ classdef DynaLearn < matlab.mixin.SetGet
             catch
                 
                 dlCheckpointCoefficient = 2.0;
-                fprintf("->Checkpoint Coefficient for optimal state saving and loading was not determined in options map, default dlCheckpoint = 'true', dlCheckpointCoef = 2\n");
+                fprintf("->Checkpoint Coefficient for optimal state saving and loading was not determined in options map, default dlCheckpointCoefficient = 2\n");
+                
+            end
+            
+            if dlSimulation ~= 1
+               
+                fprintf("->Simulation has been manually disactivated for this run.\n");
                 
             end
             
@@ -549,8 +566,10 @@ classdef DynaLearn < matlab.mixin.SetGet
                     fprintf("\t\tBatch no. %d\t", j);
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
                     obj.dlUpdateParams(dlInputParameters{j});
-%                     obj.dlSimulate();
                     
+                    if dlSimulation == 1
+                        obj.dlSimulate();
+                    end
                     obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     fprintf("\tError = %f\n", obj.dlLastError);
@@ -568,6 +587,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 fprintf("\t\tEpoch's Average Error = %f\n", dlAvgError);
                 
                 if strcmpi(dlCheckpoint, 'true')
+                    
                     if dlAvgError < obj.dlOptimalError
 
                         obj.dlOptimalError = dlAvgError;
@@ -580,7 +600,7 @@ classdef DynaLearn < matlab.mixin.SetGet
 
                         end
 
-                    elseif dlAvgError > 1.75*obj.dlOptimalError
+                    elseif dlAvgError > dlCheckpointCoefficient*obj.dlOptimalError
 
                         obj.dlLoadOptimal();
 
@@ -599,8 +619,8 @@ classdef DynaLearn < matlab.mixin.SetGet
                    
                     if strcmpi(dlUpdateMode, 'batch')
 
-                            obj.dlUpdateError = dlAvgError;
-                            obj.dlTrainStep(dlLearningRule, dlLambda);
+                        obj.dlUpdateError = dlAvgError;
+                        obj.dlTrainStep(dlLearningRule, dlLambda);
 
                     end
                     
@@ -612,7 +632,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlTrainStep(obj, dlLearningRule, dlLambda)
            
             error = obj.dlUpdateError;
-            fprintf("UPD err = %f", error);
+%             fprintf("UPD err = %f", error);
             p = load([obj.dlPath, '/params.mat']);
             
             val = struct2cell(p.p);
@@ -705,12 +725,6 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlLoadOptimal(obj)
             
             obj.dlLoadCheckPoint('/Optimal');
-            
-        end
-        
-        function out = dlRampFunc(obj, x)
-           
-            out = (x + abs(x))/2;
             
         end
         
