@@ -454,6 +454,7 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlRunSimulation(obj, dlVaryList, dlOutputParameters)
            
+            fprintf("\n\tSingle trial running: \n");
             obj.dlUpdateParams(dlVaryList);
             obj.dlSimulate();
             obj.dlCalculateOutputs(dlOutputParameters);
