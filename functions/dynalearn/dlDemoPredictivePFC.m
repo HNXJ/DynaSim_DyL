@@ -32,8 +32,8 @@ function y = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate)
     a1 = 1;a2 = ceil(1*Ne/5);
     b1 = ceil(1 + 1*Ne/5);b2 = ceil(2*Ne/5);
     c1 = ceil(1 + 2*Ne/5);c2 = ceil(3*Ne/5);
-    cx1_1 = ceil(1 + 2*Ne/5);cx1_2 = ceil(3*Ne/5);
-    cx2_1 = ceil(1 + 2*Ne/5);cx2_2 = ceil(3*Ne/5);
+    cx1_1 = ceil(1 + 3*Ne/5);cx1_2 = ceil(4*Ne/5);
+    cx2_1 = ceil(1 + 4*Ne/5);cx2_2 = ceil(5*Ne/5);
     
     cnx1_1 = 1;cnx1_2 = ceil(1*Ne/6);
     cnx2_1 = ceil(1 + 1*Ne/6);cnx2_2 = ceil(2*Ne/6);
@@ -53,9 +53,9 @@ function y = dlDemoPredictivePFC(Ne, Ni, Nio, noise_rate)
     KsupEdeepE(cnx1_1:cnx1_2, a1:a2) = k3*rand((cnx1_2 - cnx1_1 + 1), (a2 - a1 + 1)) + k4; % X1 -> O1
     KsupEdeepE(cnx2_1:cnx2_2, b1:b2) = k3*rand((cnx2_2 - cnx2_1 + 1), (b2 - b1 + 1)) + k4; % X2 -> O2
     KsupEdeepE(cnx3_1:cnx3_2, c1:c2) = k3*rand((cnx3_2 - cnx3_1 + 1), (c2 - c1 + 1)) + k4; % X3 -> O3
-    KsupEdeepE(cny1_1:cny1_2, c1:c2) = k3*rand((cny1_2 - cny1_1 + 1), (a2 - a1 + 1)) + k4; % Y1 -> O3
+    KsupEdeepE(cny1_1:cny1_2, a1:a2) = k3*rand((cny1_2 - cny1_1 + 1), (a2 - a1 + 1)) + k4; % Y1 -> O3
     KsupEdeepE(cny2_1:cny2_2, b1:b2) = k3*rand((cny2_2 - cny2_1 + 1), (b2 - b1 + 1)) + k4; % Y2 -> O2
-    KsupEdeepE(cny3_1:cny3_2, a1:a2) = k3*rand((cny3_2 - cny3_1 + 1), (c2 - c1 + 1)) + k4; % Y3 -> O1
+    KsupEdeepE(cny3_1:cny3_2, c1:c2) = k3*rand((cny3_2 - cny3_1 + 1), (c2 - c1 + 1)) + k4; % Y3 -> O1
 
     KmidEdeepE = Kee*0.3;
     KmidIdeepE = Kie*0.3;
