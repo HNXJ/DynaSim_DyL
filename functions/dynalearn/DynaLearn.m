@@ -447,9 +447,8 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             end
             
-            obj.dlLastError = Error
+            obj.dlLastError = Error;
             obj.dlErrorsLog = [obj.dlErrorsLog, obj.dlLastError];
-            disp(obj.dlLastError);
             
         end
         
