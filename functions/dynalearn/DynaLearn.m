@@ -31,6 +31,10 @@ classdef DynaLearn < matlab.mixin.SetGet
         dlDownSampleFactor = 10; 
         dlOptimalError = 1e9;
         dlUpdateError = 0;
+        dlLastLambda = 1e-3;
+        
+        dlDeltaRatio = 1;
+        dlLastDelta = 1;
         
     end
     
@@ -452,6 +456,23 @@ classdef DynaLearn < matlab.mixin.SetGet
             
         end
         
+        function out = dlAdaptiveLambda(obj)
+            
+            out = obj.dlLastLambda * obj.dlDeltaRatio;
+            
+        end
+        
+        function dlOutputGenerator(obj)
+           
+            n = size(obj.dlLastOutputs, 2);
+            for i = 1:n
+               
+                obj.dlLastOutputs{i} = obj.dlLastOutputs{i} * rand(1) * 2;
+                
+            end
+            
+        end
+        
         function dlRunSimulation(obj, dlVaryList, dlOutputParameters)
            
             fprintf("\n\tSingle trial running: \n");
@@ -468,15 +489,30 @@ classdef DynaLearn < matlab.mixin.SetGet
             try
                
                 dlSimulationFlag = dlTrainOptions('dlSimulationFlag');
-                if dlSimulationFlag == 0
-                   
-                    fprintf("->Simulation for this ");
-                    
-                end
                 
             catch
                 
                 dlSimulationFlag = 1;
+                
+            end
+            
+            try
+               
+                dlOfflineOutputGenerator = dlTrainOptions('dlOfflineOutputGenerator');
+                
+            catch
+                
+                dlOfflineOutputGenerator = 0;
+                
+            end
+            
+            try
+               
+                dlAdaptiveLambda = dlTrainOptions('dlAdaptiveLambda');
+                
+            catch
+                
+                dlAdaptiveLambda = 1;
                 
             end
             
@@ -487,7 +523,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             catch
                 
                 dlEpochs = 10;
-                fprintf("->Epochs was not determined in options map, default dlEpochs = 10\n");
+                fprintf("->Number of epochs was not determined in options map. Default dlEpochs = 10\n");
                 
             end
             
@@ -520,7 +556,7 @@ classdef DynaLearn < matlab.mixin.SetGet
             catch
                 
                 dlLearningRule = 'DeltaRule';
-                fprintf("->Learning rule was not determined in options map, default dlLearningRule = 10\n");
+                fprintf("->Learning rule was not determined in options map, default dlLearningRule = 'DeltaRule'\n");
                 
             end
             
@@ -537,12 +573,22 @@ classdef DynaLearn < matlab.mixin.SetGet
             
             try
                
+                dlOutputLogFlag = dlTrainOptions('dlOutputLogFlag');
+                
+            catch
+                
+                dlOutputLogFlag = 0;
+                
+            end
+            
+            try
+               
                 dlCheckpoint = dlTrainOptions('dlCheckpoint');
                 
             catch
                 
                 dlCheckpoint = 'true';
-                fprintf("->Checkpoint mode was not determined in options map, default dlCheckpoint = 'true'\n");
+                fprintf("->Checkpoint flag was not determined in options map, default dlCheckpoint = 'true'\n");
                 
             end
             
@@ -557,12 +603,37 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
             end
             
-            if dlSimulation ~= 1
+            if dlSimulationFlag ~= 1
                
-                fprintf("->Simulation has been manually disactivated for this run.\n");
+                fprintf("->Simulation has been manually deactivated for this run.\n");
+                if dlOfflineOutputGenerator == 1
+               
+                    fprintf("->Offline output generator (random) is activated. Outputs are only for debugging approaches. \n");
+                
+                end
+                
+            else
+               
+                if dlOfflineOutputGenerator == 1
+               
+                    fprintf("->Offline output generator (random) is activated but ignored as simulation is active. \n");
+                
+                end
                 
             end
             
+            if dlAdaptiveLambda == 1
+               
+                fprintf("->Adaptive lambda is active. Lambda (learning rate) will be changed based on volatility of model error.\n");
+                
+            end
+            
+            if dlOutputLogFlag == 1
+               
+                fprintf("->Outputs log will be saved.\n");
+                
+            end            
+                
             for i = 1:dlEpochs
                 
                 fprintf("\tEpoch no. %d\n", i);
@@ -572,18 +643,26 @@ classdef DynaLearn < matlab.mixin.SetGet
                     set(obj, 'dlTrialNumber', obj.dlTrialNumber + 1);
                     obj.dlUpdateParams(dlInputParameters{j});
                     
-                    if dlSimulation == 1
+                    if dlSimulationFlag == 1
                         obj.dlSimulate();
+                        obj.dlCalculateOutputs(dlOutputParameters);
+                    elseif dlOfflineOutputGenerator == 1
+                        obj.dlOutputGenerator();
                     end
                     
-                    obj.dlCalculateOutputs(dlOutputParameters);
                     obj.dlCalculateError(dlTargetParameters{j});
                     fprintf("\tError = %f\n", obj.dlLastError);
-%                     obj.dlOutputLog = [obj.dlOutputLog; obj.dlLastOutputs];
+                    
+                    if dlOutputLogFlag
+                        obj.dlOutputLog = [obj.dlOutputLog; obj.dlLastOutputs];
+                    end
                     
                     if strcmpi(dlUpdateMode, 'trial')
                         
                         obj.dlUpdateError = obj.dlLastError;
+                        if dlAdaptiveLambda == 1
+                            dlLambda = obj.dlAdaptiveLambda();
+                        end
                         obj.dlTrainStep(dlLearningRule, dlLambda);
                         
                     end
@@ -591,7 +670,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                 end
                 
                 dlAvgError = mean(obj.dlErrorsLog(end-2:end));
-                fprintf("\t\tEpoch's Average Error = %f\n", dlAvgError);
+                fprintf("\t\tEpoch's Average Error = %f, Last lambda = %f\n", dlAvgError, dlLambda);
                 
                 if strcmpi(dlCheckpoint, 'true')
                     
@@ -603,6 +682,9 @@ classdef DynaLearn < matlab.mixin.SetGet
                         if strcmpi(dlUpdateMode, 'batch')
 
                             obj.dlUpdateError = dlAvgError;
+                            if dlAdaptiveLambda == 1
+                                dlLambda = obj.dlAdaptiveLambda();
+                            end
                             obj.dlTrainStep(dlLearningRule, dlLambda);
 
                         end
@@ -616,6 +698,9 @@ classdef DynaLearn < matlab.mixin.SetGet
                         if strcmpi(dlUpdateMode, 'batch')
 
                             obj.dlUpdateError = dlAvgError;
+                            if dlAdaptiveLambda == 1
+                                dlLambda = obj.dlAdaptiveLambda();
+                            end
                             obj.dlTrainStep(dlLearningRule, dlLambda);
 
                         end
@@ -627,6 +712,9 @@ classdef DynaLearn < matlab.mixin.SetGet
                     if strcmpi(dlUpdateMode, 'batch')
 
                         obj.dlUpdateError = dlAvgError;
+                        if dlAdaptiveLambda == 1
+                            dlLambda = obj.dlAdaptiveLambda();
+                        end
                         obj.dlTrainStep(dlLearningRule, dlLambda);
 
                     end
@@ -639,13 +727,14 @@ classdef DynaLearn < matlab.mixin.SetGet
         function dlTrainStep(obj, dlLearningRule, dlLambda)
            
             error = obj.dlUpdateError;
-%             fprintf("UPD err = %f", error);
+            obj.dlLastLambda = dlLambda;
             p = load([obj.dlPath, '/params.mat']);
             
             val = struct2cell(p.p);
             lab = fieldnames(p.p);
             l = find(contains(lab, '_netcon'));
             
+            deltaL = 0;
             if strcmpi(dlLearningRule, 'DeltaRule')
             
                 for i = l'
@@ -658,6 +747,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     wn(wn < 0) = 0;
                     wn(wn > 1) = 1;
                     val{i, 1} = wn;
+                    deltaL = deltaL + sum(sum(abs(delta)));
                     
                 end
                 
@@ -673,6 +763,7 @@ classdef DynaLearn < matlab.mixin.SetGet
                     wn(wn < 0) = 0;
                     wn(wn > 1) = 1;
                     val{i, 1} = wn;
+                    deltaL = deltaL + sum(sum(abs(delta)));
                     
                 end
                 
@@ -684,6 +775,17 @@ classdef DynaLearn < matlab.mixin.SetGet
                 
                 disp("TODO train step and learning 'else' part");
                 disp(error);
+                
+            end
+            
+            if obj.dlLastDelta < 0
+            
+                obj.dlLastDelta = deltaL;
+                    
+            else
+                
+                obj.dlDeltaRatio = (obj.dlLastDelta / deltaL)^0.5;
+                obj.dlLastDelta = deltaL;
                 
             end
             
@@ -734,7 +836,11 @@ classdef DynaLearn < matlab.mixin.SetGet
         
         function dlLoadOptimal(obj)
             
-            obj.dlLoadCheckPoint('/Optimal');
+            try
+                obj.dlLoadCheckPoint('/Optimal');
+            catch
+                fprintf("--->No oprimal file exists. first run a training session with an active checkpoint flag.\n");
+            end
             
         end
         
