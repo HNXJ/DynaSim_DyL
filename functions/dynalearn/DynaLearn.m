@@ -467,11 +467,16 @@ classdef DynaLearn < matlab.mixin.SetGet
             
             try
                
-                dlSimulation = dlTrainOptions('dlSimulation');
+                dlSimulationFlag = dlTrainOptions('dlSimulationFlag');
+                if dlSimulationFlag == 0
+                   
+                    fprintf("->Simulation for this ");
+                    
+                end
                 
             catch
                 
-                dlSimulation = 1;
+                dlSimulationFlag = 1;
                 
             end
             
@@ -685,7 +690,6 @@ classdef DynaLearn < matlab.mixin.SetGet
             q = cell2struct(val, lab);
             p.p = q;
             save([obj.dlPath, '/params.mat'], '-struct', 'p');
-%             fprintf("\tTrial completed.\n");
             
         end
         
